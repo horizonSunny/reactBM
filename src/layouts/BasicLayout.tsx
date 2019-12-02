@@ -149,12 +149,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
   return (
     <ProLayout
       logo={logo}
-      menuHeaderRender={(logoDom, titleDom) => (
-        <span>
-          {logoDom}
-          {titleDom}
-        </span>
-      )}
+      // menuHeaderRender={(logoDom, titleDom) => (
+      //   <span>
+      //     {logoDom}
+      //     {titleDom}
+      //   </span>
+      // )}
       onCollapse={handleMenuCollapse}
       menuItemRender={(menuItemProps, defaultDom) => {
         if (menuItemProps.isUrl || menuItemProps.children) {
