@@ -21,12 +21,12 @@ const route = [
         routes: [
           {
             path: '/',
-            redirect: '/welcome',
+            redirect: '/businessAdm',
           },
           {
-            path: '/welcome',
-            name: 'welcome',
-            icon: 'smile',
+            path: '/businessAdm',
+            name: 'businessAdm',
+            icon: 'dashboard',
             component: './Welcome',
           },
           {
