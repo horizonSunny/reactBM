@@ -34,7 +34,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
         onPressEnter={value => {
           console.log('enter', value);
         }}
-      />
+      />*/}
       <Tooltip title="使用文档">
         <a
           target="_blank"
@@ -44,7 +44,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = props => {
         >
           <Icon type="question-circle-o" />
         </a>
-      </Tooltip>*/}
+      </Tooltip>
       <Avatar />
       {/* <SelectLang className={styles.action} /> */}
     </div>
