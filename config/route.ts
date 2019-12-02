@@ -21,13 +21,20 @@ const route = [
         routes: [
           {
             path: '/',
-            redirect: '/businessAdm',
+            redirect: '/businessAdm/enterprise',
           },
           {
             path: '/businessAdm',
-            name: 'businessAdm',
+            name: '企业管理',
             icon: 'dashboard',
-            component: './Welcome',
+            routes: [
+              {
+                path: '/businessAdm/enterprise',
+                name: '入驻企业',
+                component: './Welcome',
+              },
+            ],
+            // component: './Welcome',
           },
           {
             path: '/admin',
