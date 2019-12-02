@@ -14,6 +14,7 @@ import Link from 'umi/link';
 import { Dispatch } from 'redux';
 import { connect } from 'dva';
 import { Icon, Result, Button } from 'antd';
+
 import Authorized from '@/utils/Authorized';
 import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
@@ -149,23 +150,25 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
     <ProLayout
       logo={logo}
       menuHeaderRender={(logoDom, titleDom) => (
-        <Link to="/">
+        <span>
           {logoDom}
           {titleDom}
-        </Link>
+        </span>
       )}
       onCollapse={handleMenuCollapse}
       menuItemRender={(menuItemProps, defaultDom) => {
         if (menuItemProps.isUrl || menuItemProps.children) {
           return defaultDom;
         }
-
         return <Link to={menuItemProps.path}>{defaultDom}</Link>;
       }}
       itemRender={(route, params, routes, paths) => {
-        const first = routes.indexOf(route) === 0;
+        const toPath = paths[paths.length - 1];
+        console.log('toPath_', toPath, '--', typeof toPath);
+        const first = routes.indexOf(route) !== 0 && routes.indexOf(route) !== routes.length - 1;
         return first ? (
-          <Link to={paths.join('/')}>{route.breadcrumbName}</Link>
+          // 前面必须加上'/'
+          <Link to={'/' + paths[paths.length - 1]}>{route.breadcrumbName}</Link>
         ) : (
           <span>{route.breadcrumbName}</span>
         );
