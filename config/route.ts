@@ -21,7 +21,7 @@ const route = [
         routes: [
           {
             path: '/',
-            redirect: '/businessAdm/enterprise/123',
+            redirect: '/businessAdm/enterprise',
           },
           {
             path: '/businessAdm',
@@ -32,13 +32,12 @@ const route = [
                 path: '/businessAdm/enterprise',
                 name: '入驻企业',
                 component: './Welcome',
-                routes: [
-                  {
-                    path: '/businessAdm/enterprise/123',
-                    name: '入驻企业312',
-                    component: './Welcome',
-                  },
-                ],
+              },
+              {
+                path: '/businessAdm/enterprise/123',
+                name: '企业管理231',
+                component: './WelcomeTwo',
+                hideInMenu: true,
               },
             ],
           },
