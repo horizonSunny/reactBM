@@ -26,7 +26,7 @@ const route = [
           {
             path: '/businessAdm',
             name: '企业管理',
-            icon: 'dashboard',
+            icon: 'home',
             routes: [
               {
                 path: '/businessAdm/enter',
@@ -49,7 +49,7 @@ const route = [
           {
             path: '/commodityAdm',
             name: '商品管理',
-            icon: 'dashboard',
+            icon: 'shop',
             routes: [
               {
                 path: '/commodityAdm/management',
