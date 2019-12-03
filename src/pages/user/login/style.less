@@ -3,6 +3,7 @@
 .main {
   width: 368px;
   margin: 0 auto;
+
   @media screen and (max-width: @screen-sm) {
     width: 95%;
   }
@@ -34,6 +35,16 @@
     .antd-pro-login-submit {
       width: 100%;
       margin-top: 24px;
+    }
+
+    // 为了调节登陆样式
+    .ant-tabs-nav .ant-tabs-tab-active {
+      color: rgba(0, 0, 0, 0.8);
+      font-weight: 500;
+    }
+
+    .ant-tabs-ink-bar {
+      background-color: rgba(0, 0, 0, 0);
     }
   }
 }

@@ -27,6 +27,7 @@ const UserLayout: React.SFC<UserLayoutProps> = props => {
       pathname: '',
     },
   } = props;
+  // console.log('props_children_', props.children);
   const { breadcrumb } = getMenuData(routes);
   const title = getPageTitle({
     pathname: location.pathname,
@@ -41,22 +42,18 @@ const UserLayout: React.SFC<UserLayoutProps> = props => {
       </Helmet>
 
       <div className={styles.container}>
-        <div className={styles.lang}>
-          <SelectLang />
-        </div>
         <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.header}>
-              <Link to="/">
+              <div>
                 <img alt="logo" className={styles.logo} src={logo} />
-                <span className={styles.title}>Ant Design</span>
-              </Link>
+                <span className={styles.title}>药利多管理系统</span>
+              </div>
             </div>
-            <div className={styles.desc}>Ant Design 是西湖区最具影响力的 Web 设计规范</div>
+            <div className={styles.desc}>药理多平台企业管理系统</div>
           </div>
           {children}
         </div>
-        <DefaultFooter />
       </div>
     </>
   );

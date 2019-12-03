@@ -145,7 +145,7 @@ class Login extends Component<LoginProps, LoginState> {
               }}
             />
           </Tab>
-          <Tab key="mobile" tab="手机号登录">
+          {/* <Tab key="mobile" tab="手机号登录">
             {status === 'error' &&
               loginType === 'mobile' &&
               !submitting &&
@@ -179,7 +179,8 @@ class Login extends Component<LoginProps, LoginState> {
               ]}
             />
           </Tab>
-          <div>
+           */}
+          {/* <div>
             <Checkbox checked={autoLogin} onChange={this.changeAutoLogin}>
               自动登录
             </Checkbox>
@@ -192,8 +193,9 @@ class Login extends Component<LoginProps, LoginState> {
               忘记密码
             </a>
           </div>
+           */}
           <Submit loading={submitting}>登录</Submit>
-          <div className={styles.other}>
+          {/* <div className={styles.other}>
             其他登录方式
             <Icon type="alipay-circle" className={styles.icon} theme="outlined" />
             <Icon type="taobao-circle" className={styles.icon} theme="outlined" />
@@ -202,6 +204,7 @@ class Login extends Component<LoginProps, LoginState> {
               注册账户
             </Link>
           </div>
+         */}
         </LoginComponents>
       </div>
     );
