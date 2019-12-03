@@ -21,7 +21,7 @@ const route = [
         routes: [
           {
             path: '/',
-            redirect: '/businessAdm/enterprise',
+            redirect: '/businessAdm/enter',
           },
           {
             path: '/businessAdm',
@@ -29,18 +29,42 @@ const route = [
             icon: 'dashboard',
             routes: [
               {
-                path: '/businessAdm/enterprise',
+                path: '/businessAdm/enter',
                 name: '入驻企业',
                 component: './Welcome',
               },
               {
-                path: '/businessAdm/enterprise/123',
-                name: '企业管理231',
+                path: '/businessAdm/examine',
+                name: '入驻审核',
+                component: './Welcome',
+              },
+              {
+                path: '/businessAdm/enter/particulars',
+                name: '查看详情',
                 component: './WelcomeTwo',
                 hideInMenu: true,
               },
             ],
           },
+          {
+            path: '/commodityAdm',
+            name: '商品管理',
+            icon: 'dashboard',
+            routes: [
+              {
+                path: '/commodityAdm/management',
+                name: '商品管理',
+                component: './Welcome',
+              },
+              {
+                path: '/commodityAdm/management/particulars',
+                name: '查看详情',
+                component: './WelcomeTwo',
+                hideInMenu: true,
+              },
+            ],
+          },
+          // 用户
           {
             path: '/admin',
             name: 'admin',
