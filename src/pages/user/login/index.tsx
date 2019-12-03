@@ -41,14 +41,18 @@ class Login extends Component<LoginProps, LoginState> {
   };
 
   handleSubmit = (err: unknown, values: LoginParamsType) => {
+    // 登陆
     const { type } = this.state;
 
     if (!err) {
+      console.log('this.props_', this.props.dispatch);
       const { dispatch } = this.props;
       dispatch({
         type: 'login/login',
         payload: { ...values, type },
       });
+    } else {
+      console.log('登陆啦啦啦_报错');
     }
   };
 
@@ -129,7 +133,7 @@ class Login extends Component<LoginProps, LoginState> {
             />
             <Password
               name="password"
-              placeholder={`${'密码'}: ant.design`}
+              placeholder={`${'密码'}: xxx`}
               rules={[
                 {
                   required: true,
