@@ -4,10 +4,12 @@ import { Card, Typography, Alert } from 'antd';
 import styles from './CommodityAdm.less';
 
 //传入组件
-import AdvancedSearchForm from './component/CommodityAdm/searchForm';
+import SearchForm from './component/CommodityAdm/SearchForm';
+import TableList from './component/CommodityAdm/TableList';
 
 export default (): React.ReactNode => (
   <PageHeaderWrapper>
-    <AdvancedSearchForm />
+    <SearchForm />
+    <TableList />
   </PageHeaderWrapper>
 );
