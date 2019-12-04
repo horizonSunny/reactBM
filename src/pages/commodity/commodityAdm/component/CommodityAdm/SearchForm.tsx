@@ -1,65 +1,73 @@
-import { Form, Icon, Input, Button } from 'antd';
+import { Form, Row, Col, Input, Button, Icon } from 'antd';
 import React from 'react';
+import './SearchForm.less';
 
-function hasErrors(fieldsError) {
-  return Object.keys(fieldsError).some(field => fieldsError[field]);
-}
+class AdvancedSearchForm extends React.Component {
+  state = {
+    expand: false,
+  };
 
-class HorizontalLoginForm extends React.Component {
-  componentDidMount() {
-    // To disabled submit button at the beginning.
-    this.props.form.validateFields();
+  // To generate mock Form.Item
+  getFields() {
+    const count = this.state.expand ? 10 : 6;
+    const { getFieldDecorator } = this.props.form;
+    const children = [];
+    for (let i = 0; i < 10; i++) {
+      children.push(
+        <Col span={8} key={i} style={{ display: i < count ? 'block' : 'none' }}>
+          <Form.Item label={`Field ${i}`}>
+            {getFieldDecorator(`field-${i}`, {
+              rules: [
+                {
+                  required: true,
+                  message: 'Input something!',
+                },
+              ],
+            })(<Input placeholder="placeholder" />)}
+          </Form.Item>
+        </Col>,
+      );
+    }
+    return children;
   }
 
-  handleSubmit = e => {
+  handleSearch = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
+      console.log('Received values of form: ', values);
     });
   };
 
-  render() {
-    const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = this.props.form;
+  handleReset = () => {
+    this.props.form.resetFields();
+  };
 
-    // Only show error after a field is touched.
-    const usernameError = isFieldTouched('username') && getFieldError('username');
-    const passwordError = isFieldTouched('password') && getFieldError('password');
+  toggle = () => {
+    const { expand } = this.state;
+    this.setState({ expand: !expand });
+  };
+
+  render() {
     return (
-      <Form layout="inline" onSubmit={this.handleSubmit}>
-        <Form.Item validateStatus={usernameError ? 'error' : ''} help={usernameError || ''}>
-          {getFieldDecorator('username', {
-            rules: [{ required: true, message: 'Please input your username!' }],
-          })(
-            <Input
-              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              placeholder="Username"
-            />,
-          )}
-        </Form.Item>
-        <Form.Item validateStatus={passwordError ? 'error' : ''} help={passwordError || ''}>
-          {getFieldDecorator('password', {
-            rules: [{ required: true, message: 'Please input your Password!' }],
-          })(
-            <Input
-              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-              type="password"
-              placeholder="Password"
-            />,
-          )}
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" disabled={hasErrors(getFieldsError())}>
-            Log in
-          </Button>
-        </Form.Item>
+      <Form className="ant-advanced-search-form" onSubmit={this.handleSearch}>
+        <Row gutter={24}>{this.getFields()}</Row>
+        <Row>
+          <Col span={24} style={{ textAlign: 'right' }}>
+            <Button type="primary" htmlType="submit">
+              Search
+            </Button>
+            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+              Clear
+            </Button>
+            <a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
+              Collapse <Icon type={this.state.expand ? 'up' : 'down'} />
+            </a>
+          </Col>
+        </Row>
       </Form>
     );
   }
 }
 
-const WrappedHorizontalLoginForm = Form.create({ name: 'horizontal_login' })(HorizontalLoginForm);
-
-export default WrappedHorizontalLoginForm;
-// ReactDOM.render(<WrappedHorizontalLoginForm />, mountNode);
+const WrappedAdvancedSearchForm = Form.create({ name: 'advanced_search' })(AdvancedSearchForm);
+export default WrappedAdvancedSearchForm;
