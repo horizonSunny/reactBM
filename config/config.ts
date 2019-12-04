@@ -91,7 +91,7 @@ export default {
   },
   disableRedirectHoist: true,
   cssLoaderOptions: {
-    modules: true,
+    modules: false,
     getLocalIdent: (
       context: {
         resourcePath: string;
