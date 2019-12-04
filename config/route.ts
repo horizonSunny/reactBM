@@ -31,17 +31,17 @@ const route = [
               {
                 path: '/businessAdm/enter',
                 name: '入驻企业',
-                component: './Welcome',
+                component: './commodity/commodityAdm/CommodityAdm.tsx',
               },
               {
                 path: '/businessAdm/examine',
                 name: '入驻审核',
-                component: './Welcome',
+                component: './commodity/commodityAdm/CommodityAdm.tsx',
               },
               {
                 path: '/businessAdm/enter/particulars',
                 name: '查看详情',
-                component: './WelcomeTwo',
+                component: './commodity/commodityAdm/CommodityAdm.tsx',
                 hideInMenu: true,
               },
             ],
@@ -53,13 +53,13 @@ const route = [
             routes: [
               {
                 path: '/commodityAdm/management',
-                name: '商品管理',
-                component: './Welcome',
+                name: '商品列表',
+                component: './commodity/commodityAdm/CommodityAdm.tsx',
               },
               {
                 path: '/commodityAdm/management/particulars',
                 name: '查看详情',
-                component: './WelcomeTwo',
+                component: './commodity/commodityAdm/CommodityAdm.tsx',
                 hideInMenu: true,
               },
             ],
