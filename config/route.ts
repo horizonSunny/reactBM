@@ -59,7 +59,7 @@ const route = [
               {
                 path: '/commodityAdm/management/particulars',
                 name: '查看详情',
-                component: './commodity/commodityAdm/CommodityAdm.tsx',
+                component: './commodity/commodityAdm/CommodityDet.tsx',
                 hideInMenu: true,
               },
             ],
