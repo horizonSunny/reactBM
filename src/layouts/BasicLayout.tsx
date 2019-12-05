@@ -164,7 +164,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       }}
       itemRender={(route, params, routes, paths) => {
         const toPath = paths[paths.length - 1];
-        console.log('toPath_', toPath, '--', typeof toPath);
         const first = routes.indexOf(route) !== 0 && routes.indexOf(route) !== routes.length - 1;
         return first ? (
           // 前面必须加上'/'
