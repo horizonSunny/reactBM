@@ -11,39 +11,72 @@ const columns = [
   },
   {
     className: 'column-money',
-    dataIndex: 'money',
+    dataIndex: 'value',
   },
 ];
-
-const data = [
-  {
-    key: '1',
-    name: 'John Brown',
-    money: '￥300,000.00',
-    address: 'New York No. 1 Lake Park',
-  },
-  {
-    key: '2',
-    name: 'Jim Green',
-    money: '￥1,256,000.00',
-    address: 'London No. 1 Lake Park',
-  },
-  {
-    key: '3',
-    name: 'Joe Black',
-    money: '￥120,000.00',
-    address: 'Sidney No. 1 Lake Park',
-  },
-];
+const dataInfo = {
+  // productImg: [
+  //   {
+  //     url: '../src/assets/timg1.jpeg',
+  //     status: true,
+  //   },
+  //   {
+  //     url: '../src/assets/timg2.jpeg',
+  //     status: false,
+  //   },
+  //   {
+  //     url: '../src/assets/timg3.jpeg',
+  //     status: false,
+  //   },
+  //   {
+  //     url: '../src/assets/timg4.jpeg',
+  //     status: false,
+  //   },
+  // ],
+  name: '感冒灵颗粒',
+  status: '中医药品',
+  isRx: '1',
+  brand: '999',
+  intro: '感冒灵颗粒666',
+  approvalNumber: '2313',
+  packing: '10gX9袋／盒',
+  model: '颗粒剂',
+  englishName: '',
+  spell: '',
+  validity: '24个月',
+  company: 'xxxx',
+  specification: 'xxxxxxx',
+};
 export default class TableList extends React.Component {
-  state = {};
+  state = {
+    tabelArr: [],
+  };
+  // 获取处理后的数据
+  dataReverse(data) {
+    const arr = [];
+    for (let item in data) {
+      const obj = new Object();
+      (obj.name = item), (obj.value = data[item]);
+      // this.state.tabelArr.push(obj);
+      arr.push(obj);
+    }
+    this.setState({
+      tabelArr: arr,
+    });
+  }
+  // 生命周期
+  componentDidMount() {
+    this.dataReverse(dataInfo);
+    console.log('this.state.tabelArr_', this.state.tabelArr);
+  }
+
   render() {
     const { state } = this;
     return (
       <Table
         className={styles.main}
         columns={columns}
-        dataSource={data}
+        dataSource={state.tabelArr}
         bordered
         pagination={false}
       />
