@@ -1,18 +1,10 @@
-import {
-  Form,
-  Input,
-  Tooltip,
-  Icon,
-  Cascader,
-  Select,
-  Row,
-  Col,
-  Checkbox,
-  Button,
-  AutoComplete,
-} from 'antd';
+import { Form, Input, Select, Radio, AutoComplete } from 'antd';
 import React from 'react';
 import styles from './Form.less';
+import LabelInfo from '../../../../../components/Label/label';
+// 引入富文本编辑器
+import BraftEditor from 'braft-editor';
+import 'braft-editor/dist/index.css';
 
 const { Option } = Select;
 const AutoCompleteOption = AutoComplete.Option;
@@ -51,11 +43,18 @@ const residences = [
     ],
   },
 ];
-
+const isMapClass = {
+  width: '40px',
+  borderRadius: '15px',
+  height: '20px',
+  lineHeight: '20px',
+  fontSize: '10px',
+};
 class EditForm extends React.Component {
   state = {
     confirmDirty: false,
     autoCompleteResult: [],
+    value: '123',
   };
 
   handleSubmit = e => {
@@ -98,7 +97,7 @@ class EditForm extends React.Component {
     }
     this.setState({ autoCompleteResult });
   };
-
+  onChange = e => {};
   render() {
     const { getFieldDecorator } = this.props.form;
     const { autoCompleteResult } = this.state;
@@ -125,126 +124,197 @@ class EditForm extends React.Component {
         },
       },
     };
-    const prefixSelector = getFieldDecorator('prefix', {
-      initialValue: '86',
-    })(
-      <Select style={{ width: 70 }}>
-        <Option value="86">+86</Option>
-        <Option value="87">+87</Option>
-      </Select>,
-    );
-
-    const websiteOptions = autoCompleteResult.map(website => (
-      <AutoCompleteOption key={website}>{website}</AutoCompleteOption>
-    ));
 
     return (
       <Form className={styles['main']} {...formItemLayout} onSubmit={this.handleSubmit}>
-        <Form.Item label="E-mail">
-          {getFieldDecorator('email', {
+        <Form.Item label="通用名">
+          {getFieldDecorator('productName', {
             rules: [
               {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
-              },
-              {
                 required: true,
-                message: 'Please input your E-mail!',
+                message: '请填写你的商品名称',
               },
             ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="Password" hasFeedback>
-          {getFieldDecorator('password', {
+        <Form.Item label="商品类别">
+          {getFieldDecorator('productType', {
             rules: [
               {
                 required: true,
-                message: 'Please input your password!',
-              },
-              {
-                validator: this.validateToNextPassword,
+                message: '请选择商品类别',
               },
             ],
-          })(<Input.Password />)}
+          })(
+            <Select style={{ width: 150 }}>
+              <Option value={1}>中西药品</Option>
+              <Option value={2}>养生保健</Option>
+              <Option value={3}>医疗器械</Option>
+              <Option value={4}>计生用品</Option>
+              <Option value={5}>中药饮品</Option>
+              <Option value={6}>美容护肤</Option>
+            </Select>,
+          )}
         </Form.Item>
-        <Form.Item label="Confirm Password" hasFeedback>
-          {getFieldDecorator('confirm', {
+        <Form.Item label="是否处方药">
+          {getFieldDecorator('isMp', {
             rules: [
               {
                 required: true,
-                message: 'Please confirm your password!',
-              },
-              {
-                validator: this.compareToFirstPassword,
+                message: '请确认药品类别',
               },
             ],
-          })(<Input.Password onBlur={this.handleConfirmBlur} />)}
+          })(
+            <Radio.Group onChange={this.onChange} value={this.state.value}>
+              <Radio value={1}>
+                <LabelInfo
+                  text="otc"
+                  classInfo={Object.assign(
+                    {
+                      border: '1px solid green',
+                      color: 'green',
+                    },
+                    isMapClass,
+                  )}
+                ></LabelInfo>
+              </Radio>
+              <Radio value={2}>
+                <LabelInfo
+                  text="otc"
+                  classInfo={Object.assign(
+                    {
+                      border: '1px solid red',
+                      color: 'red',
+                    },
+                    isMapClass,
+                  )}
+                ></LabelInfo>
+              </Radio>
+              <Radio value={3}>
+                <LabelInfo
+                  text="Rx"
+                  classInfo={Object.assign(
+                    {
+                      border: '1px solid red',
+                      color: 'red',
+                    },
+                    isMapClass,
+                  )}
+                ></LabelInfo>
+              </Radio>
+              <Radio value={4}>
+                <LabelInfo
+                  text="其他"
+                  classInfo={Object.assign(
+                    {
+                      border: '1px solid rgb(136,136,136)',
+                      color: 'rgb(136,136,136)',
+                    },
+                    isMapClass,
+                  )}
+                ></LabelInfo>
+              </Radio>
+            </Radio.Group>,
+          )}
         </Form.Item>
-        <Form.Item
-          label={
-            <span>
-              Nickname&nbsp;
-              <Tooltip title="What do you want others to call you?">
-                <Icon type="question-circle-o" />
-              </Tooltip>
-            </span>
-          }
-        >
-          {getFieldDecorator('nickname', {
-            rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+        <Form.Item label="商品品牌">
+          {getFieldDecorator('productBrand', {
+            rules: [
+              {
+                required: true,
+                message: '请填写你的商品品牌',
+              },
+            ],
           })(<Input />)}
         </Form.Item>
-        <Form.Item label="Habitual Residence">
-          {getFieldDecorator('residence', {
-            initialValue: ['zhejiang', 'hangzhou', 'xihu'],
+        <Form.Item label="商品简介">
+          {getFieldDecorator('productDesc', {
             rules: [
-              { type: 'array', required: true, message: 'Please select your habitual residence!' },
+              {
+                required: true,
+                message: '请填写你的商品简介',
+              },
             ],
-          })(<Cascader options={residences} />)}
+          })(<Input.TextArea />)}
         </Form.Item>
-        <Form.Item label="Phone Number">
-          {getFieldDecorator('phone', {
-            rules: [{ required: true, message: 'Please input your phone number!' }],
-          })(<Input addonBefore={prefixSelector} style={{ width: '100%' }} />)}
+        <Form.Item label="批准文号">
+          {getFieldDecorator('approvalNumber', {
+            rules: [
+              {
+                required: true,
+                message: '请填写你的批准文号',
+              },
+            ],
+          })(<Input />)}
         </Form.Item>
-        <Form.Item label="Website">
-          {getFieldDecorator('website', {
-            rules: [{ required: true, message: 'Please input website!' }],
+        <Form.Item label="产品规格">
+          {getFieldDecorator('productSpecif', {
+            rules: [
+              {
+                required: true,
+                message: '请填写你的产品规格',
+              },
+            ],
+          })(<Input />)}
+        </Form.Item>
+        <Form.Item label="剂型/型号">
+          {getFieldDecorator('productModel', {
+            rules: [
+              {
+                required: true,
+                message: '请填写你的剂型/型号',
+              },
+            ],
+          })(<Input />)}
+        </Form.Item>
+        <Form.Item label="英文名">
+          <Input />
+        </Form.Item>
+        <Form.Item label="汉语拼音">
+          <Input />
+        </Form.Item>
+        <Form.Item label="产品有效期">
+          {getFieldDecorator('productExpire', {
+            rules: [
+              {
+                required: true,
+                message: '请填写你的产品有效期',
+              },
+            ],
+          })(<Input />)}
+        </Form.Item>
+        <Form.Item label="生产企业">
+          {getFieldDecorator('manufacturer', {
+            rules: [
+              {
+                required: true,
+                message: '请填写你的生产企业',
+              },
+            ],
+          })(<Input />)}
+        </Form.Item>
+        <Form.Item label="说明书">
+          {getFieldDecorator('content', {
+            validateTrigger: 'onBlur',
+            rules: [
+              {
+                required: true,
+                validator: (_, value, callback) => {
+                  if (value.isEmpty()) {
+                    callback('请输入正文内容');
+                  } else {
+                    callback();
+                  }
+                },
+              },
+            ],
+            initialValue: BraftEditor.createEditorState(''),
           })(
-            <AutoComplete
-              dataSource={websiteOptions}
-              onChange={this.handleWebsiteChange}
-              placeholder="website"
-            >
-              <Input />
-            </AutoComplete>,
+            <BraftEditor
+              style={{ border: '1px solid #d1d1d1', borderRadius: 5 }}
+              placeholder="请输入正文内容"
+            />,
           )}
-        </Form.Item>
-        <Form.Item label="Captcha" extra="We must make sure that your are a human.">
-          <Row gutter={8}>
-            <Col span={12}>
-              {getFieldDecorator('captcha', {
-                rules: [{ required: true, message: 'Please input the captcha you got!' }],
-              })(<Input />)}
-            </Col>
-            <Col span={12}>
-              <Button>Get captcha</Button>
-            </Col>
-          </Row>
-        </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
-          {getFieldDecorator('agreement', {
-            valuePropName: 'checked',
-          })(
-            <Checkbox>
-              I have read the <a href="">agreement</a>
-            </Checkbox>,
-          )}
-        </Form.Item>
-        <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
-            Register
-          </Button>
         </Form.Item>
       </Form>
     );
