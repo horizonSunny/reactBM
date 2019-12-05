@@ -8,32 +8,38 @@ import filterData from './filter';
 const columns = [
   {
     dataIndex: 'name',
-    render: text => <a>{text}</a>,
   },
   {
     className: 'column-money',
     dataIndex: 'value',
+    render: (text, record) => {
+      if (record.key === 0) {
+        return record.key;
+      } else {
+        return text;
+      }
+    },
   },
 ];
 const dataInfo = {
-  // productImg: [
-  //   {
-  //     url: '../src/assets/timg1.jpeg',
-  //     status: true,
-  //   },
-  //   {
-  //     url: '../src/assets/timg2.jpeg',
-  //     status: false,
-  //   },
-  //   {
-  //     url: '../src/assets/timg3.jpeg',
-  //     status: false,
-  //   },
-  //   {
-  //     url: '../src/assets/timg4.jpeg',
-  //     status: false,
-  //   },
-  // ],
+  productImg: [
+    {
+      url: '../src/assets/timg1.jpeg',
+      status: true,
+    },
+    {
+      url: '../src/assets/timg2.jpeg',
+      status: false,
+    },
+    {
+      url: '../src/assets/timg3.jpeg',
+      status: false,
+    },
+    {
+      url: '../src/assets/timg4.jpeg',
+      status: false,
+    },
+  ],
   name: '感冒灵颗粒',
   status: '中医药品',
   isRx: 1,
