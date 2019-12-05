@@ -62,6 +62,12 @@ const route = [
                 component: './commodity/commodityAdm/CommodityDet.tsx',
                 hideInMenu: true,
               },
+              {
+                path: '/commodityAdm/management/edit',
+                name: '产品编辑',
+                component: './commodity/commodityAdm/CommodityEdit.tsx',
+                hideInMenu: true,
+              },
             ],
           },
           // 用户

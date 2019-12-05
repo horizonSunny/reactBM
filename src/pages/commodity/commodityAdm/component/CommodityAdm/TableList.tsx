@@ -1,5 +1,6 @@
 import { Table, Divider, Tag, Switch } from 'antd';
 import React from 'react';
+import Link from 'umi/link';
 import styles from './TableList.less';
 
 const pagination = { position: 'bottom', pageSize: '10' };
@@ -81,9 +82,9 @@ export default class TableList extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a>查看</a>
+            <Link to="/commodityAdm/management/particulars">查看</Link>
             <Divider type="vertical" />
-            <a>编辑</a>
+            <Link to="/commodityAdm/management/edit">编辑</Link>
           </span>
         ),
       },
