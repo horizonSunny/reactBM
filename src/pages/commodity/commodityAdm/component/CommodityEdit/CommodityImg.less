@@ -1,0 +1,41 @@
+.uploadPhoto {
+  :global {
+    .ant-radio {
+      position: absolute;
+      bottom: -5px;
+      left: 40px;
+    }
+
+    .ant-upload.ant-upload-select-picture-card {
+      display: inline-table;
+      height: 90px;
+      width: 90px;
+    }
+
+    .ant-upload-list-picture-card {
+      display: none;
+    }
+
+    .ant-radio-group {
+      overflow-x: auto;
+      max-width: 590px;
+      overflow-y: hidden;
+      white-space: nowrap;
+    }
+
+    .ant-radio-wrapper {
+      text-align: center;
+    }
+
+    .ant-card {
+      position: relative;
+
+      .del-picture {
+        position: absolute;
+        cursor: pointer;
+        right: 2px;
+        top: 2px;
+      }
+    }
+  }
+}
