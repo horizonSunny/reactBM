@@ -49,7 +49,7 @@ const errorHandler = (error: { response: Response }): Response => {
  * 配置request请求时的默认参数
  */
 const request = extend({
-  prefix: 'https://result.eolinker.com/3WQByrh0b30f03e7671610b56c9d6c7246706378876608f?uri=',
+  // prefix: 'https://result.eolinker.com/3WQByrh0b30f03e7671610b56c9d6c7246706378876608f?uri=',
   errorHandler, // 默认错误处理
   credentials: 'include', // 默认请求是否带上cookie
 });

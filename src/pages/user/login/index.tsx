@@ -45,7 +45,6 @@ class Login extends Component<LoginProps, LoginState> {
     const { type } = this.state;
 
     if (!err) {
-      console.log('this.props_', this.props.dispatch);
       const { dispatch } = this.props;
       dispatch({
         type: 'login/login',

@@ -29,19 +29,19 @@ const route = [
             icon: 'home',
             routes: [
               {
-                path: '/businessAdm/enter',
+                path: 'enter',
                 name: '入驻企业',
-                component: './Welcome',
+                component: './businessAdm/businessEnter',
               },
               {
-                path: '/businessAdm/examine',
+                path: 'examine',
                 name: '入驻审核',
                 component: './Welcome',
               },
               {
-                path: '/businessAdm/enter/particulars',
+                path: 'enter/particulars',
                 name: '查看详情',
-                component: './WelcomeTwo',
+                component: './businessAdm/particulars',
                 hideInMenu: true,
               },
             ],
@@ -52,26 +52,26 @@ const route = [
             icon: 'shop',
             routes: [
               {
-                path: '/commodityAdm/management',
-                name: '商品管理',
-                component: './Welcome',
+                path: 'management',
+                name: '商品管理 ',
+                component: './Admin',
               },
               {
-                path: '/commodityAdm/management/particulars',
+                path: 'management/particulars',
                 name: '查看详情',
-                component: './WelcomeTwo',
+                component: './Admin',
                 hideInMenu: true,
               },
             ],
           },
           // 用户
-          {
-            path: '/admin',
-            name: 'admin',
-            icon: 'crown',
-            component: './Admin',
-            authority: ['admin'],
-          },
+          // {
+          //   path: '/admin',
+          //   name: 'admin',
+          //   icon: 'crown',
+          //   component: './Admin',
+          //   authority: ['admin'],
+          // },
           {
             component: './404',
           },
