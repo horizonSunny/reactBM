@@ -2,6 +2,7 @@ import { Form, Input, Select, Radio, AutoComplete } from 'antd';
 import React from 'react';
 import styles from './Form.less';
 import LabelInfo from '../../../../../components/Label/label';
+import CommodityImg from './CommodityImg';
 // 引入富文本编辑器
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
@@ -98,6 +99,10 @@ class EditForm extends React.Component {
     this.setState({ autoCompleteResult });
   };
   onChange = e => {};
+  // 图片
+  addPictureAttachment = () => {};
+  calToMainImg = () => {};
+  removeAttachment = () => {};
   render() {
     const { getFieldDecorator } = this.props.form;
     const { autoCompleteResult } = this.state;
@@ -124,9 +129,31 @@ class EditForm extends React.Component {
         },
       },
     };
-
+    const pictureList = [];
+    function convertPictureAttachments() {}
     return (
       <Form className={styles['main']} {...formItemLayout} onSubmit={this.handleSubmit}>
+        <Form.Item label="商品图">
+          {getFieldDecorator('productImage', {
+            rules: [
+              {
+                required: true,
+                message: '请选择上传商品图片',
+              },
+            ],
+          })(
+            <CommodityImg
+              addAttachment={this.addPictureAttachment.bind(this, 'pictureList')}
+              businessType={'DEL_MATERIAL_PRODUCT_PICTURE'}
+              callToMainImg={this.calToMainImg.bind(this)}
+              defaultFileList={convertPictureAttachments(pictureList)}
+              fileSize={800 * 1024}
+              fileType={'DEL_MATERIAL_PRODUCT_PICTURE'}
+              preview={true}
+              removeAttachment={this.removeAttachment.bind(this, 'pictureList')}
+            />,
+          )}
+        </Form.Item>
         <Form.Item label="通用名">
           {getFieldDecorator('productName', {
             rules: [
