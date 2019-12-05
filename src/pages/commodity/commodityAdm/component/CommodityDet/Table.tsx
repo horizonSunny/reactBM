@@ -3,6 +3,7 @@
 import { Table } from 'antd';
 import React from 'react';
 import styles from './Table.less';
+import filterData from './filter';
 
 const columns = [
   {
@@ -35,7 +36,7 @@ const dataInfo = {
   // ],
   name: '感冒灵颗粒',
   status: '中医药品',
-  isRx: '1',
+  isRx: 1,
   brand: '999',
   intro: '感冒灵颗粒666',
   approvalNumber: '2313',
@@ -54,10 +55,15 @@ export default class TableList extends React.Component {
   // 获取处理后的数据
   dataReverse(data) {
     const arr = [];
+    let i = 0;
     for (let item in data) {
       const obj = new Object();
-      (obj.name = item), (obj.value = data[item]);
+      obj.key = i++;
+      obj.value = data[item];
       // this.state.tabelArr.push(obj);
+      if (filterData.hasOwnProperty(item)) {
+        obj.name = filterData[item];
+      }
       arr.push(obj);
     }
     this.setState({
