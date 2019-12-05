@@ -1,6 +1,6 @@
 // import { Table, Divider, Tag, Switch } from 'antd';
 
-import { Table } from 'antd';
+import { Table, Carousel } from 'antd';
 import React from 'react';
 import styles from './Table.less';
 import filterData from './filter';
@@ -14,7 +14,20 @@ const columns = [
     dataIndex: 'value',
     render: (text, record) => {
       if (record.key === 0) {
-        return record.key;
+        return (
+          <div>
+            <Carousel>
+              {record.value.map((item, index) => {
+                console.log('item[]', item['url']);
+                return (
+                  <div key={index}>
+                    <img src={item['url']} alt="2311" />
+                  </div>
+                );
+              })}
+            </Carousel>
+          </div>
+        );
       } else {
         return text;
       }
