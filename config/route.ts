@@ -36,7 +36,7 @@ const route = [
               {
                 path: 'examine',
                 name: '入驻审核',
-                component: './Welcome',
+                component: './commodity/commodityAdm/CommodityAdm.tsx',
               },
               {
                 path: 'enter/particulars',
@@ -52,14 +52,20 @@ const route = [
             icon: 'shop',
             routes: [
               {
-                path: 'management',
-                name: '商品管理 ',
-                component: './Admin',
+                path: '/commodityAdm/management',
+                name: '商品列表',
+                component: './commodity/commodityAdm/CommodityAdm.tsx',
               },
               {
                 path: 'management/particulars',
                 name: '查看详情',
-                component: './Admin',
+                component: './commodity/commodityAdm/CommodityDet.tsx',
+                hideInMenu: true,
+              },
+              {
+                path: '/commodityAdm/management/edit',
+                name: '产品编辑',
+                component: './commodity/commodityAdm/CommodityEdit.tsx',
                 hideInMenu: true,
               },
             ],

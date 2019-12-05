@@ -1,0 +1,16 @@
+export default {
+  productImg: '商品图',
+  name: '通用名',
+  status: '商品类别',
+  isRx: '是否处方药',
+  brand: '商品品牌',
+  intro: '商品简介',
+  approvalNumber: '批准文号',
+  packing: '包装规格',
+  model: '剂型／型号',
+  englishName: '英文名',
+  spell: '汉语拼音',
+  validity: '有效期',
+  company: '生产企业',
+  specification: '说明书',
+};

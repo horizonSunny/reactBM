@@ -49,7 +49,7 @@ class QueryForm extends Component {
             <Form.Item {...formItemLayout} label="入住时间">
               {getFieldDecorator('time', {
                 rules: [],
-              })(<RangePicker />)}
+              })(<RangePicker style={{ width: '100%'}}/>)}
             </Form.Item>
           </Col>
           <Col span={8}>
