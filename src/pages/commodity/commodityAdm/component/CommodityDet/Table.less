@@ -1,12 +1,21 @@
 .main {
   :global {
-
-    // .ant-spin-container {
-    //   text-align: center;
-    // }
-    .ant-pagination {
-      float: none;
+    .ant-table {
       text-align: center;
+
+      .ant-table-content {
+        background: #fff;
+        width: 90%;
+        display: inline-block;
+
+        .ant-table-thead>tr>th {
+          display: none;
+        }
+      }
+    }
+
+    .ant-pro-grid-content {
+      background: #fff;
     }
   }
 }
