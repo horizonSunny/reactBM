@@ -8,10 +8,17 @@ export interface LoginParamsType {
 }
 
 export async function fakeAccountLogin(params: LoginParamsType) {
-  return request('/api/login/account', {
-    method: 'POST',
-    data: params,
-  });
+  // return request('/auth/oauth/token', {
+  //   method: 'POST',
+  //   data: {
+  //     username: 'admin',
+  //     password: 'elcrD28ZSLLtR0VLs/jERA==',
+  //     grant_type: 'password',
+  //     scope: 'server',
+  //     userType: 1,
+  //   },
+  // });
+  return request('/admin/province/city?status=1');
 }
 
 export async function getFakeCaptcha(mobile: string) {

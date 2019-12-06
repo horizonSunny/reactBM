@@ -109,6 +109,7 @@ class Login extends Component<LoginProps, LoginState> {
       <div className={styles.main}>
         <LoginComponents
           defaultActiveKey={type}
+          LoginParamsType
           onTabChange={this.onTabChange}
           onSubmit={this.handleSubmit}
           onCreate={(form?: FormComponentProps['form']) => {
@@ -197,7 +198,7 @@ class Login extends Component<LoginProps, LoginState> {
             </a>
           </div>
            */}
-          <Submit loading={submitting}>登录</Submit>
+          <Submit loading={submitting}>登录1</Submit>
           {/* <div className={styles.other}>
             其他登录方式
             <Icon type="alipay-circle" className={styles.icon} theme="outlined" />
