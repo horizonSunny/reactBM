@@ -1,41 +1,65 @@
-.uploadPhoto {
-  :global {
-    .ant-radio {
+.main {
+
+  // 遮罩块
+  .imageShade {
+    position: absolute;
+    z-index: 1;
+    background: rgba(255, 0, 0, 0);
+    float: left;
+    width: 104px;
+    height: 104px;
+    margin: 0 8px 8px 0;
+
+    .imgDelete {
+      float: right;
+      margin: 4px 4px;
+      cursor: pointer;
+    }
+
+    span {
+      display: inline-block;
+      width: 60px;
+      height: 18px;
+      line-height: 18px;
+      border-radius: 9px;
+      font-size: 10px;
       position: absolute;
-      bottom: -5px;
-      left: 40px;
-    }
-
-    .ant-upload.ant-upload-select-picture-card {
-      display: inline-table;
-      height: 90px;
-      width: 90px;
-    }
-
-    .ant-upload-list-picture-card {
-      display: none;
-    }
-
-    .ant-radio-group {
-      overflow-x: auto;
-      max-width: 590px;
-      overflow-y: hidden;
-      white-space: nowrap;
-    }
-
-    .ant-radio-wrapper {
+      left: 50%;
+      margin-left: -30px;
+      top: 70%;
       text-align: center;
+      cursor: pointer;
+      color: #ddd;
+      background: rgba(83, 83, 83, 0.9)
     }
 
-    .ant-card {
-      position: relative;
+    span:hover {
+      background: rgba(83, 83, 83, 1)
+    }
+  }
 
-      .del-picture {
-        position: absolute;
-        cursor: pointer;
-        right: 2px;
-        top: 2px;
-      }
+  :global {
+    .antd-pro-pages-commodity-commodity-adm-component-commodity-edit-commodity-img-main {
+      position: relative;
+    }
+
+    .ant-upload-list-picture-card .ant-upload-list-item-info::before {
+      z-index: -1
+    }
+
+    .ant-upload-select-picture-card i {
+      font-size: 32px;
+      color: #999;
+    }
+
+    .ant-upload-select-picture-card .ant-upload-text {
+      margin-top: 8px;
+      color: #666;
+    }
+
+    // 去掉原始的显示
+    .ant-upload-list-item-actions {
+      display: none;
     }
   }
 }
