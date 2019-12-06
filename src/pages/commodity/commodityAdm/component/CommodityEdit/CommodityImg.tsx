@@ -80,10 +80,14 @@ class PicturesWall extends React.Component {
     );
     return (
       <div className={styles.main}>
-        <div className={styles.imageShade}>
-          <Icon type="close-circle" theme="filled" className={styles.imgDelete} />
-          <span>设为主图</span>
-        </div>
+        <span className={styles.imgPosition}>
+          {fileList.map(item => (
+            <span className={styles.imageShade}>
+              <Icon type="close-circle" theme="filled" className={styles.imgDelete} />
+              <span>设为主图</span>
+            </span>
+          ))}
+        </span>
         <Upload
           action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
           listType="picture-card"
