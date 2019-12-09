@@ -29,7 +29,7 @@ const route = [
             icon: 'home',
             routes: [
               {
-                path: 'enter',
+                path: '/businessAdm/enter',
                 name: '入驻企业',
                 component: './businessAdm/businessEnter',
               },
@@ -39,9 +39,15 @@ const route = [
                 component: './commodity/commodityAdm/CommodityAdm.tsx',
               },
               {
-                path: 'enter/particulars',
+                path: '/businessAdm/enter/particulars',
                 name: '查看详情',
                 component: './businessAdm/particulars',
+                hideInMenu: true,
+              },
+              {
+                path: '/businessAdm/enter/edit',
+                name: '编辑资料',
+                component: './businessAdm/businessEdit',
                 hideInMenu: true,
               },
             ],

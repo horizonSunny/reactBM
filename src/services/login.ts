@@ -1,24 +1,30 @@
 import request from '@/utils/request';
 
 export interface LoginParamsType {
-  userName: string;
+  username: string;
   password: string;
-  mobile: string;
-  captcha: string;
+  grant_type: string;
+  scope: string;
+  userType: Number;
+  // "username":  "admin",
+  // "password":  "elcrD28ZSLLtR0VLs/jERA==",
+  // "grant_type":  "password",
+  // "scope":  "server",
+  // "userType":  1
 }
 
+// export async function fakeAccountLogin(params: LoginParamsType) {
+//   return request('/api/login/account', {
+//     method: 'POST',
+//     data: params,
+//   });
+// }
+
 export async function fakeAccountLogin(params: LoginParamsType) {
-  // return request('/auth/oauth/token', {
-  //   method: 'POST',
-  //   data: {
-  //     username: 'admin',
-  //     password: 'elcrD28ZSLLtR0VLs/jERA==',
-  //     grant_type: 'password',
-  //     scope: 'server',
-  //     userType: 1,
-  //   },
-  // });
-  return request('/admin/province/city?status=1');
+  return request('/auth/oauth/token', {
+    method: 'POST',
+    data: params,
+  });
 }
 
 export async function getFakeCaptcha(mobile: string) {

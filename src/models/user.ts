@@ -50,7 +50,23 @@ const UserModel: UserModelType = {
       });
     },
     *fetchCurrent(_, { call, put }) {
-      const response = yield call(queryCurrent);
+      // const response = yield call(queryCurrent);
+      const response = {
+        name: 'admin',
+        avatar: 'https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png',
+        userid: '00000001',
+        email: '',
+        signature: '',
+        title: '',
+        group: '',
+        tags: [],
+        notifyCount: 12,
+        unreadCount: 11,
+        country: 'China',
+        geographic: {},
+        address: '',
+        phone: '',
+      };
       yield put({
         type: 'saveCurrentUser',
         payload: response,
