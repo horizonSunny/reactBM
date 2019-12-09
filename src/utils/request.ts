@@ -4,7 +4,7 @@
  */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
-
+const initLoginToken = 'Basic c3lzdGVtOnN5c3RlbQ==';
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -49,9 +49,25 @@ const errorHandler = (error: { response: Response }): Response => {
  * 配置request请求时的默认参数
  */
 const request = extend({
-  // prefix: 'https://result.eolinker.com/3WQByrh0b30f03e7671610b56c9d6c7246706378876608f?uri=',
+  prefix: 'http://47.103.158.133',
+  // prefix: 'http://192.168.10.234:9000',
   errorHandler, // 默认错误处理
-  credentials: 'include', // 默认请求是否带上cookie
+  // credentials: 'include', // 默认请求是否带上cookie
 });
 
+request.interceptors.request.use((url, options) => {
+  let headers = {};
+  if (!sessionStorage.getItem('token') || url.indexOf('auth/oauth/token') > 0) {
+    headers = {
+      Authorization: initLoginToken,
+    };
+  } else {
+    headers = {
+      Authorization: sessionStorage.getItem('token'),
+    };
+  }
+  return {
+    options: { ...options, headers },
+  };
+});
 export default request;

@@ -2,6 +2,7 @@ import { Reducer } from 'redux';
 import { routerRedux } from 'dva/router';
 import { Effect } from 'dva';
 import { stringify } from 'querystring';
+import { notification } from 'antd';
 
 import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
@@ -42,7 +43,9 @@ const Model: LoginModelType = {
       });
       console.log('response:', response);
       // Login successfully
-      if (response.status === 'ok') {
+      if (response.code === 1) {
+        const token = response.data.access_token;
+        sessionStorage.setItem('token', token);
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();
         let { redirect } = params as { redirect: string };
@@ -59,6 +62,11 @@ const Model: LoginModelType = {
           }
         }
         yield put(routerRedux.replace(redirect || '/'));
+      } else {
+        notification.error({
+          description: response.msg,
+          message: response.msg,
+        });
       }
     },
 
