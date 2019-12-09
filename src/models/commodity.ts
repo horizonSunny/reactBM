@@ -21,11 +21,14 @@ const CommodityModel = {
   reducers: {
     // 获取商品列表
     list(state, action) {
+      action.payload.pageList.forEach((element, index) => {
+        element.key = index;
+      });
       state.productList = action.payload;
-      // console.log('list.action_', action.payload, state);
+      console.log('list.action_', action.payload);
       return {
         ...state,
-        list: action.payload,
+        ...action.payload,
       };
     },
   },
