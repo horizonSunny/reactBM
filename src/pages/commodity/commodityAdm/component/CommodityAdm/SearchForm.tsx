@@ -1,6 +1,7 @@
 import { Form, Row, Col, Input, Button, Icon, DatePicker, Select } from 'antd';
 import React from 'react';
 import styles from './SearchForm.less';
+import router from 'umi/router';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -38,7 +39,10 @@ class AdvancedSearchForm extends React.Component {
     const { expand } = this.state;
     this.setState({ expand: !expand });
   };
-
+  // 新增产品
+  handleNew = () => {
+    router.push('/commodityAdm/management/edit');
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
     const rangeConfig = {
@@ -109,6 +113,9 @@ class AdvancedSearchForm extends React.Component {
             </Button>
             <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
               重置
+            </Button>
+            <Button style={{ marginLeft: 8 }} onClick={this.handleNew}>
+              新增
             </Button>
           </Col>
         </Row>
