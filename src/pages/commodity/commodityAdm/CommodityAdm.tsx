@@ -10,7 +10,7 @@ import TableList from './component/CommodityAdm/TableList';
 
 // 请求
 // import { CurrentUser } from '@/models/user';
-@connect(() => ({}))
+@connect(({ commodity }) => ({ commodity }))
 export default class CommodityAdm extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
@@ -21,7 +21,11 @@ export default class CommodityAdm extends React.Component {
         pageSize: 10,
       },
     });
+    console.log('aaa_', this.props.commodity);
   }
+  state = {
+    productList: {},
+  };
   render() {
     return (
       <PageHeaderWrapper>
