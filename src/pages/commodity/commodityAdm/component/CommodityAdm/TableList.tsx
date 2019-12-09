@@ -3,7 +3,7 @@ import React from 'react';
 import Link from 'umi/link';
 import styles from './TableList.less';
 
-const pagination = { position: 'bottom', pageSize: '10' };
+const pagination = { position: 'bottom', pageSize: 10 };
 // export default (): React.ReactNode => (
 //   <Table className={styles['main']} columns={columns} dataSource={data} {...state} />
 // );
@@ -13,6 +13,7 @@ export default class TableList extends React.Component {
     data: [
       {
         sku: '1',
+        key: 1,
         tradeName: 'John Brown',
         approvalNumber: 32,
         classes: 'New York No. 1 Lake Park',
@@ -23,6 +24,7 @@ export default class TableList extends React.Component {
       },
       {
         sku: '1',
+        key: 2,
         tradeName: 'John Brown',
         approvalNumber: 32,
         classes: 'New York No. 1 Lake Park',
