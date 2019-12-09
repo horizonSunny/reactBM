@@ -4,9 +4,11 @@ import styles from './SearchForm.less';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
+
 class AdvancedSearchForm extends React.Component {
   state = {
     expand: false,
+    sellingStatus: null,
   };
   handleSearch = e => {
     e.preventDefault();
@@ -14,6 +16,7 @@ class AdvancedSearchForm extends React.Component {
       if (err) {
         return;
       }
+      console.log('fieldsValue_', fieldsValue);
       const rangeValue = fieldsValue['range-picker'];
       const values = {
         ...fieldsValue,
@@ -24,14 +27,12 @@ class AdvancedSearchForm extends React.Component {
   };
 
   handleReset = () => {
+    console.log('reset');
     this.props.form.resetFields();
   };
   // 售卖状态
-  handleSelectChange = value => {
-    console.log(value);
-    this.props.form.setFieldsValue({
-      note: `Hi, ${value === 'male' ? 'man' : 'lady'}!`,
-    });
+  handleSellingChange = value => {
+    console.log('handleSellingChange_', value);
   };
   toggle = () => {
     const { expand } = this.state;
@@ -53,37 +54,50 @@ class AdvancedSearchForm extends React.Component {
           </Col>
           <Col span={6} style={{}}>
             <Form.Item label="售卖状态">
-              <Select defaultValue="all" style={{ width: 120 }} onChange={this.handleSelectChange}>
-                <Option value="all">全部</Option>
-                <Option value="sell">上架</Option>
-                <Option value="soldOut">下架</Option>
-              </Select>
+              {getFieldDecorator('sellStatus', {
+                rules: [],
+                initialValue: 'all',
+              })(
+                <Select style={{ width: 120 }} onChange={this.handleSellingChange}>
+                  <Option value="all">全部</Option>
+                  <Option value="sell">上架</Option>
+                  <Option value="soldOut">下架</Option>
+                </Select>,
+              )}
             </Form.Item>
           </Col>
           <Col span={6} style={{}}>
             <Form.Item label="类别">
-              <Select defaultValue="1" style={{ width: 120 }} onChange={this.handleSelectChange}>
-                <Option value="1">全部</Option>
-                <Option value="2">中西药品</Option>
-                <Option value="3">养生保健</Option>
-                <Option value="4">医疗器械</Option>
-                <Option value="5">计生用品</Option>
-                <Option value="6">计生用品</Option>
-                <Option value="7">中药饮品</Option>
-                <Option value="8">美容护肤</Option>
-              </Select>
+              {getFieldDecorator('status', {
+                rules: [],
+                initialValue: '1',
+              })(
+                <Select style={{ width: 120 }} onChange={this.handleSelectChange}>
+                  <Option value="1">全部</Option>
+                  <Option value="2">中西药品</Option>
+                  <Option value="3">养生保健</Option>
+                  <Option value="4">医疗器械</Option>
+                  <Option value="5">计生用品</Option>
+                  <Option value="6">中药饮品</Option>
+                  <Option value="7">美容护肤</Option>
+                </Select>,
+              )}
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={24}>
           <Col span={8} style={{}}>
             <Form.Item label="关键字">
-              <Input placeholder="关键字输入" />
+              {getFieldDecorator('keyword', {
+                rules: [],
+              })(<Input placeholder="关键字输入" />)}
             </Form.Item>
           </Col>
           <Col span={8} style={{}}>
             <Form.Item label="批准文号">
-              <Input placeholder="批准文号输入" />
+              {getFieldDecorator('approvalNumber', {
+                rules: [],
+              })(<Input placeholder="批准文号输入" />)}
             </Form.Item>
           </Col>
           <Col
@@ -96,9 +110,6 @@ class AdvancedSearchForm extends React.Component {
             <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
               重置
             </Button>
-            {/* <a style={{ marginLeft: 8, fontSize: 12 }} onClick={this.toggle}>
-              Collapse <Icon type={this.state.expand ? 'up' : 'down'} />
-            </a> */}
           </Col>
         </Row>
       </Form>
