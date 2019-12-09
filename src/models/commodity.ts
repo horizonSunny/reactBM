@@ -7,7 +7,7 @@ const CommodityModel = {
   state: {},
   namespace: 'commodity',
   effects: {
-    *fetch({ payload }, { call, put }) {
+    *getList({ payload }, { call, put }) {
       const response = yield call(productList, payload);
       yield put({
         type: 'list',

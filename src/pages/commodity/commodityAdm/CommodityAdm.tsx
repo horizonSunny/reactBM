@@ -10,17 +10,13 @@ import TableList from './component/CommodityAdm/TableList';
 
 // 请求
 // import { CurrentUser } from '@/models/user';
-// @connect(() => ({}))
+@connect(() => ({}))
 export default class CommodityAdm extends React.Component {
-  // const { dispatch } = this.props;
-  // dispatch({
-  //   type: 'login/logout',
-  // });
   componentDidMount() {
-    // const { dispatch } = this.props;
-    // dispatch({
-    //   type: 'login/logout',
-    // });
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'commodity/getList',
+    });
   }
   render() {
     return (
