@@ -16,6 +16,10 @@ export default class CommodityAdm extends React.Component {
     const { dispatch } = this.props;
     dispatch({
       type: 'commodity/getList',
+      payload: {
+        pageNumber: 0,
+        pageSize: 10,
+      },
     });
   }
   render() {
