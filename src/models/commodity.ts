@@ -1,18 +1,26 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
 
-import { productList } from '@/services/commodity';
+import { productList, product } from '@/services/commodity';
 
 const CommodityModel = {
   namespace: 'commodity',
   state: {
     productList: {},
+    productWithId: {},
   },
   effects: {
     *getList({ payload }, { call, put }) {
       const response = yield call(productList, payload);
       yield put({
         type: 'list',
+        payload: response.data,
+      });
+    },
+    *getProduct({ payload }, { call, put }) {
+      const response = yield call(product, payload);
+      yield put({
+        type: 'product',
         payload: response.data,
       });
     },
@@ -26,6 +34,15 @@ const CommodityModel = {
       });
       state.productList = action.payload;
       console.log('list.action_', action.payload);
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
+    // 获取单个商品
+    product(state, action) {
+      state.productWithId = action.payload;
+      console.log('productWithId.action_', action.payload);
       return {
         ...state,
         ...action.payload,

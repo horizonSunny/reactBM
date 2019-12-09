@@ -10,14 +10,15 @@ const { Title } = Typography;
 @connect(({ commodity }) => ({ commodity }))
 export default class CommodityDet extends React.Component {
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, location } = this.props;
     dispatch({
-      type: 'commodity/getList',
+      type: 'commodity/getProduct',
       payload: {
-        pageNumber: 0,
-        pageSize: 10,
+        id: location.query.id,
       },
     });
+    // 获取路由传参
+    console.log('this.props.match_productWithId_', this.props.commodity.productWithId);
   }
   render() {
     return (

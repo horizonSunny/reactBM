@@ -63,7 +63,7 @@ export default class TableList extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Link to="/commodityAdm/management/particulars">查看</Link>
+            <Link to={`/commodityAdm/management/particulars?id=${record.productId}`}>查看</Link>
             <Divider type="vertical" />
             <Link to="/commodityAdm/management/edit">编辑</Link>
           </span>

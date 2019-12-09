@@ -6,3 +6,7 @@ export async function productList(params: Object) {
     params: params,
   });
 }
+// 根据id查询商品信息
+export async function product(params: any) {
+  return request('/admin/v1/product/' + params['id']);
+}
