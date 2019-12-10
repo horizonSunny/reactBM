@@ -1,4 +1,4 @@
-import { Form, Input, Select, Radio, AutoComplete } from 'antd';
+import { Form, Input, Select, Radio, Button } from 'antd';
 import React from 'react';
 import styles from './Form.less';
 import LabelInfo from '../../../../../components/Label/label';
@@ -16,17 +16,32 @@ const isMapClass = {
   fontSize: '10px',
 };
 class EditForm extends React.Component {
-  state = {};
+  state = {
+    editorState: null,
+  };
 
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        console.log('Received values of form: ', values.content.toRAW());
+        // console.log('Received values of form: ', values.content.toHTML());
       }
     });
   };
   onChange = e => {};
+  //编辑器
+
+  submitContent = async () => {
+    // 在编辑器获得焦点时按下ctrl+s会执行此方法
+    // 编辑器内容提交到服务端之前，可直接调用editorState.toHTML()来获取HTML格式的内容
+    const htmlContent = this.state.editorState.toHTML();
+    const result = await saveEditorContent(htmlContent);
+  };
+
+  handleEditorChange = editorState => {
+    this.setState({ editorState });
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
@@ -40,9 +55,12 @@ class EditForm extends React.Component {
       },
     };
     const pictureList = [];
+    const { editorState } = this.state;
+    // 不在控制栏显示的控件
+    const excludeControls = ['media', 'emoji'];
     return (
       <Form className={styles['main']} {...formItemLayout} onSubmit={this.handleSubmit}>
-        <Form.Item label="商品图">
+        {/* <Form.Item label="商品图">
           {getFieldDecorator('productImage', {
             rules: [
               {
@@ -218,7 +236,7 @@ class EditForm extends React.Component {
               },
             ],
           })(<Input />)}
-        </Form.Item>
+        </Form.Item>*/}
         <Form.Item label="说明书">
           {getFieldDecorator('content', {
             validateTrigger: 'onBlur',
@@ -239,8 +257,22 @@ class EditForm extends React.Component {
             <BraftEditor
               style={{ border: '1px solid #d1d1d1', borderRadius: 5 }}
               placeholder="请输入正文内容"
+              value={editorState}
+              onChange={this.handleEditorChange}
+              onSave={this.submitContent}
+              excludeControls={excludeControls}
             />,
           )}
+        </Form.Item>
+        <Form.Item
+          wrapperCol={{
+            xs: { span: 24, offset: 0 },
+            sm: { span: 16, offset: 8 },
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
         </Form.Item>
       </Form>
     );
