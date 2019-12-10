@@ -60,7 +60,7 @@ class EditForm extends React.Component {
     const excludeControls = ['media', 'emoji'];
     return (
       <Form className={styles['main']} {...formItemLayout} onSubmit={this.handleSubmit}>
-        {/* <Form.Item label="商品图">
+        <Form.Item label="商品图">
           {getFieldDecorator('productImage', {
             rules: [
               {
@@ -236,7 +236,7 @@ class EditForm extends React.Component {
               },
             ],
           })(<Input />)}
-        </Form.Item>*/}
+        </Form.Item>
         <Form.Item label="说明书">
           {getFieldDecorator('content', {
             validateTrigger: 'onBlur',
