@@ -168,7 +168,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
         const toPath = paths[paths.length - 1];
         const first = routes.indexOf(route) !== 0 && routes.indexOf(route) !== routes.length - 1;
         const crumbName = classfyB(toPath, location.query.id);
-        console.log('breadcrumbName_name', crumbName);
         return first ? (
           // 前面必须加上'/'
           <Link to={'/' + paths[paths.length - 1]}>{route.breadcrumbName}</Link>

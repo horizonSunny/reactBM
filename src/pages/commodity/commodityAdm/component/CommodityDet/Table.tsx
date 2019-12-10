@@ -18,7 +18,6 @@ const columns = [
           <div>
             <Carousel>
               {record.value.map((item, index) => {
-                console.log('item[]', item['url']);
                 return (
                   <div key={index}>
                     <img src={item['url']} alt="2311" />
@@ -92,7 +91,6 @@ export default class TableList extends React.Component {
   // 生命周期
   componentDidMount() {
     this.dataReverse(dataInfo);
-    console.log('this.state.tabelArr_', this.state.tabelArr);
   }
 
   render() {
