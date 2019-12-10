@@ -17,8 +17,6 @@ export default class CommodityDet extends React.Component {
         id: location.query.id,
       },
     });
-    // 获取路由传参
-    console.log('this.props.match_productWithId_', this.props.commodity.productWithId);
   }
   render() {
     return (

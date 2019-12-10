@@ -1,6 +1,7 @@
 import { Upload, Icon, Modal } from 'antd';
 import React from 'react';
 import styles from './CommodityImg.less';
+import { connect } from 'dva';
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -10,7 +11,12 @@ function getBase64(file) {
     reader.onerror = error => reject(error);
   });
 }
+@connect(({ commodity }) => ({ commodity }))
 class PicturesWall extends React.Component {
+  componentDidMount() {
+    // 获取路由传参
+    console.log('this.props.match_productWithId_', this.props.commodity.productWithId);
+  }
   state = {
     previewVisible: false,
     previewImage: '',

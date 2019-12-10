@@ -8,42 +8,6 @@ import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 
 const { Option } = Select;
-const AutoCompleteOption = AutoComplete.Option;
-
-const residences = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [
-          {
-            value: 'xihu',
-            label: 'West Lake',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [
-          {
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men',
-          },
-        ],
-      },
-    ],
-  },
-];
 const isMapClass = {
   width: '40px',
   borderRadius: '15px',
@@ -52,11 +16,7 @@ const isMapClass = {
   fontSize: '10px',
 };
 class EditForm extends React.Component {
-  state = {
-    confirmDirty: false,
-    autoCompleteResult: [],
-    value: '123',
-  };
+  state = {};
 
   handleSubmit = e => {
     e.preventDefault();
@@ -66,47 +26,9 @@ class EditForm extends React.Component {
       }
     });
   };
-
-  handleConfirmBlur = e => {
-    const { value } = e.target;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  };
-
-  compareToFirstPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
-    }
-  };
-
-  validateToNextPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
-    }
-    callback();
-  };
-
-  handleWebsiteChange = value => {
-    let autoCompleteResult;
-    if (!value) {
-      autoCompleteResult = [];
-    } else {
-      autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
-    }
-    this.setState({ autoCompleteResult });
-  };
   onChange = e => {};
-  // 图片
-  addPictureAttachment = () => {};
-  calToMainImg = () => {};
-  removeAttachment = () => {};
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { autoCompleteResult } = this.state;
-
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -117,20 +39,7 @@ class EditForm extends React.Component {
         sm: { span: 16 },
       },
     };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 8,
-        },
-      },
-    };
     const pictureList = [];
-    function convertPictureAttachments() {}
     return (
       <Form className={styles['main']} {...formItemLayout} onSubmit={this.handleSubmit}>
         <Form.Item label="商品图">
@@ -139,20 +48,10 @@ class EditForm extends React.Component {
               {
                 required: true,
                 message: '请选择上传商品图片',
+                initialValue: pictureList,
               },
             ],
-          })(
-            <CommodityImg
-              addAttachment={this.addPictureAttachment.bind(this, 'pictureList')}
-              businessType={'DEL_MATERIAL_PRODUCT_PICTURE'}
-              callToMainImg={this.calToMainImg.bind(this)}
-              defaultFileList={convertPictureAttachments(pictureList)}
-              fileSize={800 * 1024}
-              fileType={'DEL_MATERIAL_PRODUCT_PICTURE'}
-              preview={true}
-              removeAttachment={this.removeAttachment.bind(this, 'pictureList')}
-            />,
-          )}
+          })(<CommodityImg />)}
         </Form.Item>
         <Form.Item label="通用名">
           {getFieldDecorator('productName', {

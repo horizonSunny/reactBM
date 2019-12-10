@@ -10,6 +10,7 @@ const CommodityModel = {
     productWithId: {},
   },
   effects: {
+    // 获取商品列表
     *getList({ payload }, { call, put }) {
       const response = yield call(productList, payload);
       yield put({
@@ -17,6 +18,7 @@ const CommodityModel = {
         payload: response.data,
       });
     },
+    // 依据id获取单个商品列表
     *getProduct({ payload }, { call, put }) {
       const response = yield call(product, payload);
       yield put({
