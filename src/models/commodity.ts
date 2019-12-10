@@ -8,6 +8,17 @@ const CommodityModel = {
   state: {
     productList: {},
     productWithId: {},
+    // 查询商品列别的时候需要筛选的字段
+    searchInfo: {
+      pageNumber: 0,
+      pageSize: 10,
+      startTime: null,
+      endTime: null,
+      isShelf: null,
+      productType: null,
+      productName: null,
+      approvalNumber: null,
+    },
   },
   effects: {
     // 获取商品列表

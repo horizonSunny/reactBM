@@ -2,6 +2,7 @@ import { Form, Row, Col, Input, Button, Icon, DatePicker, Select } from 'antd';
 import React from 'react';
 import styles from './SearchForm.less';
 import router from 'umi/router';
+import moment from 'moment';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -21,7 +22,10 @@ class AdvancedSearchForm extends React.Component {
       const rangeValue = fieldsValue['range-picker'];
       const values = {
         ...fieldsValue,
-        'range-picker': [rangeValue[0].format('YYYY-MM-DD'), rangeValue[1].format('YYYY-MM-DD')],
+        'range-picker': [
+          Date.parse(rangeValue[0].format('YYYY-MM-DD')),
+          Date.parse(rangeValue[1].format('YYYY-MM-DD')),
+        ],
       };
       console.log('Received values of form: ', values);
     });
@@ -30,14 +34,6 @@ class AdvancedSearchForm extends React.Component {
   handleReset = () => {
     console.log('reset');
     this.props.form.resetFields();
-  };
-  // 售卖状态
-  handleSellingChange = value => {
-    console.log('handleSellingChange_', value);
-  };
-  toggle = () => {
-    const { expand } = this.state;
-    this.setState({ expand: !expand });
   };
   // 新增产品
   handleNew = () => {
@@ -62,7 +58,7 @@ class AdvancedSearchForm extends React.Component {
                 rules: [],
                 initialValue: 'all',
               })(
-                <Select style={{ width: 120 }} onChange={this.handleSellingChange}>
+                <Select style={{ width: 120 }}>
                   <Option value="all">全部</Option>
                   <Option value="sell">上架</Option>
                   <Option value="soldOut">下架</Option>
