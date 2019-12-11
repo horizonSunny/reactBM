@@ -64,7 +64,7 @@ request.interceptors.request.use((url, options) => {
     };
   } else {
     headers = {
-      Authorization: sessionStorage.getItem('token'),
+      Authorization: 'bearer ' + sessionStorage.getItem('token'),
     };
   }
   return {

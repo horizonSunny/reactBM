@@ -1,4 +1,4 @@
-import { Form, Input, Select, Radio, AutoComplete } from 'antd';
+import { Form, Input, Select, Radio, Button } from 'antd';
 import React from 'react';
 import styles from './Form.less';
 import LabelInfo from '../../../../../components/Label/label';
@@ -6,44 +6,9 @@ import CommodityImg from './CommodityImg';
 // 引入富文本编辑器
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
+import { connect } from 'dva';
 
 const { Option } = Select;
-const AutoCompleteOption = AutoComplete.Option;
-
-const residences = [
-  {
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [
-      {
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [
-          {
-            value: 'xihu',
-            label: 'West Lake',
-          },
-        ],
-      },
-    ],
-  },
-  {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [
-      {
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [
-          {
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men',
-          },
-        ],
-      },
-    ],
-  },
-];
 const isMapClass = {
   width: '40px',
   borderRadius: '15px',
@@ -51,62 +16,62 @@ const isMapClass = {
   lineHeight: '20px',
   fontSize: '10px',
 };
+@connect(({ commodity }) => ({ commodity }))
 class EditForm extends React.Component {
+  componentWillReceiveProps() {
+    this.state.formInit = this.props.commodity.productWithId;
+  }
   state = {
-    confirmDirty: false,
-    autoCompleteResult: [],
-    value: '123',
+    formInit: {},
+    editorState: null,
   };
-
+  onRef = ref => {
+    this.child = ref;
+  };
   handleSubmit = e => {
     e.preventDefault();
+    const { dispatch } = this.props;
+    // 通过子组件getImgList方法获取list,处理list,这边msg后面要修改
+    const imgList = this.child.getImgList();
+    const list = imgList.map(item => {
+      if (item.hasOwnProperty('url')) {
+        return item.url;
+      } else {
+        return item.response.data;
+      }
+    });
+    this.props.form.setFieldsValue({
+      productImage: list,
+    });
     this.props.form.validateFieldsAndScroll((err, values) => {
+      values['productSpec'] = values['productSpec'].toHTML();
       if (!err) {
-        console.log('Received values of form: ', values);
+        return;
+      } else {
+        // 判断是不是编辑
+        dispatch({
+          type: location.query.id ? 'commodity/editProduct' : 'commodity/newProduct',
+          payload: values,
+        });
       }
     });
   };
-
-  handleConfirmBlur = e => {
-    const { value } = e.target;
-    this.setState({ confirmDirty: this.state.confirmDirty || !!value });
-  };
-
-  compareToFirstPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && value !== form.getFieldValue('password')) {
-      callback('Two passwords that you enter is inconsistent!');
-    } else {
-      callback();
+  onChange = e => {};
+  //校验图片
+  validatorImg = (rule, value, callback) => {
+    const imgList = this.child.getImgList();
+    if (imgList.length === 0) {
+      callback('图片不能为空');
     }
-  };
-
-  validateToNextPassword = (rule, value, callback) => {
-    const { form } = this.props;
-    if (value && this.state.confirmDirty) {
-      form.validateFields(['confirm'], { force: true });
-    }
+    // Note: 必须总是返回一个 callback，否则 validateFieldsAndScroll 无法响应
     callback();
   };
-
-  handleWebsiteChange = value => {
-    let autoCompleteResult;
-    if (!value) {
-      autoCompleteResult = [];
-    } else {
-      autoCompleteResult = ['.com', '.org', '.net'].map(domain => `${value}${domain}`);
-    }
-    this.setState({ autoCompleteResult });
+  handleEditorChange = editorState => {
+    this.setState({ editorState });
   };
-  onChange = e => {};
-  // 图片
-  addPictureAttachment = () => {};
-  calToMainImg = () => {};
-  removeAttachment = () => {};
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { autoCompleteResult } = this.state;
-
+    const formInit = this.state.formInit;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -117,42 +82,29 @@ class EditForm extends React.Component {
         sm: { span: 16 },
       },
     };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 8,
-        },
-      },
-    };
-    const pictureList = [];
-    function convertPictureAttachments() {}
+    const { editorState } = this.state;
+    // 不在控制栏显示的控件
+    const excludeControls = ['media', 'emoji'];
     return (
       <Form className={styles['main']} {...formItemLayout} onSubmit={this.handleSubmit}>
         <Form.Item label="商品图">
           {getFieldDecorator('productImage', {
+            validateTrigger: 'onBlur',
             rules: [
               {
                 required: true,
-                message: '请选择上传商品图片',
+                validator: (_, value, callback) => {
+                  if (value.isEmpty()) {
+                    callback('请输入正文内容');
+                  } else {
+                    callback();
+                  }
+                },
               },
             ],
-          })(
-            <CommodityImg
-              addAttachment={this.addPictureAttachment.bind(this, 'pictureList')}
-              businessType={'DEL_MATERIAL_PRODUCT_PICTURE'}
-              callToMainImg={this.calToMainImg.bind(this)}
-              defaultFileList={convertPictureAttachments(pictureList)}
-              fileSize={800 * 1024}
-              fileType={'DEL_MATERIAL_PRODUCT_PICTURE'}
-              preview={true}
-              removeAttachment={this.removeAttachment.bind(this, 'pictureList')}
-            />,
-          )}
+            initialValue: [],
+          })(<CommodityImg onRef={this.onRef} vaule={[]} />)}
+          {/* <CommodityImg onRef={this.onRef} /> */}
         </Form.Item>
         <Form.Item label="通用名">
           {getFieldDecorator('productName', {
@@ -162,6 +114,7 @@ class EditForm extends React.Component {
                 message: '请填写你的商品名称',
               },
             ],
+            initialValue: formInit['productName'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="商品类别">
@@ -172,6 +125,7 @@ class EditForm extends React.Component {
                 message: '请选择商品类别',
               },
             ],
+            initialValue: formInit['productType'],
           })(
             <Select style={{ width: 150 }}>
               <Option value={1}>中西药品</Option>
@@ -191,9 +145,10 @@ class EditForm extends React.Component {
                 message: '请确认药品类别',
               },
             ],
+            initialValue: formInit['isMp'],
           })(
-            <Radio.Group onChange={this.onChange} value={this.state.value}>
-              <Radio value={1}>
+            <Radio.Group>
+              <Radio value={0}>
                 <LabelInfo
                   text="otc"
                   classInfo={Object.assign(
@@ -205,7 +160,7 @@ class EditForm extends React.Component {
                   )}
                 ></LabelInfo>
               </Radio>
-              <Radio value={2}>
+              <Radio value={1}>
                 <LabelInfo
                   text="otc"
                   classInfo={Object.assign(
@@ -217,7 +172,7 @@ class EditForm extends React.Component {
                   )}
                 ></LabelInfo>
               </Radio>
-              <Radio value={3}>
+              <Radio value={2}>
                 <LabelInfo
                   text="Rx"
                   classInfo={Object.assign(
@@ -229,7 +184,7 @@ class EditForm extends React.Component {
                   )}
                 ></LabelInfo>
               </Radio>
-              <Radio value={4}>
+              <Radio value={3}>
                 <LabelInfo
                   text="其他"
                   classInfo={Object.assign(
@@ -252,6 +207,7 @@ class EditForm extends React.Component {
                 message: '请填写你的商品品牌',
               },
             ],
+            initialValue: formInit['productBrand'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="商品简介">
@@ -262,6 +218,7 @@ class EditForm extends React.Component {
                 message: '请填写你的商品简介',
               },
             ],
+            initialValue: formInit['productDesc'],
           })(<Input.TextArea />)}
         </Form.Item>
         <Form.Item label="批准文号">
@@ -272,6 +229,7 @@ class EditForm extends React.Component {
                 message: '请填写你的批准文号',
               },
             ],
+            initialValue: formInit['approvalNumber'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="产品规格">
@@ -282,6 +240,7 @@ class EditForm extends React.Component {
                 message: '请填写你的产品规格',
               },
             ],
+            initialValue: formInit['productSpecif'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="剂型/型号">
@@ -292,13 +251,20 @@ class EditForm extends React.Component {
                 message: '请填写你的剂型/型号',
               },
             ],
+            initialValue: formInit['productModel'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="英文名">
-          <Input />
+          {getFieldDecorator('englishName', {
+            rules: [],
+            initialValue: formInit['englishName'] ? formInit['englishName'] : '',
+          })(<Input />)}
         </Form.Item>
         <Form.Item label="汉语拼音">
-          <Input />
+          {getFieldDecorator('pinyin', {
+            rules: [],
+            initialValue: formInit['pinyin'] ? formInit['pinyin'] : '',
+          })(<Input />)}
         </Form.Item>
         <Form.Item label="产品有效期">
           {getFieldDecorator('productExpire', {
@@ -308,6 +274,7 @@ class EditForm extends React.Component {
                 message: '请填写你的产品有效期',
               },
             ],
+            initialValue: formInit['productExpire'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="生产企业">
@@ -318,10 +285,11 @@ class EditForm extends React.Component {
                 message: '请填写你的生产企业',
               },
             ],
+            initialValue: formInit['manufacturer'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="说明书">
-          {getFieldDecorator('content', {
+          {getFieldDecorator('productSpec', {
             validateTrigger: 'onBlur',
             rules: [
               {
@@ -335,13 +303,26 @@ class EditForm extends React.Component {
                 },
               },
             ],
-            initialValue: BraftEditor.createEditorState(''),
+            initialValue: BraftEditor.createEditorState(formInit['productSpec']),
           })(
             <BraftEditor
               style={{ border: '1px solid #d1d1d1', borderRadius: 5 }}
               placeholder="请输入正文内容"
+              value={editorState}
+              onChange={this.handleEditorChange}
+              excludeControls={excludeControls}
             />,
           )}
+        </Form.Item>
+        <Form.Item
+          wrapperCol={{
+            xs: { span: 24, offset: 0 },
+            sm: { span: 16, offset: 8 },
+          }}
+        >
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
         </Form.Item>
       </Form>
     );

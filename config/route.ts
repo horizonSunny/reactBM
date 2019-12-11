@@ -70,7 +70,7 @@ const route = [
               },
               {
                 path: '/commodityAdm/management/edit',
-                name: '产品编辑',
+                name: '新建产品',
                 component: './commodity/commodityAdm/CommodityEdit.tsx',
                 hideInMenu: true,
               },

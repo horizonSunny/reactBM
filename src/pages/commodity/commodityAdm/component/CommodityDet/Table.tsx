@@ -4,6 +4,7 @@ import { Table, Carousel } from 'antd';
 import React from 'react';
 import styles from './Table.less';
 import filterData from './filter';
+import { connect } from 'dva';
 
 const columns = [
   {
@@ -13,20 +14,19 @@ const columns = [
     className: 'column-money',
     dataIndex: 'value',
     render: (text, record) => {
-      if (record.key === 0) {
+      if (record.name === '商品图') {
         return (
-          <div>
+          <Carousel>
             <Carousel>
               {record.value.map((item, index) => {
-                console.log('item[]', item['url']);
                 return (
-                  <div key={index}>
-                    <img src={item['url']} alt="2311" />
+                  <div>
+                    <img src={item} alt="2311" style={{ height: '100%', width: '100%' }} />
                   </div>
                 );
               })}
             </Carousel>
-          </div>
+          </Carousel>
         );
       } else {
         return text;
@@ -34,39 +34,7 @@ const columns = [
     },
   },
 ];
-const dataInfo = {
-  productImg: [
-    {
-      url: '../src/assets/timg1.jpeg',
-      status: true,
-    },
-    {
-      url: '../src/assets/timg2.jpeg',
-      status: false,
-    },
-    {
-      url: '../src/assets/timg3.jpeg',
-      status: false,
-    },
-    {
-      url: '../src/assets/timg4.jpeg',
-      status: false,
-    },
-  ],
-  name: '感冒灵颗粒',
-  status: '中医药品',
-  isRx: 1,
-  brand: '999',
-  intro: '感冒灵颗粒666',
-  approvalNumber: '2313',
-  packing: '10gX9袋／盒',
-  model: '颗粒剂',
-  englishName: '',
-  spell: '',
-  validity: '24个月',
-  company: 'xxxx',
-  specification: 'xxxxxxx',
-};
+@connect(({ commodity }) => ({ commodity }))
 export default class TableList extends React.Component {
   state = {
     tabelArr: [],
@@ -76,23 +44,24 @@ export default class TableList extends React.Component {
     const arr = [];
     let i = 0;
     for (let item in data) {
-      const obj = new Object();
-      obj.key = i++;
-      obj.value = data[item];
       // this.state.tabelArr.push(obj);
       if (filterData.hasOwnProperty(item)) {
+        const obj = new Object();
+        obj.key = i++;
+        obj.value = data[item];
         obj.name = filterData[item];
+        arr.push(obj);
       }
-      arr.push(obj);
     }
+    console.log('tabelArr_', arr);
+    // return arr;
     this.setState({
       tabelArr: arr,
     });
   }
   // 生命周期
-  componentDidMount() {
-    this.dataReverse(dataInfo);
-    console.log('this.state.tabelArr_', this.state.tabelArr);
+  componentWillReceiveProps() {
+    this.dataReverse(this.props.commodity.productWithId);
   }
 
   render() {

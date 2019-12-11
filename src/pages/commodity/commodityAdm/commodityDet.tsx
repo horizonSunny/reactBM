@@ -4,12 +4,27 @@ import { Card, Typography, Alert } from 'antd';
 import styles from './CommodityDet.less';
 import TableList from './component/CommodityDet/Table';
 import RecordList from './component/CommodityDet/Record';
+import { connect } from 'dva';
 
 const { Title } = Typography;
-export default (): React.ReactNode => (
-  <PageHeaderWrapper className={styles['main']}>
-    <Title level={4}>商品名称(SKU编号)</Title>
-    <TableList></TableList>
-    <RecordList></RecordList>
-  </PageHeaderWrapper>
-);
+@connect(({ commodity }) => ({ commodity }))
+export default class CommodityDet extends React.Component {
+  componentDidMount() {
+    const { dispatch, location } = this.props;
+    dispatch({
+      type: 'commodity/getProduct',
+      payload: {
+        id: location.query.id,
+      },
+    });
+  }
+  render() {
+    return (
+      <PageHeaderWrapper className={styles['main']}>
+        <Title level={4}>商品名称(SKU编号)</Title>
+        <TableList></TableList>
+        <RecordList></RecordList>
+      </PageHeaderWrapper>
+    );
+  }
+}

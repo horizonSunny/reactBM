@@ -20,6 +20,8 @@ import RightContent from '@/components/GlobalHeader/RightContent';
 import { ConnectState } from '@/models/connect';
 import { isAntDesignPro, getAuthorityFromRouter } from '@/utils/utils';
 import logo from '../assets/logo.svg';
+// 做面包屑的动态配置
+import classfyB from '../utils/classfyBreadcrumb';
 
 const noMatch = (
   <Result
@@ -165,11 +167,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = props => {
       itemRender={(route, params, routes, paths) => {
         const toPath = paths[paths.length - 1];
         const first = routes.indexOf(route) !== 0 && routes.indexOf(route) !== routes.length - 1;
+        const crumbName = classfyB(toPath, location.query.id);
         return first ? (
           // 前面必须加上'/'
           <Link to={'/' + paths[paths.length - 1]}>{route.breadcrumbName}</Link>
         ) : (
-          <span>{route.breadcrumbName}</span>
+          <span>{crumbName ? crumbName : route.breadcrumbName}</span>
         );
       }}
       // 取消脚部展示信息
