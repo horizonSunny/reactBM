@@ -9,12 +9,32 @@ import { connect } from 'dva';
 export default class CommodityEdit extends React.Component {
   componentDidMount() {
     const { dispatch, location } = this.props;
-    // 假如id存在则获取数据，没存在就是新建
+    // 假如id存在则获取数据，没存在就是新建,若是新建就清空productWithId
     if (location.query.id) {
       dispatch({
         type: 'commodity/getProduct',
         payload: {
           id: location.query.id,
+        },
+      });
+    } else {
+      dispatch({
+        type: 'commodity/resetProduct',
+        payload: {
+          approvalNumber: '',
+          englishName: '',
+          isMp: 0,
+          manufacturer: '',
+          pinyin: '',
+          productBrand: '',
+          productDesc: '',
+          productExpire: '',
+          productImage: [],
+          productModel: '',
+          productName: '',
+          productSpec: '',
+          productSpecif: '',
+          productType: 0,
         },
       });
     }

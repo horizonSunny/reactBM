@@ -62,7 +62,6 @@ export default class TableList extends React.Component {
   // 生命周期
   componentWillReceiveProps() {
     this.dataReverse(this.props.commodity.productWithId);
-    console.log('this.props.commodity.productWithId_', this.props.commodity.productWithId);
   }
 
   render() {

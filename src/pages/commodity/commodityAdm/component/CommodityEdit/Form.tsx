@@ -6,6 +6,7 @@ import CommodityImg from './CommodityImg';
 // 引入富文本编辑器
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
+import { connect } from 'dva';
 
 const { Option } = Select;
 const isMapClass = {
@@ -15,8 +16,14 @@ const isMapClass = {
   lineHeight: '20px',
   fontSize: '10px',
 };
+@connect(({ commodity }) => ({ commodity }))
 class EditForm extends React.Component {
+  componentWillReceiveProps() {
+    this.state.formInit = this.props.commodity.productWithId;
+    console.log('this.state.formInit_', this.state.formInit);
+  }
   state = {
+    formInit: {},
     editorState: null,
   };
 
@@ -44,6 +51,8 @@ class EditForm extends React.Component {
   };
   render() {
     const { getFieldDecorator } = this.props.form;
+    const formInit = this.state.formInit;
+    console.log('formInit_', formInit);
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -77,6 +86,7 @@ class EditForm extends React.Component {
               {
                 required: true,
                 message: '请填写你的商品名称',
+                initialValue: formInit['productName'],
               },
             ],
           })(<Input />)}
@@ -87,6 +97,7 @@ class EditForm extends React.Component {
               {
                 required: true,
                 message: '请选择商品类别',
+                initialValue: formInit['productType'],
               },
             ],
           })(
@@ -212,10 +223,14 @@ class EditForm extends React.Component {
           })(<Input />)}
         </Form.Item>
         <Form.Item label="英文名">
-          <Input />
+          {getFieldDecorator('englishName', {
+            rules: [],
+          })(<Input />)}
         </Form.Item>
         <Form.Item label="汉语拼音">
-          <Input />
+          {getFieldDecorator('pinyin', {
+            rules: [],
+          })(<Input />)}
         </Form.Item>
         <Form.Item label="产品有效期">
           {getFieldDecorator('productExpire', {
@@ -238,7 +253,7 @@ class EditForm extends React.Component {
           })(<Input />)}
         </Form.Item>
         <Form.Item label="说明书">
-          {getFieldDecorator('content', {
+          {getFieldDecorator('productSpec', {
             validateTrigger: 'onBlur',
             rules: [
               {

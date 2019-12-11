@@ -46,22 +46,20 @@ const CommodityModel = {
     },
     // 获取单个商品
     product(state, action) {
-      console.log('getProduct');
       state.productWithId = action.payload;
       return {
         ...state,
         ...action.payload,
       };
     },
-    // 将搜索表单的数据放在store,分页时候要用到
-    // resetSearch(state, action) {
-    //   state.searchInfo = action.payload;
-    //   console.log('state.searchInfo_', state.searchInfo);
-    //   return {
-    //     ...state,
-    //     ...action.payload,
-    //   };
-    // },
+    // 重置所有图片信息
+    resetProduct(state, action) {
+      state.productWithId = action.payload;
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
   },
 };
 
