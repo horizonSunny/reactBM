@@ -20,7 +20,6 @@ const isMapClass = {
 class EditForm extends React.Component {
   componentWillReceiveProps() {
     this.state.formInit = this.props.commodity.productWithId;
-    console.log('this.state.formInit_', this.state.formInit);
   }
   state = {
     formInit: {},
@@ -31,7 +30,7 @@ class EditForm extends React.Component {
   };
   handleSubmit = e => {
     e.preventDefault();
-    // 通过子组件getImgList方法获取list,处理list
+    // 通过子组件getImgList方法获取list,处理list,这边msg后面要修改
     const imgList = this.child.getImgList();
     const list = imgList.map(item => {
       if (item.hasOwnProperty('url')) {
@@ -43,9 +42,10 @@ class EditForm extends React.Component {
     this.props.form.setFieldsValue({
       productImage: list,
     });
-    console.log('this.props.form_', this.props.form);
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
+        return;
+      } else {
       }
     });
   };
@@ -132,7 +132,7 @@ class EditForm extends React.Component {
             ],
             initialValue: formInit['isMp'],
           })(
-            <Radio.Group onChange={this.onChange} value={this.state.value}>
+            <Radio.Group>
               <Radio value={0}>
                 <LabelInfo
                   text="otc"
