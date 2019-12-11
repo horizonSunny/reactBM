@@ -10,3 +10,17 @@ export async function productList(params: Object) {
 export async function product(params: any) {
   return request('/admin/v1/product/' + params['id']);
 }
+// 编辑商品
+export async function editorProduct(params: any) {
+  return request('/admin/v1/product', {
+    method: 'PUT',
+    data: params,
+  });
+}
+// 新增商品
+export async function newProduct(params: any) {
+  return request('/admin/v1/product', {
+    method: 'POST',
+    data: params,
+  });
+}

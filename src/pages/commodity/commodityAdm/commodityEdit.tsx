@@ -23,7 +23,7 @@ export default class CommodityEdit extends React.Component {
         payload: {
           approvalNumber: '',
           englishName: '',
-          isMp: 0,
+          isMp: '',
           manufacturer: '',
           pinyin: '',
           productBrand: '',
@@ -34,7 +34,7 @@ export default class CommodityEdit extends React.Component {
           productName: '',
           productSpec: '',
           productSpecif: '',
-          productType: 0,
+          productType: '',
         },
       });
     }

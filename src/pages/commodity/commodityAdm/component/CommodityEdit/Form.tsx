@@ -30,35 +30,42 @@ class EditForm extends React.Component {
   };
   handleSubmit = e => {
     e.preventDefault();
+    const { dispatch } = this.props;
     // 通过子组件getImgList方法获取list,处理list,这边msg后面要修改
     const imgList = this.child.getImgList();
     const list = imgList.map(item => {
       if (item.hasOwnProperty('url')) {
         return item.url;
       } else {
-        return item.response.msg;
+        return item.response.data;
       }
     });
     this.props.form.setFieldsValue({
       productImage: list,
     });
     this.props.form.validateFieldsAndScroll((err, values) => {
+      values['productSpec'] = values['productSpec'].toHTML();
       if (!err) {
         return;
       } else {
+        // 判断是不是编辑
+        dispatch({
+          type: location.query.id ? 'commodity/editProduct' : 'commodity/newProduct',
+          payload: values,
+        });
       }
     });
   };
   onChange = e => {};
-  //编辑器
-
-  submitContent = async () => {
-    // 在编辑器获得焦点时按下ctrl+s会执行此方法
-    // 编辑器内容提交到服务端之前，可直接调用editorState.toHTML()来获取HTML格式的内容
-    const htmlContent = this.state.editorState.toHTML();
-    const result = await saveEditorContent(htmlContent);
+  //校验图片
+  validatorImg = (rule, value, callback) => {
+    const imgList = this.child.getImgList();
+    if (imgList.length === 0) {
+      callback('图片不能为空');
+    }
+    // Note: 必须总是返回一个 callback，否则 validateFieldsAndScroll 无法响应
+    callback();
   };
-
   handleEditorChange = editorState => {
     this.setState({ editorState });
   };
@@ -82,13 +89,22 @@ class EditForm extends React.Component {
       <Form className={styles['main']} {...formItemLayout} onSubmit={this.handleSubmit}>
         <Form.Item label="商品图">
           {getFieldDecorator('productImage', {
+            validateTrigger: 'onBlur',
             rules: [
               {
                 required: true,
-                message: '请选择上传商品图片',
+                validator: (_, value, callback) => {
+                  if (value.isEmpty()) {
+                    callback('请输入正文内容');
+                  } else {
+                    callback();
+                  }
+                },
               },
             ],
-          })(<CommodityImg onRef={this.onRef} />)}
+            initialValue: [],
+          })(<CommodityImg onRef={this.onRef} vaule={[]} />)}
+          {/* <CommodityImg onRef={this.onRef} /> */}
         </Form.Item>
         <Form.Item label="通用名">
           {getFieldDecorator('productName', {
@@ -107,7 +123,6 @@ class EditForm extends React.Component {
               {
                 required: true,
                 message: '请选择商品类别',
-                initialValue: formInit['productType'],
               },
             ],
             initialValue: formInit['productType'],
@@ -295,7 +310,6 @@ class EditForm extends React.Component {
               placeholder="请输入正文内容"
               value={editorState}
               onChange={this.handleEditorChange}
-              onSave={this.submitContent}
               excludeControls={excludeControls}
             />,
           )}

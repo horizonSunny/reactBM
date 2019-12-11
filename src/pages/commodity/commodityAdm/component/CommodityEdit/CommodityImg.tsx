@@ -54,6 +54,7 @@ class PicturesWall extends React.Component {
     console.log('file_', file);
     console.log('fileList_', fileList);
     this.setState({ fileList });
+    // this.props.onChange(fileList);
   };
   // 将传入数组元素位置调换为首,黑科技
   swapArr(itemIndex) {

@@ -1,7 +1,7 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
 
-import { productList, product } from '@/services/commodity';
+import { productList, product, editorProduct, newProduct } from '@/services/commodity';
 
 const CommodityModel = {
   namespace: 'commodity',
@@ -26,6 +26,22 @@ const CommodityModel = {
       const response = yield call(product, payload);
       yield put({
         type: 'product',
+        payload: response.data,
+      });
+    },
+    // 新建产品
+    *newProduct({ payload }, { call, put }) {
+      const response = yield call(newProduct, payload);
+      yield put({
+        type: 'successProduct',
+        payload: response.data,
+      });
+    },
+    // 编辑产品
+    *editProduct({ payload }, { call, put }) {
+      const response = yield call(editorProduct, payload);
+      yield put({
+        type: 'successProduct',
         payload: response.data,
       });
     },
@@ -55,6 +71,13 @@ const CommodityModel = {
     // 重置所有图片信息
     resetProduct(state, action) {
       state.productWithId = action.payload;
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
+    // 编辑或者新建产品成功后
+    successProduct(state, action) {
       return {
         ...state,
         ...action.payload,
