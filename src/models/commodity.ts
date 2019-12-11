@@ -8,21 +8,13 @@ const CommodityModel = {
   state: {
     productList: {},
     productWithId: {},
-    // 查询商品列别的时候需要筛选的字段
-    searchInfo: {
-      pageNumber: 0,
-      pageSize: 10,
-      startTime: null,
-      endTime: null,
-      isShelf: null,
-      productType: null,
-      productName: null,
-      approvalNumber: null,
-    },
+    // 查询商品列别的时候需要筛选的字段,只是searchInfo表单里面含有的字段
+    // searchInfo: {},
   },
   effects: {
     // 获取商品列表
     *getList({ payload }, { call, put }) {
+      console.log('in_getList');
       const response = yield call(productList, payload);
       yield put({
         type: 'list',
@@ -60,6 +52,15 @@ const CommodityModel = {
         ...action.payload,
       };
     },
+    // 将搜索表单的数据放在store,分页时候要用到
+    // resetSearch(state, action) {
+    //   state.searchInfo = action.payload;
+    //   console.log('state.searchInfo_', state.searchInfo);
+    //   return {
+    //     ...state,
+    //     ...action.payload,
+    //   };
+    // },
   },
 };
 

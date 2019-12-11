@@ -2,23 +2,26 @@ import { Form, Row, Col, Input, Button, Icon, DatePicker, Select } from 'antd';
 import React from 'react';
 import styles from './SearchForm.less';
 import router from 'umi/router';
-import moment from 'moment';
+import { connect } from 'dva';
+import filterProperty from '@/utils/filterProperty';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
+@connect(({ commodity }) => ({ commodity }))
 class AdvancedSearchForm extends React.Component {
   state = {
     expand: false,
     sellingStatus: null,
   };
+  // 查询
   handleSearch = e => {
+    const { dispatch } = this.props;
     e.preventDefault();
     this.props.form.validateFields((err, fieldsValue) => {
       if (err) {
         return;
       }
-      console.log('fieldsValue_', fieldsValue);
       const rangeValue = fieldsValue['range-picker'];
       const values = {
         ...fieldsValue,
@@ -27,7 +30,26 @@ class AdvancedSearchForm extends React.Component {
           Date.parse(rangeValue[1].format('YYYY-MM-DD')),
         ],
       };
-      console.log('Received values of form: ', values);
+      const searchParams = {
+        startTime: values['range-picker'][0],
+        endTime: values['range-picker'][0],
+        isShelf: values['sellStatus'] == 3 ? undefined : values['sellStatus'],
+        productType: values['status'],
+        productName: values['keyword'],
+        approvalNumber: values['approvalNumber'],
+      };
+      const searchInfo = filterProperty(searchParams);
+      dispatch({
+        type: 'commodity/getList',
+        payload: Object.assign(
+          {
+            pageNumber: 0,
+            pageSize: 10,
+          },
+          searchInfo,
+        ),
+      });
+      this.props.saveSearchInfo(searchInfo);
     });
   };
 
@@ -56,12 +78,12 @@ class AdvancedSearchForm extends React.Component {
             <Form.Item label="售卖状态">
               {getFieldDecorator('sellStatus', {
                 rules: [],
-                initialValue: 'all',
+                initialValue: 3,
               })(
                 <Select style={{ width: 120 }}>
-                  <Option value="all">全部</Option>
-                  <Option value="sell">上架</Option>
-                  <Option value="soldOut">下架</Option>
+                  <Option value={3}>全部</Option>
+                  <Option value={0}>上架</Option>
+                  <Option value={1}>下架</Option>
                 </Select>,
               )}
             </Form.Item>
