@@ -43,7 +43,11 @@ class PicturesWall extends React.Component {
     });
   };
 
-  handleChange = ({ fileList }) => this.setState({ fileList });
+  handleChange = ({ fileList, file, event }) => {
+    console.log('file_', file);
+    console.log('fileList_', fileList);
+    this.setState({ fileList });
+  };
   // 将传入数组元素位置调换为首,黑科技
   swapArr(itemIndex) {
     let temp = this.state.fileList[0];
@@ -61,6 +65,20 @@ class PicturesWall extends React.Component {
       fileList: this.state.fileList,
     });
   }
+
+  // 修改上传
+
+  getPdfURL = () => {
+    const _this = this;
+    const props = {
+      name: 'file',
+      action: 'http://47.103.158.133/admin/v1/uploadFile',
+      headers: {
+        authorization: 'bearer ' + sessionStorage.getItem('token'),
+      },
+    };
+    return props;
+  };
 
   render() {
     const { previewVisible, previewImage, fileList } = this.state;
@@ -88,7 +106,7 @@ class PicturesWall extends React.Component {
           ))}
         </span>
         <Upload
-          action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+          {...this.getPdfURL()}
           listType="picture-card"
           fileList={fileList}
           onPreview={this.handlePreview}
