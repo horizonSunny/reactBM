@@ -75,9 +75,9 @@ class EditForm extends React.Component {
               {
                 required: true,
                 message: '请选择上传商品图片',
-                initialValue: pictureList,
               },
             ],
+            // initialValue: pictureList,
           })(<CommodityImg />)}
         </Form.Item>
         <Form.Item label="通用名">
@@ -86,9 +86,9 @@ class EditForm extends React.Component {
               {
                 required: true,
                 message: '请填写你的商品名称',
-                initialValue: formInit['productName'],
               },
             ],
+            initialValue: formInit['productName'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="商品类别">
@@ -100,6 +100,7 @@ class EditForm extends React.Component {
                 initialValue: formInit['productType'],
               },
             ],
+            initialValue: formInit['productType'],
           })(
             <Select style={{ width: 150 }}>
               <Option value={1}>中西药品</Option>
@@ -119,9 +120,10 @@ class EditForm extends React.Component {
                 message: '请确认药品类别',
               },
             ],
+            initialValue: formInit['isMp'],
           })(
             <Radio.Group onChange={this.onChange} value={this.state.value}>
-              <Radio value={1}>
+              <Radio value={0}>
                 <LabelInfo
                   text="otc"
                   classInfo={Object.assign(
@@ -133,7 +135,7 @@ class EditForm extends React.Component {
                   )}
                 ></LabelInfo>
               </Radio>
-              <Radio value={2}>
+              <Radio value={1}>
                 <LabelInfo
                   text="otc"
                   classInfo={Object.assign(
@@ -145,7 +147,7 @@ class EditForm extends React.Component {
                   )}
                 ></LabelInfo>
               </Radio>
-              <Radio value={3}>
+              <Radio value={2}>
                 <LabelInfo
                   text="Rx"
                   classInfo={Object.assign(
@@ -157,7 +159,7 @@ class EditForm extends React.Component {
                   )}
                 ></LabelInfo>
               </Radio>
-              <Radio value={4}>
+              <Radio value={3}>
                 <LabelInfo
                   text="其他"
                   classInfo={Object.assign(
@@ -180,6 +182,7 @@ class EditForm extends React.Component {
                 message: '请填写你的商品品牌',
               },
             ],
+            initialValue: formInit['productBrand'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="商品简介">
@@ -190,6 +193,7 @@ class EditForm extends React.Component {
                 message: '请填写你的商品简介',
               },
             ],
+            initialValue: formInit['productDesc'],
           })(<Input.TextArea />)}
         </Form.Item>
         <Form.Item label="批准文号">
@@ -200,6 +204,7 @@ class EditForm extends React.Component {
                 message: '请填写你的批准文号',
               },
             ],
+            initialValue: formInit['approvalNumber'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="产品规格">
@@ -210,6 +215,7 @@ class EditForm extends React.Component {
                 message: '请填写你的产品规格',
               },
             ],
+            initialValue: formInit['productSpecif'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="剂型/型号">
@@ -220,16 +226,19 @@ class EditForm extends React.Component {
                 message: '请填写你的剂型/型号',
               },
             ],
+            initialValue: formInit['productModel'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="英文名">
           {getFieldDecorator('englishName', {
             rules: [],
+            initialValue: formInit['englishName'] ? formInit['englishName'] : '',
           })(<Input />)}
         </Form.Item>
         <Form.Item label="汉语拼音">
           {getFieldDecorator('pinyin', {
             rules: [],
+            initialValue: formInit['pinyin'] ? formInit['pinyin'] : '',
           })(<Input />)}
         </Form.Item>
         <Form.Item label="产品有效期">
@@ -240,6 +249,7 @@ class EditForm extends React.Component {
                 message: '请填写你的产品有效期',
               },
             ],
+            initialValue: formInit['productExpire'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="生产企业">
@@ -250,6 +260,7 @@ class EditForm extends React.Component {
                 message: '请填写你的生产企业',
               },
             ],
+            initialValue: formInit['manufacturer'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="说明书">
@@ -267,7 +278,7 @@ class EditForm extends React.Component {
                 },
               },
             ],
-            initialValue: BraftEditor.createEditorState(''),
+            initialValue: BraftEditor.createEditorState(formInit['productSpec']),
           })(
             <BraftEditor
               style={{ border: '1px solid #d1d1d1', borderRadius: 5 }}
