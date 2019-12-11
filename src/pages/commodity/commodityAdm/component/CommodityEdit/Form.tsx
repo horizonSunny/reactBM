@@ -20,6 +20,7 @@ const isMapClass = {
 class EditForm extends React.Component {
   componentWillReceiveProps() {
     this.state.formInit = this.props.commodity.productWithId;
+    console.log('this.state.formInit_', this.state.formInit);
   }
   state = {
     formInit: {},
@@ -40,11 +41,14 @@ class EditForm extends React.Component {
         return item.response.data;
       }
     });
-    this.props.form.setFieldsValue({
-      productImage: list,
-    });
+    console.log('进来了');
+    // this.props.form.setFieldsValue({
+    //   productImage: list,
+    // });
+    // this.props.form.setFieldsValue({
+    //   productSpec: values['productSpec'].toHTML(),
+    // });
     this.props.form.validateFieldsAndScroll((err, values) => {
-      values['productSpec'] = values['productSpec'].toHTML();
       if (!err) {
         return;
       } else {
@@ -88,23 +92,7 @@ class EditForm extends React.Component {
     return (
       <Form className={styles['main']} {...formItemLayout} onSubmit={this.handleSubmit}>
         <Form.Item label="商品图">
-          {getFieldDecorator('productImage', {
-            validateTrigger: 'onBlur',
-            rules: [
-              {
-                required: true,
-                validator: (_, value, callback) => {
-                  if (value.isEmpty()) {
-                    callback('请输入正文内容');
-                  } else {
-                    callback();
-                  }
-                },
-              },
-            ],
-            initialValue: [],
-          })(<CommodityImg onRef={this.onRef} vaule={[]} />)}
-          {/* <CommodityImg onRef={this.onRef} /> */}
+          <CommodityImg onRef={this.onRef} />
         </Form.Item>
         <Form.Item label="通用名">
           {getFieldDecorator('productName', {
