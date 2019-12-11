@@ -7,6 +7,7 @@ import CommodityImg from './CommodityImg';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 import { connect } from 'dva';
+import { callbackify } from 'util';
 
 const { Option } = Select;
 const isMapClass = {
@@ -19,8 +20,10 @@ const isMapClass = {
 @connect(({ commodity }) => ({ commodity }))
 class EditForm extends React.Component {
   componentWillReceiveProps() {
-    this.state.formInit = this.props.commodity.productWithId;
-    console.log('this.state.formInit_', this.state.formInit);
+    // this.state.formInit = this.props.commodity.productWithId;
+    this.setState({
+      formInit: this.props.commodity.productWithId,
+    });
   }
   state = {
     formInit: {},
@@ -41,14 +44,11 @@ class EditForm extends React.Component {
         return item.response.data;
       }
     });
-    console.log('进来了');
-    // this.props.form.setFieldsValue({
-    //   productImage: list,
-    // });
-    // this.props.form.setFieldsValue({
-    //   productSpec: values['productSpec'].toHTML(),
-    // });
+    this.props.form.setFieldsValue({
+      productImage: list,
+    });
     this.props.form.validateFieldsAndScroll((err, values) => {
+      console.log('values_', values);
       if (!err) {
         return;
       } else {
@@ -61,13 +61,9 @@ class EditForm extends React.Component {
     });
   };
   onChange = e => {};
-  //校验图片
+  // 判断
   validatorImg = (rule, value, callback) => {
-    const imgList = this.child.getImgList();
-    if (imgList.length === 0) {
-      callback('图片不能为空');
-    }
-    // Note: 必须总是返回一个 callback，否则 validateFieldsAndScroll 无法响应
+    console.log('validatorImg_', value);
     callback();
   };
   handleEditorChange = editorState => {
@@ -92,7 +88,14 @@ class EditForm extends React.Component {
     return (
       <Form className={styles['main']} {...formItemLayout} onSubmit={this.handleSubmit}>
         <Form.Item label="商品图">
-          <CommodityImg onRef={this.onRef} />
+          {getFieldDecorator('productImage', {
+            rules: [
+              {
+                validator: this.validatorImg,
+              },
+            ],
+            initialValue: formInit['productImage'],
+          })(<CommodityImg onRef={this.onRef} />)}
         </Form.Item>
         <Form.Item label="通用名">
           {getFieldDecorator('productName', {

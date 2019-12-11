@@ -25,7 +25,9 @@ class PicturesWall extends React.Component {
       newObj.uid = index;
       return newObj;
     });
-    this.state.fileList = arr;
+    this.setState({
+      fileList: arr,
+    });
   }
   state = {
     previewVisible: false,

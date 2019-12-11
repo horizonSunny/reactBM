@@ -8,6 +8,7 @@ const CommodityModel = {
   state: {
     productList: {},
     productWithId: {},
+    productLog: {},
     // 查询商品列别的时候需要筛选的字段,只是searchInfo表单里面含有的字段
     // searchInfo: {},
   },
@@ -62,7 +63,8 @@ const CommodityModel = {
     },
     // 获取单个商品
     product(state, action) {
-      state.productWithId = action.payload;
+      state.productWithId = action.payload.product;
+      state.productLog = action.payload.log;
       return {
         ...state,
         ...action.payload,
