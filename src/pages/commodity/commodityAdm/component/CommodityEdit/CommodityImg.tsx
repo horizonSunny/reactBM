@@ -14,6 +14,9 @@ function getBase64(file) {
 
 @connect(({ commodity }) => ({ commodity }))
 class PicturesWall extends React.Component {
+  componentDidMount() {
+    this.props.onRef(this);
+  }
   componentWillReceiveProps() {
     const imgArr = this.props.commodity.productWithId.productImage;
     const arr = imgArr.map((item, index) => {
@@ -28,6 +31,10 @@ class PicturesWall extends React.Component {
     previewVisible: false,
     previewImage: '',
     fileList: [],
+  };
+  // 获取fileList
+  getImgList = () => {
+    return this.state.fileList;
   };
 
   handleCancel = () => this.setState({ previewVisible: false });

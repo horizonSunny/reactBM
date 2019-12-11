@@ -26,13 +26,26 @@ class EditForm extends React.Component {
     formInit: {},
     editorState: null,
   };
-
+  onRef = ref => {
+    this.child = ref;
+  };
   handleSubmit = e => {
     e.preventDefault();
+    // 通过子组件getImgList方法获取list,处理list
+    const imgList = this.child.getImgList();
+    const list = imgList.map(item => {
+      if (item.hasOwnProperty('url')) {
+        return item.url;
+      } else {
+        return item.response.msg;
+      }
+    });
+    this.props.form.setFieldsValue({
+      productImage: list,
+    });
+    console.log('this.props.form_', this.props.form);
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values.content.toRAW());
-        // console.log('Received values of form: ', values.content.toHTML());
       }
     });
   };
@@ -52,7 +65,6 @@ class EditForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const formInit = this.state.formInit;
-    console.log('formInit_', formInit);
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -63,7 +75,6 @@ class EditForm extends React.Component {
         sm: { span: 16 },
       },
     };
-    const pictureList = [];
     const { editorState } = this.state;
     // 不在控制栏显示的控件
     const excludeControls = ['media', 'emoji'];
@@ -77,8 +88,7 @@ class EditForm extends React.Component {
                 message: '请选择上传商品图片',
               },
             ],
-            // initialValue: pictureList,
-          })(<CommodityImg />)}
+          })(<CommodityImg onRef={this.onRef} />)}
         </Form.Item>
         <Form.Item label="通用名">
           {getFieldDecorator('productName', {
