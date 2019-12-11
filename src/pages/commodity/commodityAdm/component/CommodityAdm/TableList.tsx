@@ -4,7 +4,7 @@ import Link from 'umi/link';
 import styles from './TableList.less';
 import { connect } from 'dva';
 
-const pagination = { position: 'bottom', pageSize: 2 };
+const pagination = { position: 'bottom', pageSize: 10 };
 
 @connect(({ commodity }) => ({ commodity }))
 export default class TableList extends React.Component {
