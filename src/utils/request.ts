@@ -4,6 +4,7 @@
  */
 import { extend } from 'umi-request';
 import { notification } from 'antd';
+import { routerRedux } from 'dva/router';
 const initLoginToken = 'Basic c3lzdGVtOnN5c3RlbQ==';
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
@@ -22,7 +23,7 @@ const codeMessage = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
 };
-
+export const serverUrl = 'http://47.103.158.133'
 /**
  * 异常处理程序
  */
@@ -69,5 +70,18 @@ request.interceptors.request.use((url, options) => {
   return {
     options: { ...options, headers },
   };
+});
+request.interceptors.response.use(async (response) => {
+  const data = await response.clone().json();
+  if(data && data.code === 2) {
+    notification.error({
+      description: '登陆过期,请重新登陆',
+      message: '登陆超时,请重新登陆',
+    });
+    window.g_app._store.dispatch({
+      type: 'login/logout',
+    })
+  }
+  return response;
 });
 export default request;

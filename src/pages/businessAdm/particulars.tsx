@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
+import { connect } from 'dva';
 import { Button } from 'antd';
 import router from 'umi/router';
 import styles from './particulars.less';
