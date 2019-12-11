@@ -46,6 +46,7 @@ const CommodityModel = {
     },
     // 获取单个商品
     product(state, action) {
+      console.log('getProduct');
       state.productWithId = action.payload;
       return {
         ...state,
