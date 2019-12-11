@@ -4,14 +4,13 @@ import Link from 'umi/link';
 import styles from './TableList.less';
 import { connect } from 'dva';
 
-const pagination = { position: 'bottom', pageSize: 10 };
-// export default (): React.ReactNode => (
-//   <Table className={styles['main']} columns={columns} dataSource={data} {...state} />
-// );
+const pagination = { position: 'bottom', pageSize: 2 };
+
 @connect(({ commodity }) => ({ commodity }))
 export default class TableList extends React.Component {
   state = {
     data: this.props.commodity.productList.pageList,
+    searchInfo: this.props.searchInfo,
     pagination,
     columns: [
       {
@@ -71,17 +70,30 @@ export default class TableList extends React.Component {
       },
     ],
   };
-  onChange = e => {};
+  onChange = e => {
+    const { dispatch } = this.props;
+    const currentPage = e.current - 1;
+    console.log('currentPage_', currentPage);
+    dispatch({
+      type: 'commodity/getList',
+      payload: Object.assign(
+        {
+          pageNumber: currentPage,
+          pageSize: 10,
+        },
+        this.state.searchInfo,
+      ),
+    });
+  };
   render() {
     const { state } = this;
-    console.log('listData2323_', this.state.data);
-    console.log('listData_', this.props.commodity.productList.pageList);
     return (
       <Table
         {...this.state}
         className={styles['main']}
         columns={state.columns}
         dataSource={this.props.commodity.productList.pageList}
+        onChange={this.onChange}
       />
     );
   }
