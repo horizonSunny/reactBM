@@ -19,13 +19,8 @@ const isMapClass = {
 };
 @connect(({ commodity }) => ({ commodity }))
 class EditForm extends React.Component {
-  componentDidMount() {
-    this.setState({
-      formInit: this.props.commodity.productWithId,
-    });
-  }
   state = {
-    formInit: {},
+    formInit: this.props.commodity.productWithId,
     editorState: null,
   };
   onRef = ref => {
@@ -90,7 +85,8 @@ class EditForm extends React.Component {
           {getFieldDecorator('productImage', {
             rules: [
               {
-                validator: this.validatorImg,
+                required: true,
+                message: '请填写你的商品图片',
               },
             ],
             initialValue: formInit['productImage'],

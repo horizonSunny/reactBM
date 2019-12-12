@@ -63,14 +63,9 @@ export default class TableList extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a
-              onClick={this.goToDetail.bind(this, record)}
-              // to={`/commodityAdm/management/particulars?id=${record.productId}`}
-            >
-              查看
-            </a>
+            <a onClick={this.goToNextPage.bind(this, record, 'detail')}>查看</a>
             <Divider type="vertical" />
-            <Link to={`/commodityAdm/management/edit?id=${record.productId}`}>编辑</Link>
+            <a onClick={this.goToNextPage.bind(this, record, 'editor')}>编辑</a>
           </span>
         ),
       },
@@ -92,22 +87,24 @@ export default class TableList extends React.Component {
     });
   };
   // 请求数据跳转详情页面
-  goToDetail = e => {
+  goToNextPage = (params, operate) => {
     const { dispatch } = this.props;
+    console.log('operate_', operate);
     dispatch({
       type: 'commodity/getProduct',
       payload: {
-        id: e.productId,
+        id: params.productId,
       },
     }).then(result => {
       router.push({
-        pathname: '/commodityAdm/management/particulars',
-        query: { id: e.productId },
+        pathname:
+          operate === 'detail'
+            ? '/commodityAdm/management/particulars'
+            : '/commodityAdm/management/edit',
+        query: { id: params.productId },
       });
     });
   };
-  // 请求数据跳转编辑或者新建页面
-  goToDetails = e => {};
   render() {
     const { state } = this;
     return (

@@ -16,6 +16,16 @@ function getBase64(file) {
 class PicturesWall extends React.Component {
   componentDidMount() {
     this.props.onRef(this);
+    console.log('productWithId_', this.props.commodity.productWithId);
+    this.resetFileList();
+  }
+  state = {
+    previewVisible: false,
+    previewImage: '',
+    fileList: [],
+  };
+  // 重置state.fileList属性
+  resetFileList = () => {
     const imgArr = this.props.commodity.productWithId.productImage;
     const arr = imgArr.map((item, index) => {
       const newObj = new Object();
@@ -26,12 +36,8 @@ class PicturesWall extends React.Component {
     this.setState({
       fileList: arr,
     });
-  }
-  state = {
-    previewVisible: false,
-    previewImage: '',
-    fileList: [],
   };
+
   // 获取fileList
   getImgList = () => {
     return this.state.fileList;
@@ -89,17 +95,6 @@ class PicturesWall extends React.Component {
   };
 
   render() {
-    const imgArr = this.props.commodity.productWithId.productImage;
-    debugger;
-    const arr = imgArr.map((item, index) => {
-      const newObj = new Object();
-      newObj.url = item;
-      newObj.uid = index;
-      return newObj;
-    });
-    this.setState({
-      fileList: arr,
-    });
     const { previewVisible, previewImage, fileList } = this.state;
     const uploadButton = (
       <div>
