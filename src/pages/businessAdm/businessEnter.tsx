@@ -4,8 +4,25 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import styles from './businessEnter.less';
 import QueryForm from './components/QueryForm';
 import EnterTable from './components/EnterTable';
+import { connect } from 'dva';
 
+@connect(({ businessAdm }) => ({
+  businessAdm: businessAdm
+}))
 class BusinessEnter extends Component {
+  componentDidMount () {
+    const { dispatch } = this.props;
+    const { queryForm, pagenation } = this.props.businessAdm
+    let params = {
+      ...queryForm,
+      ...pagenation
+    }
+    // 查询列表
+    dispatch({
+      type: 'businessAdm/queryList',
+      payload: { ...params }
+    });
+  }
   render() {
     return (
       <PageHeaderWrapper>

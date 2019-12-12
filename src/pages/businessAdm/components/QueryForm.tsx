@@ -1,5 +1,6 @@
 import { Form, Row, Col, Input, Button, Icon, DatePicker, Select, Cascader } from 'antd';
 import React, { Component } from 'react';
+import { connect } from 'dva';
 import styles from './QueryForm.less';
 import { newArea } from '../../../utils/area.js';
 import router from 'umi/router';
@@ -8,26 +9,102 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 const options = newArea();
 
+@connect(({ businessAdm }) => ({
+  businessAdm: businessAdm
+}))
 class QueryForm extends Component {
-  handleSearch = e => {
-    e.preventDefault();
+  constructor(props) {
+    super(props);
+    this.state = {
+      pagination: {
+        current: 0,
+        pageSize: 10
+      }
+    };
+  }
+  // componentDidMount () {
+  //   this.handleQuery()
+  // }
+  handleSearch = (e) => {
+    e.preventDefault()
+    const { dispatch } = this.props;
     this.props.form.validateFields((err, values) => {
-      console.log('Received values of form: ', values);
-    });
+      let startTime = ''
+      let endTime = ''
+      if(values.time && values.time.length > 0) {
+        startTime = new Date(values.time[0]).getTime()
+        endTime = new Date(values.time[1]).getTime()
+      }
+      let params = {
+        adminName: values.adminName,
+        endTime: endTime,
+        startTime: startTime,
+        status: values.status,
+        channel: values.channel,
+        tenantName: values.tenantName
+      }
+      console.log('查询参数: ', params)
+      // 查询列表
+      dispatch({
+        type: 'businessAdm/queryFormChange',
+        payload: { ...params },
+      }).then(
+        () => {
+          this.handleQuery()
+        }
+      )
+    })
   };
 
   handleReset = () => {
-    this.props.form.resetFields();
+    const { dispatch } = this.props;
+    this.props.form.resetFields()
+    let params = {
+      adminName: '',
+      endTime: '',
+      startTime: '',
+      status: '',
+      channel: '',
+      tenantName: ''
+    }
+    dispatch({
+      type: 'businessAdm/queryFormChange',
+      payload: { ...params },
+    }).then(
+      () => {
+        this.handleQuery()
+      }
+    )
   };
 
+  handleQuery = () => {
+    const { dispatch } = this.props;
+    const { queryForm, pagenation } = this.props.businessAdm
+    let params = {
+      ...queryForm,
+      ...pagenation
+    }
+    // 查询列表
+    dispatch({
+      type: 'businessAdm/queryList',
+      payload: { ...params }
+    });
+  }
   handleInsert = () => {
-    // 新增
-    console.log('新增跳转');
-    router.push('/businessAdm/enter/edit');
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'businessAdm/currentRecord',
+      payload: {}
+    }).then(
+      () => {
+        router.push('/businessAdm/enter/edit');
+      }
+    )
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
+    const { queryForm } = this.props.businessAdm
 
     const formItemLayout = {
       labelCol: {
@@ -48,19 +125,19 @@ class QueryForm extends Component {
           <Col span={8}>
             <Form.Item {...formItemLayout} label="入住时间">
               {getFieldDecorator('time', {
-                rules: [],
+                // initialValue: [queryForm.startTime,queryForm.endTime]
               })(<RangePicker style={{ width: '100%' }} />)}
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item {...formItemLayout} label="企业状态">
               {getFieldDecorator('status', {
-                rules: [],
+                initialValue: queryForm.status
               })(
                 <Select>
-                  <Option value="1">全部</Option>
-                  <Option value="2">禁售</Option>
-                  <Option value="3">启售</Option>
+                  <Option value="">全部</Option>
+                  <Option value="0">启售</Option>
+                  <Option value="1">禁售</Option>
                 </Select>,
               )}
             </Form.Item>
@@ -68,7 +145,7 @@ class QueryForm extends Component {
           <Col span={8}>
             <Form.Item {...formItemLayout} label="所属渠道">
               {getFieldDecorator('channel', {
-                rules: [],
+                initialValue: queryForm.channel
               })(
                 <Select>
                   <Option value="1">全部</Option>
@@ -83,21 +160,21 @@ class QueryForm extends Component {
           <Col span={8}>
             <Form.Item {...formItemLayout} label="地区">
               {getFieldDecorator('area', {
-                rules: [],
+                initialValue: queryForm.area
               })(<Cascader options={options} changeOnSelect placeholder="省市区" />)}
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item {...formItemLayout} label="企业名称">
-              {getFieldDecorator('name', {
-                rules: [],
+              {getFieldDecorator('tenantName', {
+                initialValue: queryForm.tenantName
               })(<Input placeholder="企业名称" />)}
             </Form.Item>
           </Col>
           <Col span={8}>
             <Form.Item {...formItemLayout} label="管理员">
-              {getFieldDecorator('admin', {
-                rules: [],
+              {getFieldDecorator('adminName', {
+                initialValue: queryForm.adminName
               })(<Input placeholder="管理员" />)}
             </Form.Item>
           </Col>

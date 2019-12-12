@@ -44,7 +44,7 @@ const Model: LoginModelType = {
       console.log('response:', response);
       // Login successfully
       if (response.code === 1) {
-        const token = response.data.access_token;
+        const token = 'bearer ' + response.data.access_token;
         sessionStorage.setItem('token', token);
         const urlParams = new URL(window.location.href);
         const params = getPageQuery();

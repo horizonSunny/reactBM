@@ -1,50 +1,42 @@
-import { Table, Switch, Button, Icon } from 'antd';
+import { Table, Switch, Button, Modal } from 'antd';
 import React, { Component } from 'react';
 import router from 'umi/router';
+import { connect } from 'dva';
+const { confirm } = Modal;
+@connect(({ businessAdm }) => ({
+  businessAdm: businessAdm
+}))
 class EnterTable extends Component {
-  dataSource = [
-    {
-      id: 1,
-      code: '000101',
-      time: '2019-12-04 16:24:00',
-      name: '上海燧人科技有限公司',
-      admin: 'admin',
-      phone: '132xxxxxxxx',
-      area: '上海市浦东新区',
-      channel: '官网',
-      status: 1,
-    },
-  ];
   columns = [
     {
       title: '企业编码',
-      dataIndex: 'code',
-      key: 'code',
+      dataIndex: 'tenantCode',
+      key: 'tenantCode',
     },
     {
       title: '入驻时间',
-      dataIndex: 'time',
-      key: 'time',
+      dataIndex: 'createTime',
+      key: 'createTime',
     },
     {
       title: '企业名称',
-      dataIndex: 'name',
-      key: 'name',
+      dataIndex: 'tenantName',
+      key: 'tenantName',
     },
     {
       title: '管理员',
-      dataIndex: 'admin',
-      key: 'admin',
+      dataIndex: 'adminName',
+      key: 'adminName',
     },
     {
       title: '管理员手机号',
-      dataIndex: 'phone',
-      key: 'phone',
+      dataIndex: 'adminTel',
+      key: 'adminTel',
     },
     {
       title: '地区',
-      dataIndex: 'area',
-      key: 'area',
+      dataIndex: 'address',
+      key: 'address',
     },
     {
       title: '渠道',
@@ -57,38 +49,100 @@ class EnterTable extends Component {
       key: 'status',
       render: (text, record) => (
         <span>
-          {text ? '起售' : '禁售'} <Switch defaultChecked={text} />
+          {text ? '禁用' : '启用'} <Switch checked={text?false:true} defaultChecked={text?false:true} onChange={() => this.handleSwitchChange(text,record)} />
         </span>
       ),
     },
     {
       title: '操作',
       key: 'action',
+      fixed: 'right',
+      width: 200,
       render: (text, record) => (
         <div>
-          <Button type="primary" onClick={this.handleView}>
+          <Button type="primary" onClick= {()=> this.handleView(text,record)} >
             查看
           </Button>
-          <Button style={{ marginLeft: '8px' }} type="primary" onClick={this.handleInsert}>
+          <Button style={{ marginLeft: '8px' }} type="primary" onClick={() => this.handleUpdate(text,record)}>
             编辑
           </Button>
         </div>
       ),
     },
-  ];
-  handleView = () => {
+  ]
+  handleSwitchChange = (text,record) => {
+    console.log('switch切换:', text, record)
+    const { dispatch } = this.props;
+    confirm({
+      content:`是否${text?'启用':'禁用'}当前商户?`,
+      okText: '确定',
+      cancelText:'取消',
+      onOk() {
+        console.log('OK')
+        let tempParam = {
+          ...record,
+          status: text?0:1
+        }
+        dispatch({
+          type: 'businessAdm/switchStatus',
+          payload: tempParam,
+        })
+      },
+      onCancel() {
+        console.log('Cancel')
+      }
+    })
+  }
+  handleView = (text,record) => {
+    console.log('当前行的数据为:', text,record)
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'businessAdm/currentRecord',
+      payload: { ...record }
+    });
+
     router.push('/businessAdm/enter/particulars');
   };
-  handleInsert = () => {
+  handleUpdate = (text,record) => {
+    console.log('当前行的数据为:', text,record)
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'businessAdm/currentRecord',
+      payload: { ...record }
+    });
     router.push('/businessAdm/enter/edit');
   };
+  onChange = (pagination, filters, sorter) => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'businessAdm/queryPagenationChange',
+      payload: { ...pagination },
+    }).then(
+      () => {
+        const { queryForm, pagenation } = this.props.businessAdm
+        let params = {
+          ...queryForm,
+          ...pagenation
+        }
+        // 查询列表
+        dispatch({
+          type: 'businessAdm/queryList',
+          payload: { ...params }
+        });
+      }
+    )
+  };
   render() {
+    const { businessAdm } = this.props;
     return (
       <Table
         style={{ paddingLeft: '10px', paddingRight: '10px' }}
-        rowKey="id"
-        dataSource={this.dataSource}
+        rowKey="tenantId"
+        dataSource={ businessAdm.businessData }
         columns={this.columns}
+        pagination={ businessAdm.pagenation }
+        onChange={this.onChange}
+        scroll={{ x: 1200 }}
       />
     );
   }
