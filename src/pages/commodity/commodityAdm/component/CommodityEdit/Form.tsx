@@ -42,7 +42,7 @@ class EditForm extends React.Component {
       productImage: list,
     });
     this.props.form.validateFieldsAndScroll((err, values) => {
-      console.log('values_', values);
+      console.log('values[productImage]_', values['productImage']);
       values['productSpec'] = values['productSpec'].toHTML();
       if (!err) {
         return;

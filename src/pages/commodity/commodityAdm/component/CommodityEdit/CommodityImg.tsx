@@ -40,6 +40,7 @@ class PicturesWall extends React.Component {
 
   // 获取fileList
   getImgList = () => {
+    console.log('this.state.fileList_', this.state.fileList);
     return this.state.fileList;
   };
 
@@ -88,7 +89,7 @@ class PicturesWall extends React.Component {
       name: 'file',
       action: 'http://47.103.158.133/admin/v1/uploadFile',
       headers: {
-        authorization: 'bearer ' + sessionStorage.getItem('token'),
+        authorization: sessionStorage.getItem('token'),
       },
     };
     return props;
