@@ -60,7 +60,7 @@ export default class TableList extends React.Component {
     });
   }
   // 生命周期
-  componentWillReceiveProps() {
+  componentDidMount() {
     this.dataReverse(this.props.commodity.productWithId);
   }
 

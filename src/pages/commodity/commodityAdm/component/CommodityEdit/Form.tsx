@@ -19,8 +19,7 @@ const isMapClass = {
 };
 @connect(({ commodity }) => ({ commodity }))
 class EditForm extends React.Component {
-  componentWillReceiveProps() {
-    // this.state.formInit = this.props.commodity.productWithId;
+  componentDidMount() {
     this.setState({
       formInit: this.props.commodity.productWithId,
     });

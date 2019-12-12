@@ -65,6 +65,7 @@ const CommodityModel = {
     product(state, action) {
       state.productWithId = action.payload.product;
       state.productLog = action.payload.log;
+      console.log('in product');
       return {
         ...state,
         ...action.payload,
