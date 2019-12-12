@@ -43,6 +43,7 @@ class EditForm extends React.Component {
     });
     this.props.form.validateFieldsAndScroll((err, values) => {
       console.log('values_', values);
+      values['productSpec'] = values['productSpec'].toHTML();
       if (!err) {
         return;
       } else {
