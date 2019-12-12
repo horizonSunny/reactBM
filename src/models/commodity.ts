@@ -40,6 +40,7 @@ const CommodityModel = {
     },
     // 编辑产品
     *editProduct({ payload }, { call, put }) {
+      console.log('in_editProduct');
       const response = yield call(editorProduct, payload);
       yield put({
         type: 'successProduct',

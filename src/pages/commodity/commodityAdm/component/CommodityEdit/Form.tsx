@@ -45,11 +45,11 @@ class EditForm extends React.Component {
       console.log('values[productImage]_', values['productImage']);
       values['productSpec'] = values['productSpec'].toHTML();
       if (!err) {
-        return;
-      } else {
+        console.log('in_dispatch');
+        let typeInfo = location.query.id ? 'commodity/editProduct' : 'commodity/newProduct';
         // 判断是不是编辑
         dispatch({
-          type: location.query.id ? 'commodity/editProduct' : 'commodity/newProduct',
+          type: typeInfo,
           payload: values,
         });
       }
@@ -308,7 +308,7 @@ class EditForm extends React.Component {
           }}
         >
           <Button type="primary" htmlType="submit">
-            Submit
+            提交
           </Button>
         </Form.Item>
       </Form>
