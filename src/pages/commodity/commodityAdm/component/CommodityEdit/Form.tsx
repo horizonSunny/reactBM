@@ -8,6 +8,7 @@ import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 import { connect } from 'dva';
 import { callbackify } from 'util';
+import routerParams from '@/utils/routerParams';
 
 const { Option } = Select;
 const isMapClass = {
@@ -29,6 +30,7 @@ class EditForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     const { dispatch } = this.props;
+    let validateValue = false;
     // 通过子组件getImgList方法获取list,处理list,这边msg后面要修改
     const imgList = this.child.getImgList();
     const list = imgList.map(item => {
@@ -45,15 +47,21 @@ class EditForm extends React.Component {
       console.log('values[productImage]_', values['productImage']);
       values['productSpec'] = values['productSpec'].toHTML();
       if (!err) {
-        console.log('in_dispatch');
-        let typeInfo = location.query.id ? 'commodity/editProduct' : 'commodity/newProduct';
-        // 判断是不是编辑
-        dispatch({
-          type: typeInfo,
-          payload: values,
-        });
+        validateValue = true;
       }
     });
+    if (validateValue) {
+      console.log('location_', routerParams(location.search));
+      const params = routerParams(location.search);
+      let typeInfo = params.id ? 'commodity/editProduct' : 'commodity/newProduct';
+      // 判断是不是编辑
+      const value = this.props.form.getFieldsValue();
+      console.log('value_', value);
+      dispatch({
+        type: typeInfo,
+        payload: value,
+      });
+    }
   };
   onChange = e => {};
   // 判断

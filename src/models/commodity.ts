@@ -74,6 +74,7 @@ const CommodityModel = {
     },
     // 重置所有图片信息
     resetProduct(state, action) {
+      console.log('in_resetProduct');
       state.productWithId = action.payload;
       return {
         ...state,
