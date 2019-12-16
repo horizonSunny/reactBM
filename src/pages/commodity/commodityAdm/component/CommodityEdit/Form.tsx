@@ -3,6 +3,7 @@ import React from 'react';
 import styles from './Form.less';
 import LabelInfo from '../../../../../components/Label/label';
 import CommodityImg from './CommodityImg';
+import router from 'umi/router';
 // 引入富文本编辑器
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
@@ -45,7 +46,6 @@ class EditForm extends React.Component {
     });
     this.props.form.validateFieldsAndScroll((err, values) => {
       console.log('values[productImage]_', values['productImage']);
-      values['productSpec'] = values['productSpec'].toHTML();
       if (!err) {
         validateValue = true;
       }
@@ -56,10 +56,15 @@ class EditForm extends React.Component {
       let typeInfo = params.id ? 'commodity/editProduct' : 'commodity/newProduct';
       // 判断是不是编辑
       const value = this.props.form.getFieldsValue();
-      console.log('value_', value);
+      value['productSpec'] = value['productSpec'].toHTML();
+      if (params.id) {
+        value['productId'] = this.props.commodity.productWithId.productId;
+      }
       dispatch({
         type: typeInfo,
         payload: value,
+      }).then(() => {
+        router.push('/commodityAdm/management');
       });
     }
   };
