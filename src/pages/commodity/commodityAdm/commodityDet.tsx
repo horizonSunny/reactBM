@@ -9,15 +9,6 @@ import { connect } from 'dva';
 const { Title } = Typography;
 @connect(({ commodity }) => ({ commodity }))
 export default class CommodityDet extends React.Component {
-  componentDidMount() {
-    const { dispatch, location } = this.props;
-    dispatch({
-      type: 'commodity/getProduct',
-      payload: {
-        id: location.query.id,
-      },
-    });
-  }
   render() {
     return (
       <PageHeaderWrapper className={styles['main']}>

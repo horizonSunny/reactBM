@@ -3,10 +3,13 @@ import React from 'react';
 import styles from './Form.less';
 import LabelInfo from '../../../../../components/Label/label';
 import CommodityImg from './CommodityImg';
+import router from 'umi/router';
 // 引入富文本编辑器
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
 import { connect } from 'dva';
+import { callbackify } from 'util';
+import routerParams from '@/utils/routerParams';
 
 const { Option } = Select;
 const isMapClass = {
@@ -18,11 +21,8 @@ const isMapClass = {
 };
 @connect(({ commodity }) => ({ commodity }))
 class EditForm extends React.Component {
-  componentWillReceiveProps() {
-    this.state.formInit = this.props.commodity.productWithId;
-  }
   state = {
-    formInit: {},
+    formInit: this.props.commodity.productWithId,
     editorState: null,
   };
   onRef = ref => {
@@ -31,6 +31,7 @@ class EditForm extends React.Component {
   handleSubmit = e => {
     e.preventDefault();
     const { dispatch } = this.props;
+    let validateValue = false;
     // 通过子组件getImgList方法获取list,处理list,这边msg后面要修改
     const imgList = this.child.getImgList();
     const list = imgList.map(item => {
@@ -44,26 +45,33 @@ class EditForm extends React.Component {
       productImage: list,
     });
     this.props.form.validateFieldsAndScroll((err, values) => {
-      values['productSpec'] = values['productSpec'].toHTML();
+      console.log('values[productImage]_', values['productImage']);
       if (!err) {
-        return;
-      } else {
-        // 判断是不是编辑
-        dispatch({
-          type: location.query.id ? 'commodity/editProduct' : 'commodity/newProduct',
-          payload: values,
-        });
+        validateValue = true;
       }
     });
+    if (validateValue) {
+      console.log('location_', routerParams(location.search));
+      const params = routerParams(location.search);
+      let typeInfo = params.id ? 'commodity/editProduct' : 'commodity/newProduct';
+      // 判断是不是编辑
+      const value = this.props.form.getFieldsValue();
+      value['productSpec'] = value['productSpec'].toHTML();
+      if (params.id) {
+        value['productId'] = this.props.commodity.productWithId.productId;
+      }
+      dispatch({
+        type: typeInfo,
+        payload: value,
+      }).then(() => {
+        router.push('/commodityAdm/management');
+      });
+    }
   };
   onChange = e => {};
-  //校验图片
+  // 判断
   validatorImg = (rule, value, callback) => {
-    const imgList = this.child.getImgList();
-    if (imgList.length === 0) {
-      callback('图片不能为空');
-    }
-    // Note: 必须总是返回一个 callback，否则 validateFieldsAndScroll 无法响应
+    console.log('validatorImg_', value);
     callback();
   };
   handleEditorChange = editorState => {
@@ -89,22 +97,14 @@ class EditForm extends React.Component {
       <Form className={styles['main']} {...formItemLayout} onSubmit={this.handleSubmit}>
         <Form.Item label="商品图">
           {getFieldDecorator('productImage', {
-            validateTrigger: 'onBlur',
             rules: [
               {
                 required: true,
-                validator: (_, value, callback) => {
-                  if (value.isEmpty()) {
-                    callback('请输入正文内容');
-                  } else {
-                    callback();
-                  }
-                },
+                message: '请填写你的商品图片',
               },
             ],
-            initialValue: [],
-          })(<CommodityImg onRef={this.onRef} vaule={[]} />)}
-          {/* <CommodityImg onRef={this.onRef} /> */}
+            initialValue: formInit['productImage'],
+          })(<CommodityImg onRef={this.onRef} />)}
         </Form.Item>
         <Form.Item label="通用名">
           {getFieldDecorator('productName', {
@@ -321,7 +321,7 @@ class EditForm extends React.Component {
           }}
         >
           <Button type="primary" htmlType="submit">
-            Submit
+            提交
           </Button>
         </Form.Item>
       </Form>

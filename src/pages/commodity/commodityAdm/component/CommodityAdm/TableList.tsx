@@ -1,6 +1,7 @@
 import { Table, Divider, Tag, Switch } from 'antd';
 import React from 'react';
 import Link from 'umi/link';
+import router from 'umi/router';
 import styles from './TableList.less';
 import { connect } from 'dva';
 
@@ -62,9 +63,9 @@ export default class TableList extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <Link to={`/commodityAdm/management/particulars?id=${record.productId}`}>查看</Link>
+            <a onClick={this.goToNextPage.bind(this, record, 'detail')}>查看</a>
             <Divider type="vertical" />
-            <Link to={`/commodityAdm/management/edit?id=${record.productId}`}>编辑</Link>
+            <a onClick={this.goToNextPage.bind(this, record, 'editor')}>编辑</a>
           </span>
         ),
       },
@@ -83,6 +84,25 @@ export default class TableList extends React.Component {
         },
         this.state.searchInfo,
       ),
+    });
+  };
+  // 请求数据跳转详情页面
+  goToNextPage = (params, operate) => {
+    const { dispatch } = this.props;
+    console.log('operate_', operate);
+    dispatch({
+      type: 'commodity/getProduct',
+      payload: {
+        id: params.productId,
+      },
+    }).then(result => {
+      router.push({
+        pathname:
+          operate === 'detail'
+            ? '/commodityAdm/management/particulars'
+            : '/commodityAdm/management/edit',
+        query: { id: params.productId },
+      });
     });
   };
   render() {

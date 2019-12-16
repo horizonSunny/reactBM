@@ -8,6 +8,7 @@ const CommodityModel = {
   state: {
     productList: {},
     productWithId: {},
+    productLog: {},
     // 查询商品列别的时候需要筛选的字段,只是searchInfo表单里面含有的字段
     // searchInfo: {},
   },
@@ -39,6 +40,7 @@ const CommodityModel = {
     },
     // 编辑产品
     *editProduct({ payload }, { call, put }) {
+      console.log('in_editProduct');
       const response = yield call(editorProduct, payload);
       yield put({
         type: 'successProduct',
@@ -62,7 +64,9 @@ const CommodityModel = {
     },
     // 获取单个商品
     product(state, action) {
-      state.productWithId = action.payload;
+      state.productWithId = action.payload.product;
+      state.productLog = action.payload.log;
+      console.log('in product');
       return {
         ...state,
         ...action.payload,
@@ -70,6 +74,7 @@ const CommodityModel = {
     },
     // 重置所有图片信息
     resetProduct(state, action) {
+      console.log('in_resetProduct');
       state.productWithId = action.payload;
       return {
         ...state,

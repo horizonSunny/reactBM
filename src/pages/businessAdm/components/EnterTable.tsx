@@ -1,4 +1,4 @@
-import { Table, Switch, Button, Modal } from 'antd';
+import { Table, Switch, Button, Modal, message } from 'antd';
 import React, { Component } from 'react';
 import router from 'umi/router';
 import { connect } from 'dva';
@@ -95,7 +95,13 @@ class EnterTable extends Component {
         dispatch({
           type: 'businessAdm/switchStatus',
           payload: tempParam,
-        });
+        }).then(
+          (data) => {
+            if (data.code === 1) {
+              message.success('修改成功!')
+            }
+          }
+        )
       },
       onCancel() {
         console.log('Cancel');

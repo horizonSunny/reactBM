@@ -16,8 +16,16 @@ function getBase64(file) {
 class PicturesWall extends React.Component {
   componentDidMount() {
     this.props.onRef(this);
+    console.log('productWithId_', this.props.commodity.productWithId);
+    this.resetFileList();
   }
-  componentWillReceiveProps() {
+  state = {
+    previewVisible: false,
+    previewImage: '',
+    fileList: [],
+  };
+  // 重置state.fileList属性
+  resetFileList = () => {
     const imgArr = this.props.commodity.productWithId.productImage;
     const arr = imgArr.map((item, index) => {
       const newObj = new Object();
@@ -25,15 +33,14 @@ class PicturesWall extends React.Component {
       newObj.uid = index;
       return newObj;
     });
-    this.state.fileList = arr;
-  }
-  state = {
-    previewVisible: false,
-    previewImage: '',
-    fileList: [],
+    this.setState({
+      fileList: arr,
+    });
   };
+
   // 获取fileList
   getImgList = () => {
+    console.log('this.state.fileList_', this.state.fileList);
     return this.state.fileList;
   };
 
@@ -82,7 +89,7 @@ class PicturesWall extends React.Component {
       name: 'file',
       action: 'http://47.103.158.133/admin/v1/uploadFile',
       headers: {
-        authorization: 'bearer ' + sessionStorage.getItem('token'),
+        authorization: sessionStorage.getItem('token'),
       },
     };
     return props;

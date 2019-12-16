@@ -60,6 +60,26 @@ class AdvancedSearchForm extends React.Component {
   };
   // 新增产品
   handleNew = () => {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'commodity/resetProduct',
+      payload: {
+        approvalNumber: '',
+        englishName: '',
+        isMp: '',
+        manufacturer: '',
+        pinyin: '',
+        productBrand: '',
+        productDesc: '',
+        productExpire: '',
+        productImage: [],
+        productModel: '',
+        productName: '',
+        productSpec: '',
+        productSpecif: '',
+        productType: '',
+      },
+    });
     router.push('/commodityAdm/management/edit');
   };
   render() {
