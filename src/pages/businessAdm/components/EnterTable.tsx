@@ -4,7 +4,7 @@ import router from 'umi/router';
 import { connect } from 'dva';
 const { confirm } = Modal;
 @connect(({ businessAdm }) => ({
-  businessAdm: businessAdm
+  businessAdm: businessAdm,
 }))
 class EnterTable extends Component {
   columns = [
@@ -49,7 +49,12 @@ class EnterTable extends Component {
       key: 'status',
       render: (text, record) => (
         <span>
-          {text ? '禁用' : '启用'} <Switch checked={text?false:true} defaultChecked={text?false:true} onChange={() => this.handleSwitchChange(text,record)} />
+          {text ? '禁用' : '启用'}{' '}
+          <Switch
+            checked={text ? false : true}
+            defaultChecked={text ? false : true}
+            onChange={() => this.handleSwitchChange(text, record)}
+          />
         </span>
       ),
     },
@@ -60,55 +65,59 @@ class EnterTable extends Component {
       width: 200,
       render: (text, record) => (
         <div>
-          <Button type="primary" onClick= {()=> this.handleView(text,record)} >
+          <Button type="primary" onClick={() => this.handleView(text, record)}>
             查看
           </Button>
-          <Button style={{ marginLeft: '8px' }} type="primary" onClick={() => this.handleUpdate(text,record)}>
+          <Button
+            style={{ marginLeft: '8px' }}
+            type="primary"
+            onClick={() => this.handleUpdate(text, record)}
+          >
             编辑
           </Button>
         </div>
       ),
     },
-  ]
-  handleSwitchChange = (text,record) => {
-    console.log('switch切换:', text, record)
+  ];
+  handleSwitchChange = (text, record) => {
+    console.log('switch切换:', text, record);
     const { dispatch } = this.props;
     confirm({
-      content:`是否${text?'启用':'禁用'}当前商户?`,
+      content: `是否${text ? '启用' : '禁用'}当前商户?`,
       okText: '确定',
-      cancelText:'取消',
+      cancelText: '取消',
       onOk() {
-        console.log('OK')
+        console.log('OK');
         let tempParam = {
-          ...record,
-          status: text?0:1
-        }
+          tenantId: record.tenantId,
+          status: text ? 0 : 1,
+        };
         dispatch({
           type: 'businessAdm/switchStatus',
           payload: tempParam,
-        })
+        });
       },
       onCancel() {
-        console.log('Cancel')
-      }
-    })
-  }
-  handleView = (text,record) => {
-    console.log('当前行的数据为:', text,record)
+        console.log('Cancel');
+      },
+    });
+  };
+  handleView = (text, record) => {
+    console.log('当前行的数据为:', text, record);
     const { dispatch } = this.props;
     dispatch({
       type: 'businessAdm/currentRecord',
-      payload: { ...record }
+      payload: { ...record },
     });
 
     router.push('/businessAdm/enter/particulars');
   };
-  handleUpdate = (text,record) => {
-    console.log('当前行的数据为:', text,record)
+  handleUpdate = (text, record) => {
+    console.log('当前行的数据为:', text, record);
     const { dispatch } = this.props;
     dispatch({
       type: 'businessAdm/currentRecord',
-      payload: { ...record }
+      payload: { ...record },
     });
     router.push('/businessAdm/enter/edit');
   };
@@ -117,20 +126,18 @@ class EnterTable extends Component {
     dispatch({
       type: 'businessAdm/queryPagenationChange',
       payload: { ...pagination },
-    }).then(
-      () => {
-        const { queryForm, pagenation } = this.props.businessAdm
-        let params = {
-          ...queryForm,
-          ...pagenation
-        }
-        // 查询列表
-        dispatch({
-          type: 'businessAdm/queryList',
-          payload: { ...params }
-        });
-      }
-    )
+    }).then(() => {
+      const { queryForm, pagenation } = this.props.businessAdm;
+      let params = {
+        ...queryForm,
+        ...pagenation,
+      };
+      // 查询列表
+      dispatch({
+        type: 'businessAdm/queryList',
+        payload: { ...params },
+      });
+    });
   };
   render() {
     const { businessAdm } = this.props;
@@ -138,9 +145,9 @@ class EnterTable extends Component {
       <Table
         style={{ paddingLeft: '10px', paddingRight: '10px' }}
         rowKey="tenantId"
-        dataSource={ businessAdm.businessData }
+        dataSource={businessAdm.businessData}
         columns={this.columns}
-        pagination={ businessAdm.pagenation }
+        pagination={businessAdm.pagenation}
         onChange={this.onChange}
         scroll={{ x: 1200 }}
       />

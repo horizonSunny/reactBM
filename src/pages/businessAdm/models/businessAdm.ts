@@ -1,6 +1,6 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
-import { queryBusiness, insertBusiness, saveBusiness } from '@/services/businessAdm';
+import { queryBusiness, insertBusiness, saveBusiness, switchStatus } from '@/services/businessAdm';
 const businessAdm = {
   namespace: 'businessAdm',
 
@@ -13,6 +13,7 @@ const businessAdm = {
       status: '',
       channel: '',
       tenantName: '',
+      province: [],
     },
     pagenation: {
       pageNumber: 0,
@@ -20,15 +21,18 @@ const businessAdm = {
       total: 0,
       showSizeChanger: true,
       showQuickJumper: true,
-      showTotal: (total) => {
+      showTotal: total => {
         return `共 ${total} 条`;
-      }
+      },
     },
-    currentRecord: {}
+    currentRecord: {},
   },
 
   effects: {
     *queryList({ payload }, { call, put }) {
+      if (payload.province.length > 0) {
+        payload.province = payload.province.join(',');
+      }
       const response = yield call(queryBusiness, payload);
       if (response.code === 1) {
         yield put({
@@ -36,34 +40,57 @@ const businessAdm = {
           payload: response.data,
         });
       }
-      return response
+      return response;
     },
     *queryFormChange({ payload }, { call, put }) {
       yield put({
         type: 'formChange',
         payload: payload,
       });
-      return payload
+      return payload;
     },
     *queryPagenationChange({ payload }, { call, put }) {
       yield put({
         type: 'pageNationChange',
         payload: payload,
       });
-      return payload
+      return payload;
     },
     *currentRecord({ payload }, { call, put }) {
       yield put({
         type: 'record',
         payload: payload,
       });
-      return payload
+      return payload;
     },
     *saveBusiness({ payload }, { call, put, select }) {
       const data = yield select(state => state.businessAdm.currentRecord);
-      console.log('data:', data)
-      let response = {}
-      let tempParam = Object.assign({}, data, payload)
+      let response = {};
+      let tempenterpriseQualification = [];
+      if (payload.enterpriseQualification.length > 0) {
+        payload.enterpriseQualification.forEach(item => {
+          if (!item.url) {
+            item.url = item.response.data;
+          }
+          tempenterpriseQualification.push({
+            name: item.name,
+            url: item.url,
+          });
+        });
+        payload.enterpriseQualification = tempenterpriseQualification;
+      }
+      let tempstoreLive = [];
+      if (payload.storeLive.length > 0) {
+        payload.storeLive.forEach(item => {
+          if (!item.url) {
+            item.url = item.response.data;
+          }
+          tempstoreLive.push(item.url);
+        });
+        payload.storeLive = tempstoreLive;
+      }
+      let tempParam = Object.assign({}, data, payload);
+      console.log('最终传参数:', tempParam);
       if (data && data.tenantId) {
         // 更新
         response = yield call(saveBusiness, tempParam);
@@ -78,18 +105,18 @@ const businessAdm = {
           payload: response.data,
         });
       }
-      return response
+      return response;
     },
     *switchStatus({ payload }, { call, put }) {
-      const response = yield call(saveBusiness, payload);
+      const response = yield call(switchStatus, payload);
       if (response.code === 1) {
         yield put({
           type: 'switchSave',
           payload: response.data,
         });
       }
-      return response
-    }
+      return response;
+    },
   },
 
   reducers: {
@@ -97,57 +124,57 @@ const businessAdm = {
       let pagenation = {
         pageNumber: action.payload.pageNumber,
         pageSize: action.payload.pageSize,
-        total: action.payload.totalElements
-      }
+        total: action.payload.totalElements,
+      };
       return {
         ...state,
         businessData: action.payload.pageList || [],
-        pageNation: pagenation
+        pageNation: pagenation,
       };
     },
     formChange(state, action) {
       return {
         ...state,
-        queryForm: action.payload
+        queryForm: action.payload,
       };
     },
     pageNationChange(state, action) {
       let tempPagenation = {
         ...state.pagenation,
-        ...action.payload
-      }
+        ...action.payload,
+      };
       return {
         ...state,
-        pagenation: tempPagenation
+        pagenation: tempPagenation,
       };
     },
     record(state, action) {
       return {
         ...state,
-        currentRecord: action.payload
+        currentRecord: action.payload,
       };
     },
     saveData(state, action) {
       return {
         ...state,
-        currentRecord: action.payload
+        currentRecord: action.payload,
       };
     },
     switchSave(state, action) {
-      let tempbusinessData = state.businessData
-      let result = action.payload
+      let tempbusinessData = state.businessData;
+      let result = action.payload;
       tempbusinessData.forEach(item => {
-        if(item.tenantId === result.tenantId){
-          item = result
+        if (item.tenantId === result.tenantId) {
+          item = result;
         }
-        return item
+        return item;
       });
       return {
         ...state,
-        businessData: tempbusinessData
+        businessData: tempbusinessData,
       };
-    }
-  }
+    },
+  },
 };
 
 export default businessAdm;

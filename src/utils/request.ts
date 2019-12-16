@@ -23,7 +23,6 @@ const codeMessage = {
   503: '服务不可用，服务器暂时过载或维护。',
   504: '网关超时。',
 };
-export const serverUrl = 'http://47.103.158.133'
 /**
  * 异常处理程序
  */
@@ -50,11 +49,13 @@ const errorHandler = (error: { response: Response }): Response => {
  * 配置request请求时的默认参数
  */
 const request = extend({
-  prefix: 'http://47.103.158.133',
-  // prefix: 'http://192.168.10.234:9000',
+  // prefix: 'http://47.103.158.133',
+  prefix: 'http://192.168.10.234:9000',
   errorHandler, // 默认错误处理
   // credentials: 'include', // 默认请求是否带上cookie
 });
+// export const serverUrl = 'http://47.103.158.133'
+export const serverUrl = 'http://192.168.10.234:9000';
 
 request.interceptors.request.use((url, options) => {
   let headers = {};
@@ -64,23 +65,23 @@ request.interceptors.request.use((url, options) => {
     };
   } else {
     headers = {
-      Authorization: 'bearer ' + sessionStorage.getItem('token'),
+      Authorization: sessionStorage.getItem('token'),
     };
   }
   return {
     options: { ...options, headers },
   };
 });
-request.interceptors.response.use(async (response) => {
+request.interceptors.response.use(async response => {
   const data = await response.clone().json();
-  if(data && data.code === 2) {
+  if (data && data.code === 2) {
     notification.error({
       description: '登陆过期,请重新登陆',
       message: '登陆超时,请重新登陆',
     });
     window.g_app._store.dispatch({
       type: 'login/logout',
-    })
+    });
   }
   return response;
 });
