@@ -26,11 +26,12 @@ class AdvancedSearchForm extends React.Component {
         return;
       }
       const rangeValue = fieldsValue['range-picker'];
+      debugger;
       const values = {
         ...fieldsValue,
         'range-picker': [
-          rangeValue[0] ? Date.parse(rangeValue[0].format('YYYY-MM-DD')) : undefined,
-          rangeValue[1] ? Date.parse(rangeValue[1].format('YYYY-MM-DD')) : undefined,
+          rangeValue ? Date.parse(rangeValue[0].format('YYYY-MM-DD')) : undefined,
+          rangeValue ? Date.parse(rangeValue[1].format('YYYY-MM-DD')) : undefined,
         ],
       };
       const searchParams = {
