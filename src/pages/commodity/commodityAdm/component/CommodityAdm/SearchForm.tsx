@@ -35,7 +35,7 @@ class AdvancedSearchForm extends React.Component {
       };
       const searchParams = {
         startTime: values['range-picker'][0],
-        endTime: values['range-picker'][0],
+        endTime: values['range-picker'][1],
         isShelf: values['sellStatus'] == 3 ? undefined : values['sellStatus'],
         productType: values['status'],
         productName: values['keyword'],
@@ -108,8 +108,8 @@ class AdvancedSearchForm extends React.Component {
               })(
                 <Select style={{ width: 120 }}>
                   <Option value={3}>全部</Option>
-                  <Option value={0}>上架</Option>
-                  <Option value={1}>下架</Option>
+                  <Option value={1}>上架</Option>
+                  <Option value={0}>下架</Option>
                 </Select>,
               )}
             </Form.Item>
