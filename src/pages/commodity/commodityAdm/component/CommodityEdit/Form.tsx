@@ -1,4 +1,4 @@
-import { Form, Input, Select, Radio, Button } from 'antd';
+import { Form, Input, Select, Radio, Button, TreeSelect } from 'antd';
 import React from 'react';
 import styles from './Form.less';
 import LabelInfo from '../../../../../components/Label/label';
@@ -24,6 +24,7 @@ class EditForm extends React.Component {
   state = {
     formInit: this.props.commodity.productWithId,
     editorState: null,
+    productType: this.props.commodity.allProductType,
   };
   onRef = ref => {
     this.child = ref;
@@ -60,6 +61,7 @@ class EditForm extends React.Component {
       if (params.id) {
         value['productId'] = this.props.commodity.productWithId.productId;
       }
+      value.productType = [value.productType];
       dispatch({
         type: typeInfo,
         payload: value,
@@ -80,6 +82,7 @@ class EditForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const formInit = this.state.formInit;
+    debugger;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -93,6 +96,7 @@ class EditForm extends React.Component {
     const { editorState } = this.state;
     // 不在控制栏显示的控件
     const excludeControls = ['media', 'emoji'];
+    const { productType } = this.state;
     return (
       <Form className={styles['main']} {...formItemLayout} onSubmit={this.handleSubmit}>
         <Form.Item label="商品图">
@@ -125,16 +129,14 @@ class EditForm extends React.Component {
                 message: '请选择商品类别',
               },
             ],
-            initialValue: formInit['productType'],
+            initialValue: formInit['productType'][0],
           })(
-            <Select style={{ width: 150 }}>
-              <Option value={1}>中西药品</Option>
-              <Option value={2}>养生保健</Option>
-              <Option value={3}>医疗器械</Option>
-              <Option value={4}>计生用品</Option>
-              <Option value={5}>中药饮品</Option>
-              <Option value={6}>美容护肤</Option>
-            </Select>,
+            <TreeSelect
+              style={{ width: '100%' }}
+              dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+              treeData={productType}
+              placeholder="Please select"
+            />,
           )}
         </Form.Item>
         <Form.Item label="是否处方药">

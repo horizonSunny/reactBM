@@ -27,7 +27,5 @@ export async function newProduct(params: any) {
 
 // 获取商品类型的数字字典
 export async function productype(params: Object) {
-  return request('/admin/dict/productype', {
-    params: params,
-  });
+  return request('/admin/v1/category/productype');
 }

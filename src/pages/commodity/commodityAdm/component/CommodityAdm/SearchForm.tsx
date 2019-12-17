@@ -118,7 +118,7 @@ class AdvancedSearchForm extends React.Component {
             <Form.Item label="类别">
               {getFieldDecorator('status', {
                 rules: [],
-                initialValue: '0-0-2',
+                initialValue: '',
               })(
                 <TreeSelect
                   style={{ width: '100%' }}

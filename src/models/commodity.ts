@@ -49,8 +49,8 @@ const CommodityModel = {
       });
     },
     // 获取产品类型字典
-    *getProductType({ payload }, { call, put }) {
-      const response = yield call(productype, payload);
+    *getProductType(_, { call, put }) {
+      const response = yield call(productype);
       yield put({
         type: 'allProductType',
         payload: response.data,
