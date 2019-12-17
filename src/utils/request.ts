@@ -54,8 +54,8 @@ const request = extend({
   errorHandler, // 默认错误处理
   // credentials: 'include', // 默认请求是否带上cookie
 });
-export const serverUrl = 'http://47.103.158.133'
-// export const serverUrl = 'http://192.168.10.234:9000';
+// export const serverUrl = 'http://47.103.158.133'
+export const serverUrl = 'http://192.168.10.234:9000';
 
 request.interceptors.request.use((url, options) => {
   let headers = {};
