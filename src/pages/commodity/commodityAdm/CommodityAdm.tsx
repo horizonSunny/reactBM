@@ -21,6 +21,10 @@ export default class CommodityAdm extends React.Component {
         pageSize: 10,
       },
     });
+    dispatch({
+      type: 'commodity/getProductType',
+      payload: { code: 'productType' },
+    });
   }
   state = {
     searchInfo: {},

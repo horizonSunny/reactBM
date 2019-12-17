@@ -1,4 +1,4 @@
-import { Form, Row, Col, Input, Button, Icon, DatePicker, Select } from 'antd';
+import { Form, Row, Col, Input, Button, DatePicker, Select, TreeSelect } from 'antd';
 import React from 'react';
 import styles from './SearchForm.less';
 import router from 'umi/router';
@@ -8,11 +8,14 @@ import filterProperty from '@/utils/filterProperty';
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
+// 测试数据
+
 @connect(({ commodity }) => ({ commodity }))
 class AdvancedSearchForm extends React.Component {
   state = {
     expand: false,
     sellingStatus: null,
+    productType: this.props.commodity.allProductType,
   };
   // 查询
   handleSearch = e => {
@@ -87,6 +90,8 @@ class AdvancedSearchForm extends React.Component {
     const rangeConfig = {
       rules: [{ type: 'array', message: 'Please select time!' }],
     };
+    console.log('this.state.productType_', this.state.productType);
+    const { productType } = this.state;
     return (
       <Form className={styles['ant-advanced-search-form']} onSubmit={this.handleSearch}>
         <Row gutter={24}>
@@ -113,17 +118,25 @@ class AdvancedSearchForm extends React.Component {
             <Form.Item label="类别">
               {getFieldDecorator('status', {
                 rules: [],
-                initialValue: '1',
+                initialValue: '0-0-2',
               })(
-                <Select style={{ width: 120 }} onChange={this.handleSelectChange}>
-                  <Option value="1">全部</Option>
-                  <Option value="2">中西药品</Option>
-                  <Option value="3">养生保健</Option>
-                  <Option value="4">医疗器械</Option>
-                  <Option value="5">计生用品</Option>
-                  <Option value="6">中药饮品</Option>
-                  <Option value="7">美容护肤</Option>
-                </Select>,
+                <TreeSelect
+                  style={{ width: '100%' }}
+                  dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                  treeData={productType}
+                  placeholder="Please select"
+                  treeDefaultExpandAll
+                  onChange={this.onChange}
+                />,
+                // <Select style={{ width: 120 }} onChange={this.handleSelectChange}>
+                //   <Option value="1">全部</Option>
+                //   <Option value="2">中西药品</Option>
+                //   <Option value="3">养生保健</Option>
+                //   <Option value="4">医疗器械</Option>
+                //   <Option value="5">计生用品</Option>
+                //   <Option value="6">中药饮品</Option>
+                //   <Option value="7">美容护肤</Option>
+                // </Select>,
               )}
             </Form.Item>
           </Col>
