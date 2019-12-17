@@ -26,7 +26,6 @@ class AdvancedSearchForm extends React.Component {
         return;
       }
       const rangeValue = fieldsValue['range-picker'];
-      debugger;
       const values = {
         ...fieldsValue,
         'range-picker': [
