@@ -43,7 +43,7 @@ const Model: LoginModelType = {
       });
       console.log('response:', response);
       // Login successfully
-      if (response.code === 1) {
+      if (response && response.code === 1) {
         const token = 'bearer ' + response.data.access_token;
         sessionStorage.setItem('token', token);
         const urlParams = new URL(window.location.href);
@@ -63,10 +63,10 @@ const Model: LoginModelType = {
         }
         yield put(routerRedux.replace(redirect || '/'));
       } else {
-        notification.error({
-          description: response.msg,
-          message: response.msg,
-        });
+        // notification.error({
+        //   description: (response && response.msg )||'网络连接失败',
+        //   message: (response && response.msg)||'网络连接失败'
+        // });
       }
     },
 

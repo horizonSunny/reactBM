@@ -30,11 +30,11 @@ const businessAdm = {
 
   effects: {
     *queryList({ payload }, { call, put }) {
-      if (payload.province.length > 0) {
+      if (payload.province && payload.province.length > 0) {
         payload.province = payload.province.join(',');
       }
       const response = yield call(queryBusiness, payload);
-      if (response.code === 1) {
+      if (response && response.code === 1) {
         yield put({
           type: 'queryData',
           payload: response.data,
@@ -90,7 +90,6 @@ const businessAdm = {
         payload.storeLive = tempstoreLive;
       }
       let tempParam = Object.assign({}, data, payload);
-      console.log('最终传参数:', tempParam);
       if (data && data.tenantId) {
         // 更新
         response = yield call(saveBusiness, tempParam);
@@ -99,7 +98,7 @@ const businessAdm = {
         response = yield call(insertBusiness, tempParam);
       }
 
-      if (response.code === 1) {
+      if (response && response.code === 1) {
         yield put({
           type: 'saveData',
           payload: response.data,
@@ -109,10 +108,10 @@ const businessAdm = {
     },
     *switchStatus({ payload }, { call, put }) {
       const response = yield call(switchStatus, payload);
-      if (response.code === 1) {
+      if (response && response.code === 1) {
         yield put({
           type: 'switchSave',
-          payload: response.data,
+          payload: payload,
         });
       }
       return response;
@@ -163,9 +162,9 @@ const businessAdm = {
     switchSave(state, action) {
       let tempbusinessData = state.businessData;
       let result = action.payload;
-      tempbusinessData.forEach(item => {
+      tempbusinessData.map(item => {
         if (item.tenantId === result.tenantId) {
-          item = result;
+          item.status = result.status;
         }
         return item;
       });

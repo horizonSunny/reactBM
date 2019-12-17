@@ -9,6 +9,8 @@ const { Option } = Select;
 const options = newArea();
 import { serverUrl } from '@/utils/request';
 import { thisExpression } from '@babel/types';
+
+const { Search } = Input;
 @connect(({ businessAdm }) => ({
   businessAdm: businessAdm,
 }))
@@ -67,9 +69,6 @@ class BusinessEdit extends Component {
     const { dispatch } = this.props;
     // this.props.form.resetFields()
     this.props.form.validateFields((err, values) => {
-      // console.log('表单数据:', values)
-      // console.log('企业资质数据:', this.state.qualificationFileList)
-      // console.log('店铺实景:', this.state.storeLiveFileList)
       if (this.state.qualificationFileList.length > 0) {
         this.props.form.setFieldsValue({
           enterpriseQualification: this.state.qualificationFileList,
@@ -104,6 +103,28 @@ class BusinessEdit extends Component {
   handleBack = () => {
     router.push('/businessAdm/enter');
   };
+  editQualificationName = (type, value, editValue) => {
+    const {qualificationFileList} = this.state
+    if (type === 'save') {
+      qualificationFileList.map(item => {
+        if (item.uid === value.uid) {
+          item.name = editValue
+          value.edit = false
+        }
+        return item
+      });
+    } else {
+      qualificationFileList.map(item => {
+        if (item.uid === value.uid) {
+          value.edit = true
+        }
+        return item
+      });
+    }
+    this.setState({
+      qualificationFileList: qualificationFileList
+    })
+  }
   handleCancel = () => this.setState({ previewVisible: false });
 
   handleQualificationChange = ({ fileList }) => this.setState({ qualificationFileList: fileList });
@@ -148,7 +169,7 @@ class BusinessEdit extends Component {
     if (!isJpgOrPng) {
       message.error('请上传指定格式的图片');
     }
-    const isLt2M = file.size / 1024 < 100;
+    const isLt2M = file.size / 1024 < 300;
     if (!isLt2M) {
       message.error('请注意上传文件大小');
     }
@@ -227,7 +248,7 @@ class BusinessEdit extends Component {
                 })(<Input maxLength={18} placeholder="请输入统一社会信用代码" />)}
               </Form.Item>
               <Form.Item label="店铺所在地">
-                {getFieldDecorator('province', {
+                {getFieldDecorator('areaData', {
                   initialValue: [
                     currentRecord.provinceCode,
                     currentRecord.cityCode,
@@ -312,6 +333,7 @@ class BusinessEdit extends Component {
                 })(
                   <Fragment>
                     <Upload
+                      className={`${styles.qualificationUpload}`}
                       action={this.state.uploadUrl}
                       listType="picture-card"
                       fileList={qualificationFileList}
@@ -322,6 +344,23 @@ class BusinessEdit extends Component {
                     >
                       {qualificationFileList.length >= 10 ? null : uploadButton}
                     </Upload>
+                    <span className={`${styles.editContent}`}>
+                      {
+                        qualificationFileList.map(item => {
+                          return (
+                            <Fragment>
+                              <div className={`${styles.editName}`}>
+                                {!item.edit?
+                                  <span key={item.uid} onClick={(e) => this.editQualificationName('edit', item, '')}>{item.name}<Icon type="edit" /></span>:
+                                  <Search key={item.uid} enterButton="保存" defaultValue={item.name} size="small" onSearch={value => this.editQualificationName('save', item, value) } />
+                                // <Input key={item.uid} maxLength={20} addonAfter={<Button size="small" type="primary" onClick={(e) => this.editQualificationName(e,defaultName)} icon="save" />} defaultValue={defaultName} />}
+                                }
+                              </div>
+                            </Fragment>
+                          )
+                        })
+                      }
+                    </span>
                     <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                       <img alt="example" style={{ width: '100%' }} src={previewImage} />
                     </Modal>
