@@ -28,3 +28,9 @@ export async function switchStatus(params) {
     data: params,
   });
 }
+
+export async function queryChannel() {
+  return request('/admin/v1/tenant/channel', {
+    method: 'get'
+  });
+}
