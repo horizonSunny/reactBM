@@ -111,14 +111,14 @@ class EditForm extends React.Component {
           })(<CommodityImg onRef={this.onRef} />)}
         </Form.Item>
         <Form.Item label="通用名">
-          {getFieldDecorator('productName', {
+          {getFieldDecorator('productCommonName', {
             rules: [
               {
                 required: true,
                 message: '请填写你的商品名称',
               },
             ],
-            initialValue: formInit['productName'],
+            initialValue: formInit['productCommonName'],
           })(<Input />)}
         </Form.Item>
         <Form.Item label="商品类别">

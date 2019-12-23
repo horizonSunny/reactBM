@@ -1,6 +1,6 @@
 export default {
   productImage: '商品图',
-  productName: '通用名',
+  productCommonName: '通用名',
   productType: '商品类别',
   isMp: '是否处方药',
   productBrand: '商品品牌',

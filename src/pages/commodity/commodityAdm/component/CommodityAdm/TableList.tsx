@@ -22,8 +22,8 @@ export default class TableList extends React.Component {
       },
       {
         title: '商品名',
-        dataIndex: 'productName',
-        key: 'productName',
+        dataIndex: 'productCommonName',
+        key: 'productCommonName',
       },
       {
         title: '批准文号',

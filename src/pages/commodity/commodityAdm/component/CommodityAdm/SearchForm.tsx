@@ -38,7 +38,7 @@ class AdvancedSearchForm extends React.Component {
         endTime: values['range-picker'][1],
         isShelf: values['sellStatus'] == 3 ? undefined : values['sellStatus'],
         productType: values['status'],
-        productName: values['keyword'],
+        productCommonName: values['keyword'],
         approvalNumber: values['approvalNumber'],
       };
       const searchInfo = filterProperty(searchParams);
@@ -77,7 +77,7 @@ class AdvancedSearchForm extends React.Component {
         productExpire: '',
         productImage: [],
         productModel: '',
-        productName: '',
+        productCommonName: '',
         productSpec: '',
         productSpecif: '',
         productType: '',
