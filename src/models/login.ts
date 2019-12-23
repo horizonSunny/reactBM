@@ -52,7 +52,8 @@ const Model: LoginModelType = {
         if (redirect) {
           const redirectUrlParams = new URL(redirect);
           if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
+            const urlInfo = urlParams.origin + '/jiyi';
+            redirect = redirect.substr(urlInfo.length);
             if (redirect.match(/^\/.*#/)) {
               redirect = redirect.substr(redirect.indexOf('#') + 1);
             }
