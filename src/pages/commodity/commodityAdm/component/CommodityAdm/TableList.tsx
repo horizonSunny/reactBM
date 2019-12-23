@@ -101,9 +101,9 @@ export default class TableList extends React.Component {
       }
     }
 
-    this.setState({
-      data: dataInfo,
-    });
+    // this.setState({
+    //   data: dataInfo,
+    // });
     console.log('this.state.data_two_', this.state.data);
   };
   // 请求数据跳转详情页面
@@ -132,7 +132,7 @@ export default class TableList extends React.Component {
         {...this.state}
         className={styles['main']}
         columns={state.columns}
-        dataSource={state.data}
+        dataSource={this.props.commodity.productList.pageList}
         onChange={this.onChange}
       />
     );
