@@ -122,9 +122,9 @@ export default {
     },
   },
   manifest: {
-    // basePath: '/',
+    basePath: '/',
   },
-  base: '/jiyi',
+  // base: '/jiyi',
   outputPath: './dist/jiyi',
   publicPath: '/jiyi/',
   // chainWebpack: webpackPlugin,
