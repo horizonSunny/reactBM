@@ -2,6 +2,7 @@ import { Upload, Icon, Modal } from 'antd';
 import React from 'react';
 import styles from './CommodityImg.less';
 import { connect } from 'dva';
+import { serverUrl } from '@/utils/request';
 
 function getBase64(file) {
   return new Promise((resolve, reject) => {
@@ -87,7 +88,7 @@ class PicturesWall extends React.Component {
     const _this = this;
     const props = {
       name: 'file',
-      action: 'http://47.103.158.133/admin/v1/uploadFile',
+      action: serverUrl + '/admin/v1/uploadFile',
       headers: {
         authorization: sessionStorage.getItem('token'),
       },
