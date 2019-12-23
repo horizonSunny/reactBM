@@ -95,7 +95,6 @@ export default class TableList extends React.Component {
     // checked = false;
     console.log('this.state.data_', this.state.data);
     const dataInfo = this.state.data;
-    // dataInfo[0]['isShelf'] = 0;
     for (let item = 0; item < dataInfo.length; item++) {
       if (dataInfo[item]['productId'] === record['productId']) {
         dataInfo[item]['isShelf'] = record['isShelf'] === 0 ? 1 : 0;
