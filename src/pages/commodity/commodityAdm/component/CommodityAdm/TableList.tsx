@@ -53,9 +53,12 @@ export default class TableList extends React.Component {
       },
       {
         title: '售卖状态',
-        key: 'status',
-        render: (status, record) => (
-          <Switch defaultChecked={record.status} onChange={this.onChange} />
+        key: 'isShelf',
+        render: record => (
+          <Switch
+            checked={record.isShelf === 0 ? false : true}
+            onChange={this.onSwitchChange.bind(this, record)}
+          />
         ),
       },
       {
@@ -85,6 +88,24 @@ export default class TableList extends React.Component {
         this.state.searchInfo,
       ),
     });
+    return false;
+  };
+  // 切换按钮
+  onSwitchChange = record => {
+    // checked = false;
+    console.log('this.state.data_', this.state.data);
+    const dataInfo = this.state.data;
+    // dataInfo[0]['isShelf'] = 0;
+    for (let item = 0; item < dataInfo.length; item++) {
+      if (dataInfo[item]['productId'] === record['productId']) {
+        dataInfo[item]['isShelf'] = record['isShelf'] === 0 ? 1 : 0;
+      }
+    }
+
+    this.setState({
+      data: dataInfo,
+    });
+    console.log('this.state.data_two_', this.state.data);
   };
   // 请求数据跳转详情页面
   goToNextPage = (params, operate) => {
@@ -112,7 +133,7 @@ export default class TableList extends React.Component {
         {...this.state}
         className={styles['main']}
         columns={state.columns}
-        dataSource={this.props.commodity.productList.pageList}
+        dataSource={state.data}
         onChange={this.onChange}
       />
     );

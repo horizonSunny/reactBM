@@ -82,7 +82,6 @@ class EditForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const formInit = this.state.formInit;
-    debugger;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
