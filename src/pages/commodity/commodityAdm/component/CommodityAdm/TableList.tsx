@@ -1,4 +1,4 @@
-import { Table, Divider, Tag, Switch } from 'antd';
+import { Table, Divider, Tag, Switch, Modal } from 'antd';
 import React from 'react';
 import Link from 'umi/link';
 import router from 'umi/router';
@@ -73,6 +73,8 @@ export default class TableList extends React.Component {
         ),
       },
     ],
+    visible: false,
+    switchRecord: {},
   };
   onChange = e => {
     const { dispatch } = this.props;
@@ -92,19 +94,14 @@ export default class TableList extends React.Component {
   };
   // 切换按钮
   onSwitchChange = record => {
-    // checked = false;
-    console.log('this.state.data_', this.state.data);
-    const dataInfo = this.state.data;
-    for (let item = 0; item < dataInfo.length; item++) {
-      if (dataInfo[item]['productId'] === record['productId']) {
-        dataInfo[item]['isShelf'] = record['isShelf'] === 0 ? 1 : 0;
-      }
-    }
-
-    // this.setState({
-    //   data: dataInfo,
-    // });
-    console.log('this.state.data_two_', this.state.data);
+    this.setState(
+      {
+        switchRecord: record,
+      },
+      () => {
+        this.showModal();
+      },
+    );
   };
   // 请求数据跳转详情页面
   goToNextPage = (params, operate) => {
@@ -125,16 +122,59 @@ export default class TableList extends React.Component {
       });
     });
   };
+  // 弹窗
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  };
+
+  handleOk = e => {
+    const dataInfo = this.props.commodity.productList.pageList;
+    for (let item = 0; item < dataInfo.length; item++) {
+      if (dataInfo[item]['productId'] === this.state.switchRecord['productId']) {
+        dataInfo[item]['isShelf'] = this.state.switchRecord['isShelf'] === 0 ? 1 : 0;
+      }
+    }
+    const { dispatch } = this.props;
+    // 这边好像dispatch什么都可以;
+    dispatch({
+      type: 'commodity/resetList',
+      payload: dataInfo,
+    });
+    this.setState({
+      visible: false,
+    });
+  };
+
+  handleCancel = e => {
+    console.log(e);
+    this.setState({
+      visible: false,
+    });
+  };
   render() {
     const { state } = this;
     return (
-      <Table
-        {...this.state}
-        className={styles['main']}
-        columns={state.columns}
-        dataSource={this.props.commodity.productList.pageList}
-        onChange={this.onChange}
-      />
+      <div>
+        <Table
+          {...this.state}
+          className={styles['main']}
+          columns={state.columns}
+          dataSource={this.props.commodity.productList.pageList}
+          onChange={this.onChange}
+        />
+        <Modal
+          title="Basic Modal"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
+      </div>
     );
   }
 }

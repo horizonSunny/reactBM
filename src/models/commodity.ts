@@ -74,6 +74,7 @@ const CommodityModel = {
         element.key = index;
       });
       state.productList = action.payload;
+      debugger;
       console.log('list.action_', action.payload);
       return {
         ...state,
@@ -110,6 +111,14 @@ const CommodityModel = {
     allProductType(state, action) {
       state.allProductType = action.payload;
       console.log('state.allProductType_', action.payload);
+      return {
+        ...state,
+        ...action.payload,
+      };
+    },
+    //重置commidityList列表
+    resetList(state, action) {
+      state.productList.pageList = action.payload;
       return {
         ...state,
         ...action.payload,
