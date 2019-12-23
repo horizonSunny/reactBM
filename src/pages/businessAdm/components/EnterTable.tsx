@@ -49,10 +49,10 @@ class EnterTable extends Component {
       key: 'status',
       render: (text, record) => (
         <span>
-          {text ? '禁用' : '启用'}{' '}
+          {text ? '启用' : '禁用'}{' '}
           <Switch
-            checked={text ? false : true}
-            defaultChecked={text ? false : true}
+            checked={text ? true : false}
+            defaultChecked={text ? true : false}
             onChange={() => this.handleSwitchChange(text, record)}
           />
         </span>
