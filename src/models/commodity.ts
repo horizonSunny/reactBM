@@ -1,7 +1,14 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
 
-import { productList, product, editorProduct, newProduct, productype } from '@/services/commodity';
+import {
+  productList,
+  product,
+  editorProduct,
+  newProduct,
+  productype,
+  shelve,
+} from '@/services/commodity';
 
 const CommodityModel = {
   namespace: 'commodity',
@@ -64,6 +71,20 @@ const CommodityModel = {
         type: 'allProductType',
         payload: response.data,
       });
+    },
+    // 上下架产品
+    *shelveProduct({ payload }, { call, put }) {
+      console.log('in_shelveProduct');
+      const response = yield call(shelve, payload);
+      if (response.code === 1) {
+        //接口调用成功
+        // do something...
+        return true; //  通过return给dispatch返回回调结果！
+      } else {
+        //接口调用失败
+        // do something...
+        return false;
+      }
     },
   },
 

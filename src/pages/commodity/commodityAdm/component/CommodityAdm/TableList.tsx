@@ -130,18 +130,33 @@ export default class TableList extends React.Component {
   };
 
   handleOk = e => {
+    const { dispatch } = this.props;
     const dataInfo = this.props.commodity.productList.pageList;
     for (let item = 0; item < dataInfo.length; item++) {
       if (dataInfo[item]['productId'] === this.state.switchRecord['productId']) {
-        dataInfo[item]['isShelf'] = this.state.switchRecord['isShelf'] === 0 ? 1 : 0;
+        // dataInfo[item]['isShelf'] = this.state.switchRecord['isShelf'] === 0 ? 1 : 0;
+        const info = this.state.switchRecord['isShelf'] === 0 ? 1 : 0;
+        debugger;
+        dispatch({
+          type: 'commodity/shelveProduct',
+          payload: {
+            productId: this.state.switchRecord['productId'],
+            status: info,
+          },
+        }).then(res => {
+          console.log('res_', res);
+          if (res) {
+            // 这边好像dispatch什么都可以;
+            dataInfo[item]['isShelf'] = this.state.switchRecord['isShelf'] === 0 ? 1 : 0;
+            dispatch({
+              type: 'commodity/resetList',
+              payload: dataInfo,
+            });
+          } else {
+          }
+        });
       }
     }
-    const { dispatch } = this.props;
-    // 这边好像dispatch什么都可以;
-    dispatch({
-      type: 'commodity/resetList',
-      payload: dataInfo,
-    });
     this.setState({
       visible: false,
     });
@@ -165,14 +180,12 @@ export default class TableList extends React.Component {
           onChange={this.onChange}
         />
         <Modal
-          title="Basic Modal"
+          title="产品上下架"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
+          <h3>确定{this.state.switchRecord['isShelf'] === 0 ? '上架' : '下架'}该产品</h3>
         </Modal>
       </div>
     );

@@ -29,3 +29,11 @@ export async function newProduct(params: any) {
 export async function productype(params: Object) {
   return request('/admin/v1/category/productype');
 }
+
+//上下架产品
+export async function shelve(params: any) {
+  return request('/admin/v1/product/shelve', {
+    method: 'PUT',
+    data: params,
+  });
+}
