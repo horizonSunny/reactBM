@@ -1,6 +1,6 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
-import { queryBusiness, insertBusiness, saveBusiness, switchStatus } from '@/services/businessAdm';
+import { queryBusiness, insertBusiness, saveBusiness, switchStatus, queryChannel} from '@/services/businessAdm';
 const businessAdm = {
   namespace: 'businessAdm',
 
@@ -26,6 +26,7 @@ const businessAdm = {
       },
     },
     currentRecord: {},
+    channel: []
   },
 
   effects: {
@@ -116,6 +117,16 @@ const businessAdm = {
       }
       return response;
     },
+    *initChannel(_, { call, put }){
+      const response = yield call(queryChannel);
+      if (response && response.code === 1) {
+        yield put({
+          type: 'saveChannel',
+          payload: response.data,
+        });
+      }
+      return response;
+    }
   },
 
   reducers: {
@@ -171,6 +182,12 @@ const businessAdm = {
       return {
         ...state,
         businessData: tempbusinessData,
+      };
+    },
+    saveChannel(state, action) {
+      return {
+        ...state,
+        channel: action.payload,
       };
     },
   },

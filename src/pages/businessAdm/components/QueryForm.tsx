@@ -22,9 +22,16 @@ class QueryForm extends Component {
       },
     };
   }
-  // componentDidMount () {
-  //   this.handleQuery()
-  // }
+  componentDidMount () {
+    this.initChannel()
+  }
+  initChannel = () => {
+    console.log('???')
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'businessAdm/initChannel'
+    })
+  }
   handleSearch = e => {
     e.preventDefault();
     const { dispatch } = this.props;
@@ -99,7 +106,7 @@ class QueryForm extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { queryForm } = this.props.businessAdm;
+    const { queryForm, channel } = this.props.businessAdm;
 
     const formItemLayout = {
       labelCol: {
@@ -131,8 +138,8 @@ class QueryForm extends Component {
               })(
                 <Select>
                   <Option value="">全部</Option>
-                  <Option value="0">启售</Option>
-                  <Option value="1">禁售</Option>
+                  <Option value="1">启用</Option>
+                  <Option value="0">禁用</Option>
                 </Select>,
               )}
             </Form.Item>
@@ -143,9 +150,14 @@ class QueryForm extends Component {
                 initialValue: queryForm.channel,
               })(
                 <Select>
-                  <Option value="1">全部</Option>
-                  <Option value="2">张三</Option>
-                  <Option value="3">李四</Option>
+                  <Option value="">全部</Option>
+                  {
+                    channel.map(item => {
+                      return (
+                        <Option value={item}>{ item }</Option>
+                      )
+                    })
+                  }
                 </Select>,
               )}
             </Form.Item>
