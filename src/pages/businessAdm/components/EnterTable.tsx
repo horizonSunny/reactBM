@@ -37,6 +37,11 @@ class EnterTable extends Component {
       title: '地区',
       dataIndex: 'address',
       key: 'address',
+      render: (text, record) => (
+        <span>
+          {record.province}{record.city}
+        </span>
+      ),
     },
     {
       title: '渠道',
@@ -49,7 +54,7 @@ class EnterTable extends Component {
       key: 'status',
       render: (text, record) => (
         <span>
-          {text ? '启用' : '禁用'}{' '}
+          {text ? '启售' : '禁售'}{' '}
           <Switch
             checked={text ? true : false}
             defaultChecked={text ? true : false}
@@ -83,7 +88,7 @@ class EnterTable extends Component {
     console.log('switch切换:', text, record);
     const { dispatch } = this.props;
     confirm({
-      content: `是否${text ? '启用' : '禁用'}当前商户?`,
+      content: `是否${text ? '启售' : '禁售'}当前商户?`,
       okText: '确定',
       cancelText: '取消',
       onOk() {

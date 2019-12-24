@@ -38,6 +38,7 @@ class QueryForm extends Component {
     this.props.form.validateFields((err, values) => {
       let startTime = '';
       let endTime = '';
+      console.log('values.time:', values.time)
       if (values.time && values.time.length > 0) {
         startTime = new Date(values.time[0]).getTime();
         endTime = new Date(values.time[1]).getTime();
@@ -128,7 +129,11 @@ class QueryForm extends Component {
             <Form.Item {...formItemLayout} label="入住时间">
               {getFieldDecorator('time', {
                 // initialValue: [queryForm.startTime,queryForm.endTime]
-              })(<RangePicker style={{ width: '100%' }} />)}
+              })(<RangePicker 
+                showTime={{ format: 'HH:mm' }}
+                format="YYYY-MM-DD HH:mm"
+                style={{ width: '100%' }} />
+              )}
             </Form.Item>
           </Col>
           <Col span={8}>
@@ -138,8 +143,8 @@ class QueryForm extends Component {
               })(
                 <Select>
                   <Option value="">全部</Option>
-                  <Option value="1">启用</Option>
-                  <Option value="0">禁用</Option>
+                  <Option value="1">启售</Option>
+                  <Option value="0">禁售</Option>
                 </Select>,
               )}
             </Form.Item>
