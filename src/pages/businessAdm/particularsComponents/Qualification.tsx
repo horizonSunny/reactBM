@@ -11,7 +11,7 @@ class Qualification extends Component {
       <div className={`${styles.infopart}`}>
         <div className={`${styles.title}`}>企业资质</div>
         <div className={`${styles.picList}`}>
-          {currentRecord.enterpriseQualification.length > 0
+          {currentRecord.enterpriseQualification && currentRecord.enterpriseQualification.length > 0
             ? currentRecord.enterpriseQualification.map((item, index) => {
                 return (
                   <div className={`${styles.picItem}`} key={index}>

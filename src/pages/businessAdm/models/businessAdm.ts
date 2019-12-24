@@ -1,6 +1,6 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
-import { queryBusiness, insertBusiness, saveBusiness, switchStatus, queryChannel} from '@/services/businessAdm';
+import { queryBusiness, insertBusiness, saveBusiness, switchStatus, queryChannel, queryOperation } from '@/services/businessAdm';
 const businessAdm = {
   namespace: 'businessAdm',
 
@@ -26,7 +26,13 @@ const businessAdm = {
       },
     },
     currentRecord: {},
-    channel: []
+    channel: [],
+    operaRecord: [],
+    recordPagenation: {
+      pageNumber: 0,
+      pageSize: 10,
+      totalElements: 0
+    }
   },
 
   effects: {
@@ -126,6 +132,27 @@ const businessAdm = {
         });
       }
       return response;
+    },
+    *getOperationRecord({ payload }, { call, put }){
+      yield put({
+        type: 'operaRecord',
+        payload: [],
+      });
+      const response = yield call(queryOperation, payload);
+      if (response && response.code === 1) {
+        yield put({
+          type: 'operaRecord',
+          payload: response.data.pageList,
+        });
+        yield put({
+          type: 'recordPagenation',
+          payload: {
+            pageNumber: response.data.pageNumber,
+            pageSize: response.data.pageSize,
+            totalElements: response.data.totalElements
+          },
+        });
+      }
     }
   },
 
@@ -188,6 +215,18 @@ const businessAdm = {
       return {
         ...state,
         channel: action.payload,
+      };
+    },
+    operaRecord(state, action) {
+      return {
+        ...state,
+        operaRecord: action.payload,
+      };
+    },
+    recordPagenation(state, action) {
+      return {
+        ...state,
+        recordPagenation: action.payload,
       };
     },
   },

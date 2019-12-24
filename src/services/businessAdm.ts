@@ -34,3 +34,10 @@ export async function queryChannel() {
     method: 'get'
   });
 }
+
+export async function queryOperation(params) {
+  return request('/admin/v1/log', {
+    method: 'get',
+    params: params
+  });
+}

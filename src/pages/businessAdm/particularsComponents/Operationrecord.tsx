@@ -1,45 +1,52 @@
 import React, { Component } from 'react';
 import styles from './index.less';
-const operationlist = [
-  {
-    id: 1,
-    name: '修改时间',
-    operater: '操作人',
-    time: '2019-12-04 12:30:40',
-  },
-  {
-    id: 2,
-    name: '起售时间',
-    operater: '操作人',
-    time: '2019-12-04 12:30:40',
-  },
-  {
-    id: 3,
-    name: '创建时间',
-    operater: '操作人',
-    time: '2019-12-04 12:30:40',
-  },
-];
+import { connect } from 'dva';
+import { Pagination } from 'antd';
+
+@connect(({ businessAdm }) => ({
+  businessAdm: businessAdm,
+}))
 class Operationrecord extends Component {
+  onChange = (page) => {
+    const { dispatch } = this.props;
+    const { recordPagenation, currentRecord } = this.props.businessAdm;
+    dispatch({
+      type: 'businessAdm/getOperationRecord',
+      payload: {
+        ...recordPagenation,
+        'pageNumber': page,
+        'tenantId': currentRecord.tenantId
+      }
+    });
+  }
   render() {
+    const { operaRecord, recordPagenation } = this.props.businessAdm;
     return (
       <div className={`${styles.infopart}`}>
         <div className={`${styles.title}`}>操作记录</div>
         <div className={`${styles.table}`}>
           <table>
             <tbody>
-              {operationlist.map(item => (
+              {operaRecord && operaRecord.map(item => (
                 <tr  key={item.id}>
-                  <td className={`${styles.tableleft}`}>{item.name}</td>
+                  <td className={`${styles.tableleft}`}>{item.operation}</td>
                   <td>
-                    <span>{item.time}</span>
-                    <span className={`${styles.operater}`}>{item.operater}</span>
+                    <span>{item.optTime}</span>
+                    <span className={`${styles.operater}`}>操作人: {item.operator}</span>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
+        {
+          recordPagenation.totalElements>((recordPagenation.pageNumber+1)*recordPagenation.pageSize)?
+          (
+            <div className={`${styles.page}`}>
+              <Pagination current={ recordPagenation.pageNumber } onChange={this.onChange} total={recordPagenation.totalElements} />
+            </div>
+          ):null
+        }
       </div>
     );
   }

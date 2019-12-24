@@ -157,9 +157,9 @@ class QueryForm extends Component {
                 <Select>
                   <Option value="">全部</Option>
                   {
-                    channel.map(item => {
+                    channel.map((item, index) => {
                       return (
-                        <Option value={item}>{ item }</Option>
+                        <Option value={item} key={index}>{ item }</Option>
                       )
                     })
                   }

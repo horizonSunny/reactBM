@@ -11,7 +11,7 @@ class Shopscene extends Component {
       <div className={`${styles.infopart}`}>
         <div className={`${styles.title}`}>店铺实景</div>
         <div className={`${styles.picList}`}>
-          {currentRecord.storeLive.map((item,index) => {
+          {currentRecord.storeLive && currentRecord.storeLive.map((item,index) => {
             return (
               <div className={`${styles.picItem}`} key={index}>
                 <img src={item} alt="" />
