@@ -4,7 +4,7 @@ import { Effect } from 'dva';
 import { stringify } from 'querystring';
 import { notification } from 'antd';
 
-import { fakeAccountLogin, getFakeCaptcha } from '@/services/login';
+import { fakeAccountLogin, getFakeCaptcha, userLogout } from '@/services/login';
 import { setAuthority } from '@/utils/authority';
 import { getPageQuery } from '@/utils/utils';
 
@@ -74,9 +74,14 @@ const Model: LoginModelType = {
     *getCaptcha({ payload }, { call }) {
       yield call(getFakeCaptcha, payload);
     },
-    *logout(_, { put }) {
+    *logout(_, { call, put }) {
       const { redirect } = getPageQuery();
       // redirect
+      const response = yield call(userLogout);
+      yield put({
+        type: 'changeLoginStatus',
+        payload: response,
+      });
       if (window.location.pathname !== '/user/login' && !redirect) {
         yield put(
           routerRedux.replace({

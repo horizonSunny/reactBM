@@ -6,6 +6,7 @@ import { extend } from 'umi-request';
 import { notification } from 'antd';
 import { routerRedux } from 'dva/router';
 const initLoginToken = 'Basic c3lzdGVtOnN5c3RlbQ==';
+const initLogoutToken = 'bearer eyJhbGciOiJIUzI1NiIsI';
 const codeMessage = {
   200: '服务器成功返回请求的数据。',
   201: '新建或修改数据成功。',
@@ -62,6 +63,10 @@ request.interceptors.request.use((url, options) => {
   if (!sessionStorage.getItem('token') || url.indexOf('auth/oauth/token') > 0) {
     headers = {
       Authorization: initLoginToken,
+    };
+  } else if (url.indexOf('auth/oauth/logout') > 0) {
+    headers = {
+      Authorization: initLogoutToken,
     };
   } else {
     headers = {
