@@ -7,3 +7,19 @@ export default function filterProperty(obj) {
   }
   return newObj;
 }
+
+// 商品类别过滤器
+let result: any;
+export function filterStatus(status, obj) {
+  debugger;
+  obj.forEach(data => {
+    if (data.value === status) {
+      result = data.title;
+      debugger;
+    } else {
+      data.children && data.children.length !== 0 && filterStatus(status, data.children);
+    }
+    // data.children && data.children.length !== 0 && filterStatus(status, [], data.children);
+  });
+  return result;
+}
