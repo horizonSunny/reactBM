@@ -95,8 +95,6 @@ const CommodityModel = {
         element.key = index;
       });
       state.productList = action.payload;
-      debugger;
-      console.log('list.action_', action.payload);
       return {
         ...state,
         ...action.payload,

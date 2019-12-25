@@ -29,8 +29,8 @@ class AdvancedSearchForm extends React.Component {
       const values = {
         ...fieldsValue,
         'range-picker': [
-          rangeValue ? Date.parse(rangeValue[0].format('YYYY-MM-DD')) : undefined,
-          rangeValue ? Date.parse(rangeValue[1].format('YYYY-MM-DD')) : undefined,
+          rangeValue ? Date.parse(rangeValue[0].format('YYYY-MM-DD HH:mm')) : undefined,
+          rangeValue ? Date.parse(rangeValue[1].format('YYYY-MM-DD HH:mm')) : undefined,
         ],
       };
       const searchParams = {
@@ -97,7 +97,10 @@ class AdvancedSearchForm extends React.Component {
         <Row gutter={24}>
           <Col span={10} style={{}}>
             <Form.Item label="创建时间">
-              {getFieldDecorator('range-picker', rangeConfig)(<RangePicker />)}
+              {getFieldDecorator(
+                'range-picker',
+                rangeConfig,
+              )(<RangePicker showTime={{ format: 'HH:mm' }} format="YYYY-MM-DD HH:mm" />)}
             </Form.Item>
           </Col>
           <Col span={6} style={{}}>

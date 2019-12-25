@@ -4,6 +4,7 @@ import Link from 'umi/link';
 import router from 'umi/router';
 import styles from './TableList.less';
 import { connect } from 'dva';
+import { filterStatus } from '@/utils/filterProperty';
 
 const pagination = { position: 'bottom', pageSize: 10 };
 
@@ -33,7 +34,10 @@ export default class TableList extends React.Component {
       {
         title: '类别',
         key: 'productType',
-        dataIndex: 'productType',
+        render: record =>
+          record['productType'].map(item => {
+            return <div>{filterStatus(item, this.props.commodity.allProductType)}</div>;
+          }),
       },
       {
         title: '包装规格',
@@ -94,6 +98,49 @@ export default class TableList extends React.Component {
   };
   // 切换按钮
   onSwitchChange = record => {
+    // const obj = [
+    //   {
+    //     id: 1,
+    //     parentId: 0,
+    //     title: '专科用药',
+    //     value: '1',
+    //     key: '1',
+    //     selectable: false,
+    //     children: [
+    //       {
+    //         id: 2,
+    //         parentId: 1,
+    //         title: '肝胆科',
+    //         value: '1-2',
+    //         key: '1-2',
+    //         selectable: false,
+    //         children: [
+    //           {
+    //             id: 3,
+    //             parentId: 2,
+    //             title: '乙肝',
+    //             value: '1-2-3',
+    //             key: '1-2-3',
+    //             selectable: true,
+    //             children: [],
+    //           },
+    //           {
+    //             id: 5,
+    //             parentId: 2,
+    //             title: '甲肝',
+    //             value: '1-2-5',
+    //             key: '1-2-5',
+    //             selectable: true,
+    //             children: [],
+    //           },
+    //         ],
+    //       },
+    //     ],
+    //   },
+    // ];
+    // let test = filterStatus('1-2-5', obj);
+    // console.log('test_', test);
+    // debugger;
     this.setState(
       {
         switchRecord: record,
@@ -136,7 +183,6 @@ export default class TableList extends React.Component {
       if (dataInfo[item]['productId'] === this.state.switchRecord['productId']) {
         // dataInfo[item]['isShelf'] = this.state.switchRecord['isShelf'] === 0 ? 1 : 0;
         const info = this.state.switchRecord['isShelf'] === 0 ? 1 : 0;
-        debugger;
         dispatch({
           type: 'commodity/shelveProduct',
           payload: {

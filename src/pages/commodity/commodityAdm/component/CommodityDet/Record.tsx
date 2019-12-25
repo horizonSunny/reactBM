@@ -2,7 +2,7 @@
 
 import { Table, Carousel } from 'antd';
 import React from 'react';
-import styles from './Table.less';
+import styles from './Record.less';
 import filterData from './filter';
 import { connect } from 'dva';
 
