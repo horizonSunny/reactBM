@@ -21,7 +21,7 @@ const columns = [
               {record.value.map((item, index) => {
                 return (
                   <div>
-                    <img src={item} alt="2311" style={{ height: '100%', width: '100%' }} />
+                    <img src={item} alt="暂无图片" style={{ height: '100%', width: '100%' }} />
                   </div>
                 );
               })}
