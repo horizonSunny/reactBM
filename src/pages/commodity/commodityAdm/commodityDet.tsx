@@ -23,6 +23,7 @@ export default class CommodityDet extends React.Component {
         <Title level={4}>商品名称(SKU编号:{commodity})</Title>
         <TableList></TableList>
         <RecordList></RecordList>
+        <div className={`${styles.operationIn}`}></div>
         <div className={`${styles.operation}`}>
           <Button type="primary" onClick={this.handleEdit}>
             编辑
