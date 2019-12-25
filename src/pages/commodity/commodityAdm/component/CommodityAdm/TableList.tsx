@@ -136,7 +136,6 @@ export default class TableList extends React.Component {
       if (dataInfo[item]['productId'] === this.state.switchRecord['productId']) {
         // dataInfo[item]['isShelf'] = this.state.switchRecord['isShelf'] === 0 ? 1 : 0;
         const info = this.state.switchRecord['isShelf'] === 0 ? 1 : 0;
-        debugger;
         dispatch({
           type: 'commodity/shelveProduct',
           payload: {
