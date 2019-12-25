@@ -10,11 +10,14 @@ import router from 'umi/router';
 const { Title } = Typography;
 @connect(({ commodity }) => ({ commodity }))
 export default class CommodityDet extends React.Component {
-  handleEdit() {
-    router.push('/businessAdm/enter');
-  }
+  handleEdit = params => {
+    router.push({
+      pathname: '/commodityAdm/management/edit',
+      query: { id: params.productId },
+    });
+  };
   handleBack() {
-    router.push('/businessAdm/enter');
+    router.goBack();
   }
   render() {
     const commodity = this.props.commodity.product.productSku;
@@ -25,7 +28,7 @@ export default class CommodityDet extends React.Component {
         <RecordList></RecordList>
         <div className={`${styles.operationIn}`}></div>
         <div className={`${styles.operation}`}>
-          <Button type="primary" onClick={this.handleEdit}>
+          <Button type="primary" onClick={this.handleEdit.bind(this, this.props.commodity.product)}>
             编辑
           </Button>
           <Button icon="left" className={`${styles.back}`} onClick={this.handleBack}>
