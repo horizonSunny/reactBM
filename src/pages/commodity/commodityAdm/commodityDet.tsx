@@ -10,9 +10,10 @@ const { Title } = Typography;
 @connect(({ commodity }) => ({ commodity }))
 export default class CommodityDet extends React.Component {
   render() {
+    const commodity = this.props.commodity.product.productSku;
     return (
       <PageHeaderWrapper className={styles['main']}>
-        <Title level={4}>商品名称(SKU编号)</Title>
+        <Title level={4}>商品名称(SKU编号:{commodity})</Title>
         <TableList></TableList>
         <RecordList></RecordList>
       </PageHeaderWrapper>
