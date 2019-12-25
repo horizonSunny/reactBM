@@ -5,7 +5,14 @@ import React from 'react';
 import styles from './Table.less';
 import filterData from './filter';
 import { connect } from 'dva';
-
+import LabelInfo from '../../../../../components/Label/label';
+const isMapClass = {
+  width: '40px',
+  borderRadius: '15px',
+  height: '20px',
+  lineHeight: '20px',
+  fontSize: '10px',
+};
 const columns = [
   {
     dataIndex: 'name',
@@ -28,6 +35,53 @@ const columns = [
             </Carousel>
           </Carousel>
         );
+      } else if (record.name === '是否处方药') {
+        let styleInfo, textInfo;
+        switch (text) {
+          case 0:
+            textInfo = 'otc';
+            styleInfo = Object.assign(
+              {
+                border: '1px solid green',
+                color: 'green',
+              },
+              isMapClass,
+            );
+            break;
+          case 1:
+            textInfo = 'otc';
+            styleInfo = Object.assign(
+              {
+                border: '1px solid red',
+                color: 'red',
+              },
+              isMapClass,
+            );
+            break;
+          case 2:
+            textInfo = 'Rx';
+            styleInfo = Object.assign(
+              {
+                border: '1px solid red',
+                color: 'red',
+              },
+              isMapClass,
+            );
+            break;
+          case 2:
+            textInfo = '其他';
+            styleInfo = Object.assign(
+              {
+                border: '1px solid rgb(136,136,136)',
+                color: 'rgb(136,136,136)',
+              },
+              isMapClass,
+            );
+            break;
+          default:
+            break;
+        }
+        return <LabelInfo text={textInfo} classInfo={styleInfo}></LabelInfo>;
       } else {
         return text;
       }
