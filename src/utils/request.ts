@@ -50,23 +50,19 @@ const errorHandler = (error: { response: Response }): Response => {
  * 配置request请求时的默认参数
  */
 const request = extend({
-  prefix: 'http://47.103.158.133',
-  // prefix: 'http://192.168.10.234:9000',
+  // prefix: 'http://47.103.158.133',
+  prefix: 'http://192.168.10.234:9000',
   errorHandler, // 默认错误处理
   // credentials: 'include', // 默认请求是否带上cookie
 });
-export const serverUrl = 'http://47.103.158.133';
-// export const serverUrl = 'http://192.168.10.234:9000';
+// export const serverUrl = 'http://47.103.158.133';
+export const serverUrl = 'http://192.168.10.234:9000';
 
 request.interceptors.request.use((url, options) => {
   let headers = {};
   if (!sessionStorage.getItem('token') || url.indexOf('auth/oauth/token') > 0) {
     headers = {
       Authorization: initLoginToken,
-    };
-  } else if (url.indexOf('auth/oauth/logout') > 0) {
-    headers = {
-      Authorization: initLogoutToken,
     };
   } else {
     headers = {
