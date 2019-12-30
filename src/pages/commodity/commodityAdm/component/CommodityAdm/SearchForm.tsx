@@ -90,7 +90,6 @@ class AdvancedSearchForm extends React.Component {
     const rangeConfig = {
       rules: [{ type: 'array', message: 'Please select time!' }],
     };
-    console.log('this.state.productType_', this.state.productType);
     const { productType } = this.state;
     return (
       <Form className={styles['ant-advanced-search-form']} onSubmit={this.handleSearch}>

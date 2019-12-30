@@ -13,7 +13,6 @@ export default class TableList extends React.Component {
   state = {
     data: this.props.commodity.productList.pageList,
     searchInfo: this.props.searchInfo,
-    pagination,
     columns: [
       {
         title: 'Sku',
@@ -81,9 +80,9 @@ export default class TableList extends React.Component {
     switchRecord: {},
   };
   onChange = e => {
+    console.log('触发', this.props.searchInfo);
     const { dispatch } = this.props;
     const currentPage = e.current - 1;
-    console.log('currentPage_', currentPage);
     dispatch({
       type: 'commodity/getList',
       payload: Object.assign(
@@ -91,56 +90,13 @@ export default class TableList extends React.Component {
           pageNumber: currentPage,
           pageSize: 10,
         },
-        this.state.searchInfo,
+        this.props.searchInfo,
       ),
     });
     return false;
   };
   // 切换按钮
   onSwitchChange = record => {
-    // const obj = [
-    //   {
-    //     id: 1,
-    //     parentId: 0,
-    //     title: '专科用药',
-    //     value: '1',
-    //     key: '1',
-    //     selectable: false,
-    //     children: [
-    //       {
-    //         id: 2,
-    //         parentId: 1,
-    //         title: '肝胆科',
-    //         value: '1-2',
-    //         key: '1-2',
-    //         selectable: false,
-    //         children: [
-    //           {
-    //             id: 3,
-    //             parentId: 2,
-    //             title: '乙肝',
-    //             value: '1-2-3',
-    //             key: '1-2-3',
-    //             selectable: true,
-    //             children: [],
-    //           },
-    //           {
-    //             id: 5,
-    //             parentId: 2,
-    //             title: '甲肝',
-    //             value: '1-2-5',
-    //             key: '1-2-5',
-    //             selectable: true,
-    //             children: [],
-    //           },
-    //         ],
-    //       },
-    //     ],
-    //   },
-    // ];
-    // let test = filterStatus('1-2-5', obj);
-    // console.log('test_', test);
-    // debugger;
     this.setState(
       {
         switchRecord: record,
@@ -224,6 +180,12 @@ export default class TableList extends React.Component {
           columns={state.columns}
           dataSource={this.props.commodity.productList.pageList}
           onChange={this.onChange}
+          pagination={{
+            current: this.props.commodity.productList.pageNumber + 1,
+            position: 'bottom',
+            pageSize: 10,
+            total: this.props.commodity.productList.totalElements,
+          }}
         />
         <Modal
           title="产品上下架"
