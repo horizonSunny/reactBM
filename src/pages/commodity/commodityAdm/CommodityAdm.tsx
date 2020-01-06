@@ -37,7 +37,6 @@ export default class CommodityAdm extends React.Component {
   };
   resetSearch(info) {
     console.log('info_', info);
-    debugger;
     this.setState({
       searchInfo: info,
     });

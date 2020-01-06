@@ -33,11 +33,11 @@ const route = [
                 name: '入驻企业',
                 component: './businessAdm/businessEnter',
               },
-              {
-                path: 'examine',
-                name: '入驻审核',
-                component: './commodity/commodityAdm/CommodityAdm.tsx',
-              },
+              // {
+              //   path: 'examine',
+              //   name: '入驻审核',
+              //   component: './commodity/commodityAdm/CommodityAdm.tsx',
+              // },
               {
                 path: '/businessAdm/enter/particulars',
                 name: '查看详情',
