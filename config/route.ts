@@ -63,6 +63,11 @@ const route = [
                 component: './commodity/commodityAdm/CommodityAdm.tsx',
               },
               {
+                path: '/commodityAdm/classification',
+                name: '商品分类',
+                component: './commodity/commodityClassify/commodityCas.tsx',
+              },
+              {
                 path: 'management/particulars',
                 name: '查看详情',
                 component: './commodity/commodityAdm/CommodityDet.tsx',
