@@ -22,7 +22,7 @@ class BodyRow extends React.Component {
     // 测试
     const item = restProps.children;
     const info = item[item.length - 1]['props']['record'];
-    console.log('restProps_', info);
+    // console.log('restProps_', info);
     if (isOver) {
       if (restProps.index > dragingIndex) {
         className = [' drop-over-downward'];
@@ -38,6 +38,9 @@ class BodyRow extends React.Component {
           {...restProps}
           className={(className, info.name === 'Joe Black1' ? 'testYellow' : '')}
           style={style}
+          onClick={() => {
+            console.log('onClick');
+          }}
         />,
       ),
     );
@@ -88,12 +91,15 @@ export default class DragSortingTable extends React.Component {
     dataOne: [
       {
         name: 'John Brown1',
+        classify: 1,
       },
       {
         name: 'Jim Green1',
+        classify: 1,
       },
       {
         name: 'Joe Black1',
+        classify: 1,
       },
     ],
     dataTwo: [
