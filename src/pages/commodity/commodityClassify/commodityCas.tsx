@@ -29,7 +29,7 @@ class BodyRow extends React.Component {
     }
 
     return connectDragSource(
-      connectDropTarget(<li {...restProps} className={className} style={style} />),
+      connectDropTarget(<tr {...restProps} className={className} style={style} />),
     );
   }
 }
@@ -142,8 +142,10 @@ export default class DragSortingTable extends React.Component {
     return (
       <DndProvider backend={HTML5Backend}>
         <Row className={styles['main']}>
-          <Col span={6}>
+          <Col span={5}>
+            <div className="titleChoose">213123</div>
             <Table
+              className="noHead"
               columns={columns}
               pagination={false}
               dataSource={this.state.dataOne}
@@ -154,8 +156,10 @@ export default class DragSortingTable extends React.Component {
               })}
             />
           </Col>
-          <Col span={6}>
+          <Col span={5}>
+            <div className="titleChoose">213123</div>
             <Table
+              className="noHead"
               columns={columns}
               pagination={false}
               dataSource={this.state.dataTwo}
@@ -166,7 +170,22 @@ export default class DragSortingTable extends React.Component {
               })}
             />
           </Col>
-          <Col span={6}>
+          <Col span={5}>
+            <div className="titleChoose">213123</div>
+            <Table
+              columns={columns}
+              pagination={false}
+              className="noHead"
+              dataSource={this.state.dataThree}
+              components={this.components}
+              onRow={(record, index) => ({
+                index,
+                moveRow: this.moveRow.bind(this, this.state.dataThree, 'dataThree'),
+              })}
+            />
+          </Col>
+          <Col span={9}>
+            <div className="titleChoose">213123</div>
             <Table
               columns={columns}
               pagination={false}
