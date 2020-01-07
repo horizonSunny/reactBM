@@ -1,12 +1,12 @@
 import React from 'react';
-import { Table, Row, Col } from 'antd';
+import { Table, Row, Col, Input } from 'antd';
 import { DndProvider, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import styles from './commodityCas.less';
 
 let dragingIndex = -1;
-
+const { Search } = Input;
 class BodyRow extends React.Component {
   render() {
     const { isOver, connectDragSource, connectDropTarget, moveRow, ...restProps } = this.props;
@@ -75,7 +75,11 @@ const DragableBodyRow = DropTarget('row', rowTarget, (connect, monitor) => ({
 
 const columns = [
   {
-    title: '新建一级分类',
+    title: `
+    <div>
+    123
+    </div>
+    `,
     dataIndex: 'name',
     key: 'name',
   },
@@ -116,6 +120,20 @@ export default class DragSortingTable extends React.Component {
         name: 'Joe Black3',
       },
     ],
+    dataFoure: [
+      {
+        name: 'John Brown3',
+        key: 1,
+      },
+      {
+        name: 'Jim Green3',
+        key: 2,
+      },
+      {
+        name: 'Joe Black3',
+        key: 3,
+      },
+    ],
   };
 
   components = {
@@ -137,8 +155,33 @@ export default class DragSortingTable extends React.Component {
     };
     this.setState(update(this.state, obj));
   };
+  rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
+    },
+    getCheckboxProps: record => ({
+      disabled: record.name === 'Disabled User', // Column configuration not to be checked
+      name: record.name,
+    }),
+  };
+  downSelect = () => {
+    return (
+      <Search
+        placeholder="input search text"
+        onSearch={value => console.log(value)}
+        style={{ width: 200 }}
+      />
+    );
+  };
 
   render() {
+    const columnss = [
+      {
+        title: this.downSelect(),
+        dataIndex: 'name',
+        key: 'name',
+      },
+    ];
     return (
       <DndProvider backend={HTML5Backend}>
         <Row className={styles['main']}>
@@ -187,14 +230,11 @@ export default class DragSortingTable extends React.Component {
           <Col span={9}>
             <div className="titleChoose">213123</div>
             <Table
-              columns={columns}
+              columns={columnss}
               pagination={false}
-              dataSource={this.state.dataThree}
+              dataSource={this.state.dataFoure}
               components={this.components}
-              onRow={(record, index) => ({
-                index,
-                moveRow: this.moveRow.bind(this, this.state.dataThree, 'dataThree'),
-              })}
+              rowSelection={this.rowSelection}
             />
           </Col>
         </Row>
