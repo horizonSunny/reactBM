@@ -1,9 +1,10 @@
 import React from 'react';
-import { Table, Row, Col, Input } from 'antd';
+import { Table, Row, Col, Input, Button } from 'antd';
 import { DndProvider, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 import styles from './commodityCas.less';
+import { template } from '_@types_babel__core@7.1.3@@types/babel__core';
 
 let dragingIndex = -1;
 const { Search } = Input;
@@ -166,11 +167,10 @@ export default class DragSortingTable extends React.Component {
   };
   downSelect = () => {
     return (
-      <Search
-        placeholder="input search text"
-        onSearch={value => console.log(value)}
-        style={{ width: 200 }}
-      />
+      <div className="buttonContain">
+        <Button type="danger">移除</Button>
+        <Button>分类至</Button>
+      </div>
     );
   };
 
@@ -228,7 +228,14 @@ export default class DragSortingTable extends React.Component {
             />
           </Col>
           <Col span={9}>
-            <div className="titleChoose">213123</div>
+            <div className="titleChoose">
+              123
+              <Search
+                placeholder="input search text"
+                onSearch={value => console.log(value)}
+                style={{ width: 200 }}
+              />
+            </div>
             <Table
               columns={columnss}
               pagination={false}
