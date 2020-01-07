@@ -18,19 +18,28 @@ class BodyRow extends React.Component {
       height: '25px',
       lineHeight: '25px',
     };
-
     let { className } = restProps;
+    // 测试
+    const item = restProps.children;
+    const info = item[item.length - 1]['props']['record'];
+    console.log('restProps_', info);
     if (isOver) {
       if (restProps.index > dragingIndex) {
-        className += ' drop-over-downward';
+        className = [' drop-over-downward'];
       }
       if (restProps.index < dragingIndex) {
-        className += ' drop-over-upward';
+        className = [' drop-over-upward'];
       }
     }
 
     return connectDragSource(
-      connectDropTarget(<tr {...restProps} className={className} style={style} />),
+      connectDropTarget(
+        <tr
+          {...restProps}
+          className={(className, info.name === 'Joe Black1' ? 'testYellow' : '')}
+          style={style}
+        />,
+      ),
     );
   }
 }
@@ -74,18 +83,6 @@ const DragableBodyRow = DropTarget('row', rowTarget, (connect, monitor) => ({
   }))(BodyRow),
 );
 
-const columns = [
-  {
-    title: `
-    <div>
-    123
-    </div>
-    `,
-    dataIndex: 'name',
-    key: 'name',
-  },
-];
-
 export default class DragSortingTable extends React.Component {
   state = {
     dataOne: [
@@ -123,15 +120,15 @@ export default class DragSortingTable extends React.Component {
     ],
     dataFoure: [
       {
-        name: 'John Brown3',
+        name: 'John Brown4',
         key: 1,
       },
       {
-        name: 'Jim Green3',
+        name: 'Jim Green4',
         key: 2,
       },
       {
-        name: 'Joe Black3',
+        name: 'Joe Black4',
         key: 3,
       },
     ],
@@ -145,7 +142,7 @@ export default class DragSortingTable extends React.Component {
 
   moveRow = (data, dataName, dragIndex, hoverIndex) => {
     // const { data } = this.state;
-    debugger;
+    console.log('moveRow');
     const dragRow = data[dragIndex];
     const obj = new Object();
     obj[dataName] = {
@@ -178,6 +175,12 @@ export default class DragSortingTable extends React.Component {
     const columnss = [
       {
         title: this.downSelect(),
+        dataIndex: 'name',
+        key: 'name',
+      },
+    ];
+    const columns = [
+      {
         dataIndex: 'name',
         key: 'name',
       },
