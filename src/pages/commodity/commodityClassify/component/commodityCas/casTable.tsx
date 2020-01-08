@@ -1,63 +1,14 @@
 import React from 'react';
 import { Table, Input, Button } from 'antd';
 import { DragableBodyRow } from './casTr';
+import { connect } from 'dva';
 import update from 'immutability-helper';
-import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
 
+@connect(({ commodityClassify }) => ({
+  commodityClassify,
+}))
 export default class CasTable extends React.Component {
-  state = {
-    dataOne: [
-      {
-        name: 'John Brown1',
-        classify: 1,
-      },
-      {
-        name: 'Jim Green1',
-        classify: 1,
-      },
-      {
-        name: 'Joe Black1',
-        classify: 1,
-      },
-    ],
-    dataTwo: [
-      {
-        name: 'John Brown2',
-      },
-      {
-        name: 'Jim Green2',
-      },
-      {
-        name: 'Joe Black2',
-      },
-    ],
-    dataThree: [
-      {
-        name: 'John Brown3',
-      },
-      {
-        name: 'Jim Green3',
-      },
-      {
-        name: 'Joe Black3',
-      },
-    ],
-    dataFoure: [
-      {
-        name: 'John Brown4',
-        key: 1,
-      },
-      {
-        name: 'Jim Green4',
-        key: 2,
-      },
-      {
-        name: 'Joe Black4',
-        key: 3,
-      },
-    ],
-  };
+  state = {};
   components = {
     body: {
       row: DragableBodyRow,
@@ -74,13 +25,13 @@ export default class CasTable extends React.Component {
         [hoverIndex, 0, dragRow],
       ],
     };
-    this.setState(update(this.state, obj));
+    // this.setState(update(this.state, obj));
   };
   render() {
     const columns = [
       {
-        dataIndex: 'name',
-        key: 'name',
+        dataIndex: 'cateName',
+        key: 'id',
       },
     ];
     return (
@@ -91,7 +42,8 @@ export default class CasTable extends React.Component {
           className="noHead"
           columns={columns}
           pagination={false}
-          dataSource={this.state.dataOne}
+          dataSource={this.props.commodityClassify['one']}
+          childrenColumnName=""
           components={this.components}
           onRow={(record, index) => ({
             index,
