@@ -2,6 +2,8 @@ import React from 'react';
 import { Table, Input, Button } from 'antd';
 import { DragableBodyRow } from './casTr';
 import update from 'immutability-helper';
+import { DndProvider } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 export default class CasTable extends React.Component {
   state = {
@@ -61,8 +63,9 @@ export default class CasTable extends React.Component {
       row: DragableBodyRow,
     },
   };
-  moveRow = (data, dataName, dragIndex, hoverIndex) => {
-    console.log('moveRow');
+  moveRow = (data, dataName, props, dragIndex, hoverIndex) => {
+    // 这边对拖拽进行一个判断，判断拖拽对物体是不是本classify内的，不是对话直接return
+    console.log('moveRow', dataName, props);
     const dragRow = data[dragIndex];
     const obj = new Object();
     obj[dataName] = {
@@ -81,6 +84,7 @@ export default class CasTable extends React.Component {
       },
     ];
     return (
+      // <DndProvider backend={HTML5Backend}>
       <div>
         <div className="titleChoose">213123</div>
         <Table
@@ -91,10 +95,11 @@ export default class CasTable extends React.Component {
           components={this.components}
           onRow={(record, index) => ({
             index,
-            moveRow: this.moveRow.bind(this, this.state.dataOne, 'dataOne'),
+            moveRow: this.moveRow.bind(this, this.state.dataOne, 'dataOne', record),
           })}
         />
       </div>
+      // </DndProvider>2
     );
   }
 }
