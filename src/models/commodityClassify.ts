@@ -12,11 +12,21 @@ import { filterClassify } from '@/utils/filterProperty';
 //   productype,
 //   shelve,
 // } from '@/services/commodity';
-
+function findChildren(data, id) {
+  let item = data.find(item => item.id === id);
+  return item['children'];
+}
 const CommodityModel = {
   namespace: 'commodityClassify',
   state: {
     classifyInfo,
+    casInfoOne: classifyInfo.data,
+    casInfoTwo: classifyInfo.data[0]['children'],
+    casInfoThree: classifyInfo.data[0]['children'][0]['children'],
+    // 当前三级分类各级对应id
+    casOneId: classifyInfo.data[0]['id'],
+    casTwoId: classifyInfo.data[0]['children'][0]['id'],
+    casThreeId: classifyInfo.data[0]['children'][0]['children'][0]['id'],
   },
   effects: {
     // 获取分类类型,对分类类型进行切分,化为分别的三级分类样式
@@ -93,6 +103,38 @@ const CommodityModel = {
       return {
         ...state,
         ...commdityClassify,
+      };
+    },
+    // 对分类位置进行变换
+    reverseCas() {},
+    // 选中分类类别
+    selectCas(state, action) {
+      console.log('action.payload_', action.payload);
+      const Obj = new Object();
+      switch (action.payload.classify) {
+        case 1:
+          // 下面是对选中后1，2，3级类别进行修改
+          Obj['casInfoTwo'] = findChildren(state.casInfoOne, action.payload.id);
+          Obj['casInfoThree'] = Obj['casInfoTwo'][0]['children'];
+          //下面是对当前选中id值进行修改
+          Obj['casOneId'] = action.payload.id;
+          Obj['casTwoId'] = Obj['casInfoTwo'][0]['id'];
+          Obj['casThreeId'] = Obj['casInfoTwo'][0]['children'][0]['id'];
+          break;
+        case 2:
+          Obj['casInfoThree'] = findChildren(state.casInfoTwo, action.payload.id);
+          Obj['casTwoId'] = action.payload.id;
+          Obj['casThreeId'] = Obj['casInfoThree'][0] ? Obj['casInfoThree'][0]['id'] : '';
+          break;
+        case 3:
+          Obj['casThreeId'] = action.payload.id;
+          break;
+        default:
+          break;
+      }
+      return {
+        ...state,
+        ...Obj,
       };
     },
   },

@@ -2,9 +2,23 @@ import React from 'react';
 import { Table } from 'antd';
 import { DragSource, DropTarget } from 'react-dnd';
 import styles from './casTr.less';
+import { connect } from 'dva';
 
 let dragingIndex = -1;
+@connect(({ commodityClassify }) => ({
+  commodityClassify,
+}))
 export class BodyRow extends React.Component {
+  selectCas(record) {
+    console.log('record_', record);
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'commodityClassify/selectCas',
+        payload: record,
+      });
+    }
+  }
   render() {
     const { isOver, connectDragSource, connectDropTarget, moveRow, ...restProps } = this.props;
     const style = {
@@ -18,25 +32,28 @@ export class BodyRow extends React.Component {
     // 测试
     const item = restProps.children;
     const info = item[item.length - 1]['props']['record'];
-    // console.log('restProps_', info);
-    if (isOver) {
-      if (restProps.index > dragingIndex) {
-        className = [' drop-over-downward'];
-      }
-      if (restProps.index < dragingIndex) {
-        className = [' drop-over-upward'];
-      }
+    let classifyInfo = '';
+    switch (info['classify']) {
+      case 1:
+        classifyInfo = this.props.commodityClassify['casOneId'];
+        break;
+      case 2:
+        classifyInfo = this.props.commodityClassify['casTwoId'];
+        break;
+      case 3:
+        classifyInfo = this.props.commodityClassify['casThreeId'];
+        break;
+      default:
+        break;
     }
 
     return connectDragSource(
       connectDropTarget(
         <tr
           {...restProps}
-          className={(className, info.name === 'Joe Black1' ? 'testYellow' : '')}
+          className={(className, info.id === classifyInfo ? 'testYellow' : '')}
           style={style}
-          onClick={() => {
-            console.log('onClick');
-          }}
+          onClick={this.selectCas.bind(this, info)}
         />,
       ),
     );

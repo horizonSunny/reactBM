@@ -107,13 +107,13 @@ export default class DragSortingTable extends React.Component {
       <DndProvider backend={HTML5Backend}>
         <Row className={styles['main']}>
           <Col span={5}>
-            <CasTable levelInfo="one"></CasTable>
+            <CasTable levelInfo="One"></CasTable>
           </Col>
           <Col span={5}>
-            <CasTable levelInfo="two"></CasTable>
+            <CasTable levelInfo="Two"></CasTable>
           </Col>
           <Col span={5}>
-            <CasTable levelInfo="three"></CasTable>
+            <CasTable levelInfo="Three"></CasTable>
           </Col>
           <Col span={9}>
             <CasCommodity></CasCommodity>
