@@ -34,6 +34,7 @@ export default class CasTable extends React.Component {
         key: 'id',
       },
     ];
+    console.log('this.props.levelInfo_', this.props.levelInfo);
     return (
       // <DndProvider backend={HTML5Backend}>
       <div>
@@ -42,12 +43,13 @@ export default class CasTable extends React.Component {
           className="noHead"
           columns={columns}
           pagination={false}
-          dataSource={this.props.commodityClassify['one']}
+          dataSource={this.props.commodityClassify[this.props.levelInfo + '']}
           childrenColumnName=""
           components={this.components}
           onRow={(record, index) => ({
             index,
-            moveRow: this.moveRow.bind(this, this.state.dataOne, 'dataOne', record),
+            moveRow: this.moveRow,
+            // moveRow: this.moveRow.bind(this, this.state.dataOne, 'dataOne', record),
           })}
         />
       </div>
