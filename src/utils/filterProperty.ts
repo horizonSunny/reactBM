@@ -33,12 +33,15 @@ export function filterClassify(obj, level = 0) {
   obj.forEach(data => {
     switch (levelInfo) {
       case 1:
+        data['classify'] = 1;
         resultClassify['one'].push(data);
         break;
       case 2:
+        data['classify'] = 2;
         resultClassify['two'].push(data);
         break;
       case 3:
+        data['classify'] = 3;
         resultClassify['three'].push(data);
         break;
       default:
