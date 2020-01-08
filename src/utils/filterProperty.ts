@@ -21,3 +21,32 @@ export function filterStatus(status, obj) {
   });
   return result;
 }
+
+// 商品分类模块对三级分类做一个过滤
+let resultClassify = {
+  one: [],
+  two: [],
+  three: [],
+};
+export function filterClassify(obj, level = 0) {
+  let levelInfo = level + 1;
+  obj.forEach(data => {
+    switch (levelInfo) {
+      case 1:
+        resultClassify['one'].push(data);
+        break;
+      case 2:
+        resultClassify['two'].push(data);
+        break;
+      case 3:
+        resultClassify['three'].push(data);
+        break;
+      default:
+        break;
+    }
+    // level++;
+    data.children && data.children.length !== 0 && filterClassify(data.children, levelInfo);
+    // data.children && data.children.length !== 0 && filterStatus(status, [], data.children);
+  });
+  return resultClassify;
+}

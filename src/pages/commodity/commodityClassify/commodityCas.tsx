@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, Row, Col, Button } from 'antd';
 import { DndProvider } from 'react-dnd';
+import { connect } from 'dva';
 import HTML5Backend from 'react-dnd-html5-backend';
 import update from 'immutability-helper';
 // 外部引入
@@ -10,7 +11,9 @@ import CasCommodity from './component/commodityCas/casCommodity';
 import CasTable from './component/commodityCas/casTable';
 
 // const { Search } = Input;
-
+@connect(({ commodityClassify }) => ({
+  commodityClassify,
+}))
 export default class DragSortingTable extends React.Component {
   state = {
     dataOne: [
@@ -64,7 +67,16 @@ export default class DragSortingTable extends React.Component {
       },
     ],
   };
-
+  componentDidMount() {
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'commodityClassify/classification',
+      }).then(() => {
+        console.log('this.props.commodityClassify_', this.props.commodityClassify);
+      });
+    }
+  }
   components = {
     body: {
       row: DragableBodyRow,
