@@ -15,58 +15,6 @@ import CasTable from './component/commodityCas/casTable';
   commodityClassify,
 }))
 export default class DragSortingTable extends React.Component {
-  state = {
-    dataOne: [
-      {
-        name: 'John Brown1',
-        classify: 1,
-      },
-      {
-        name: 'Jim Green1',
-        classify: 1,
-      },
-      {
-        name: 'Joe Black1',
-        classify: 1,
-      },
-    ],
-    dataTwo: [
-      {
-        name: 'John Brown2',
-      },
-      {
-        name: 'Jim Green2',
-      },
-      {
-        name: 'Joe Black2',
-      },
-    ],
-    dataThree: [
-      {
-        name: 'John Brown3',
-      },
-      {
-        name: 'Jim Green3',
-      },
-      {
-        name: 'Joe Black3',
-      },
-    ],
-    dataFoure: [
-      {
-        name: 'John Brown4',
-        key: 1,
-      },
-      {
-        name: 'Jim Green4',
-        key: 2,
-      },
-      {
-        name: 'Joe Black4',
-        key: 3,
-      },
-    ],
-  };
   componentDidMount() {
     const { dispatch } = this.props;
     if (dispatch) {
@@ -77,32 +25,7 @@ export default class DragSortingTable extends React.Component {
       });
     }
   }
-  components = {
-    body: {
-      row: DragableBodyRow,
-    },
-  };
-
-  moveRow = (data, dataName, dragIndex, hoverIndex) => {
-    console.log('moveRow');
-    const dragRow = data[dragIndex];
-    const obj = new Object();
-    obj[dataName] = {
-      $splice: [
-        [dragIndex, 1],
-        [hoverIndex, 0, dragRow],
-      ],
-    };
-    this.setState(update(this.state, obj));
-  };
-
   render() {
-    const columns = [
-      {
-        dataIndex: 'name',
-        key: 'name',
-      },
-    ];
     return (
       <DndProvider backend={HTML5Backend}>
         <Row className={styles['main']}>
