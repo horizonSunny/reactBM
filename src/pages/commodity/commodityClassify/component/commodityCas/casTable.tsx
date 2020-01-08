@@ -1,17 +1,9 @@
 import React from 'react';
-import { Table, Row, Col, Button } from 'antd';
-import { DndProvider } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { Table, Input, Button } from 'antd';
+import { DragableBodyRow } from './casTr';
 import update from 'immutability-helper';
-// 外部引入
-import styles from './commodityCas.less';
-import { DragableBodyRow } from './component/commodityCas/casTr';
-import CasCommodity from './component/commodityCas/casCommodity';
-import CasTable from './component/commodityCas/casTable';
 
-// const { Search } = Input;
-
-export default class DragSortingTable extends React.Component {
+export default class CasTable extends React.Component {
   state = {
     dataOne: [
       {
@@ -64,13 +56,11 @@ export default class DragSortingTable extends React.Component {
       },
     ],
   };
-
   components = {
     body: {
       row: DragableBodyRow,
     },
   };
-
   moveRow = (data, dataName, dragIndex, hoverIndex) => {
     console.log('moveRow');
     const dragRow = data[dragIndex];
@@ -83,7 +73,6 @@ export default class DragSortingTable extends React.Component {
     };
     this.setState(update(this.state, obj));
   };
-
   render() {
     const columns = [
       {
@@ -92,22 +81,20 @@ export default class DragSortingTable extends React.Component {
       },
     ];
     return (
-      <DndProvider backend={HTML5Backend}>
-        <Row className={styles['main']}>
-          <Col span={5}>
-            <CasTable></CasTable>
-          </Col>
-          <Col span={5}>
-            <CasTable></CasTable>
-          </Col>
-          <Col span={5}>
-            <CasTable></CasTable>
-          </Col>
-          <Col span={9}>
-            <CasCommodity></CasCommodity>
-          </Col>
-        </Row>
-      </DndProvider>
+      <div>
+        <div className="titleChoose">213123</div>
+        <Table
+          className="noHead"
+          columns={columns}
+          pagination={false}
+          dataSource={this.state.dataOne}
+          components={this.components}
+          onRow={(record, index) => ({
+            index,
+            moveRow: this.moveRow.bind(this, this.state.dataOne, 'dataOne'),
+          })}
+        />
+      </div>
     );
   }
 }
