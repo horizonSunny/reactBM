@@ -25,7 +25,9 @@ export default class CasCommodity extends React.Component {
   downSelect = () => {
     return (
       <div className="buttonContain">
-        <Button type="danger">移除</Button>
+        <Button type="danger" onClick={this.removeCom.bind(this)}>
+          移除
+        </Button>
         <Button>分类至</Button>
       </div>
     );
@@ -39,6 +41,17 @@ export default class CasCommodity extends React.Component {
       });
     }
   };
+  // 移除选中的药物
+  removeCom() {
+    const { dispatch } = this.props;
+    const { selectedRowKeys } = this.state;
+    if (dispatch) {
+      dispatch({
+        type: 'commodityClassify/removeCommodity',
+        payload: selectedRowKeys,
+      });
+    }
+  }
   render() {
     const columns = [
       {

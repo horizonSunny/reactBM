@@ -133,6 +133,21 @@ const CommodityModel = {
         searchKeyword: searchValue,
       };
     },
+    // 移除选中的药物
+    removeCommodity(state, action) {
+      const selectArr = action.payload;
+      const removeEndArr = state.commodityInfo.pageList.filter(item => {
+        return !selectArr.includes(item['productId']);
+      });
+      const obj = {
+        ...state.commodityInfo,
+        pageList: removeEndArr,
+      };
+      return {
+        ...state,
+        commodityInfo: obj,
+      };
+    },
   },
 };
 
