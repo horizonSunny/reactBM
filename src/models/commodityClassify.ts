@@ -106,7 +106,7 @@ const CommodityModel = {
       };
     },
     // 对分类位置进行变换
-    reverseCas() {},
+    reverseCas(state, action) {},
     // 选中分类类别
     selectCas(state, action) {
       console.log('action.payload_', action.payload);
@@ -135,6 +135,16 @@ const CommodityModel = {
       return {
         ...state,
         ...Obj,
+      };
+    },
+    // 拖起的时候获取拖起对应的分类目标
+    dragStart(state, action) {
+      // 必须是同步的
+      console.log('onDrag_', action.payload);
+      let dragStart = action.payload;
+      return {
+        ...state,
+        dragStart,
       };
     },
   },

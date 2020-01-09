@@ -10,7 +10,13 @@ let dragingIndex = -1;
 }))
 export class BodyRow extends React.Component {
   onDragStart(record) {
-    console.log('onDrag——', record);
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'commodityClassify/dragStart',
+        payload: record.classify,
+      });
+    }
   }
 
   selectCas(record) {

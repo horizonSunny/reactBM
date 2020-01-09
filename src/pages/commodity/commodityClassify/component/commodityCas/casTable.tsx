@@ -13,9 +13,14 @@ export default class CasTable extends React.Component {
       row: DragableBodyRow,
     },
   };
-  moveRow = (data, props, dragIndex, hoverIndex) => {
+  moveRow = (record, dragIndex, hoverIndex) => {
     // 这边对拖拽进行一个判断，判断拖拽对物体是不是本classify内的，不是对话直接return
-    console.log('moveRow', data, props, dragIndex, hoverIndex);
+    console.log('moveRow', record, dragIndex, hoverIndex);
+    let _this = this;
+    if (record.classify !== this.props.commodityClassify.dragStart) {
+      console.log('不在同一行');
+      return;
+    }
   };
   render() {
     const columns = [
@@ -37,7 +42,7 @@ export default class CasTable extends React.Component {
           components={this.components}
           onRow={(record, index) => ({
             index,
-            moveRow: this.moveRow.bind(this, dataSourceInfo, record),
+            moveRow: this.moveRow.bind(this, record),
           })}
         />
       </div>
