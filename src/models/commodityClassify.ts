@@ -2,7 +2,7 @@ import { Effect } from 'dva';
 import { Reducer } from 'redux';
 
 // 以下是mock数据
-import classifyInfo from '../../mock/commdityClassify';
+import classifyInfo, { commodityMessage } from '../../mock/commdityClassify';
 import { filterClassify } from '@/utils/filterProperty';
 // import {
 //   productList,
@@ -27,6 +27,8 @@ const CommodityModel = {
     casOneId: classifyInfo.data[0]['id'],
     casTwoId: classifyInfo.data[0]['children'][0]['id'],
     casThreeId: classifyInfo.data[0]['children'][0]['children'][0]['id'],
+    // 分类下的商品
+    commodityInfo: commodityMessage.data,
   },
   effects: {
     // 获取分类类型,对分类类型进行切分,化为分别的三级分类样式

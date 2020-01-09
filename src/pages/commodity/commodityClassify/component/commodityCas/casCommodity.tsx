@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Input, Button } from 'antd';
 import { DragableBodyRow } from './casTr';
 const { Search } = Input;
+import styles from './casCommodity.less';
 
 import { connect } from 'dva';
 
@@ -9,22 +10,6 @@ import { connect } from 'dva';
   commodityClassify,
 }))
 export default class CasCommodity extends React.Component {
-  state = {
-    dataFoure: [
-      {
-        name: 'John Brown4',
-        key: 1,
-      },
-      {
-        name: 'Jim Green4',
-        key: 2,
-      },
-      {
-        name: 'Joe Black4',
-        key: 3,
-      },
-    ],
-  };
   components = {
     body: {
       row: DragableBodyRow,
@@ -51,12 +36,12 @@ export default class CasCommodity extends React.Component {
     const columnss = [
       {
         title: this.downSelect(),
-        dataIndex: 'name',
-        key: 'name',
+        dataIndex: 'productCommonName',
+        key: 'productId',
       },
     ];
     return (
-      <div>
+      <div className={styles['main']}>
         <div
           style={{
             textAlign: 'center',
@@ -66,7 +51,17 @@ export default class CasCommodity extends React.Component {
             justifyContent: 'space-around',
           }}
         >
-          <div>333</div>
+          <div>
+            共
+            <span
+              style={{
+                color: 'red',
+              }}
+            >
+              {this.props.commodityClassify.commodityInfo['totalElements']}
+            </span>
+            件商品
+          </div>
           <Search
             placeholder="input search text"
             onSearch={value => console.log(value)}
@@ -75,8 +70,7 @@ export default class CasCommodity extends React.Component {
         </div>
         <Table
           columns={columnss}
-          pagination={false}
-          dataSource={this.state.dataFoure}
+          dataSource={this.props.commodityClassify.commodityInfo.pageList}
           components={this.components}
           rowSelection={this.rowSelection}
         />
