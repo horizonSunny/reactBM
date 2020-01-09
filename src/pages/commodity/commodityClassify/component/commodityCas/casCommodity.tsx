@@ -3,6 +3,11 @@ import { Table, Input, Button } from 'antd';
 import { DragableBodyRow } from './casTr';
 const { Search } = Input;
 
+import { connect } from 'dva';
+
+@connect(({ commodityClassify }) => ({
+  commodityClassify,
+}))
 export default class CasCommodity extends React.Component {
   state = {
     dataFoure: [
