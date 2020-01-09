@@ -52,8 +52,16 @@ export default class CasCommodity extends React.Component {
     ];
     return (
       <div>
-        <div className="titleChoose">
-          123
+        <div
+          style={{
+            textAlign: 'center',
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-around',
+          }}
+        >
+          <div>333</div>
           <Search
             placeholder="input search text"
             onSearch={value => console.log(value)}
