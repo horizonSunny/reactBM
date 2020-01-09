@@ -12,7 +12,7 @@ import CasTable from './component/commodityCas/casTable';
 @connect(({ commodityClassify }) => ({
   commodityClassify,
 }))
-export default class DragSortingTable extends React.Component {
+export default class Table extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
     if (dispatch) {

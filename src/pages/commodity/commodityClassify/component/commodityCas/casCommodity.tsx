@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table, Input, Button } from 'antd';
-import { DragableBodyRow } from './casTr';
+import { commodityItem } from './commodityItem';
 const { Search } = Input;
 import styles from './casCommodity.less';
 
@@ -10,9 +10,10 @@ import { connect } from 'dva';
   commodityClassify,
 }))
 export default class CasCommodity extends React.Component {
+  state: {};
   components = {
     body: {
-      row: DragableBodyRow,
+      row: commodityItem,
     },
   };
   rowSelection = {
@@ -32,8 +33,17 @@ export default class CasCommodity extends React.Component {
       </div>
     );
   };
+  search = e => {
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'commodityClassify/modifyKeyWord',
+        payload: e.target.value,
+      });
+    }
+  };
   render() {
-    const columnss = [
+    const columns = [
       {
         title: this.downSelect(),
         dataIndex: 'productCommonName',
@@ -63,13 +73,14 @@ export default class CasCommodity extends React.Component {
             件商品
           </div>
           <Search
-            placeholder="input search text"
-            onSearch={value => console.log(value)}
+            placeholder="请输入关键字"
+            onChange={this.search.bind(this)}
             style={{ width: 200 }}
+            value={this.props.commodityClassify.searchKeyword}
           />
         </div>
         <Table
-          columns={columnss}
+          columns={columns}
           dataSource={this.props.commodityClassify.commodityInfo.pageList}
           components={this.components}
           rowSelection={this.rowSelection}

@@ -29,6 +29,8 @@ const CommodityModel = {
     casThreeId: classifyInfo.data[0]['children'][0]['children'][0]['id'],
     // 分类下的商品
     commodityInfo: commodityMessage.data,
+    // 分类下商品的查询关键字
+    searchKeyword: '',
   },
   effects: {
     // 获取分类类型,对分类类型进行切分,化为分别的三级分类样式
@@ -120,6 +122,15 @@ const CommodityModel = {
       return {
         ...state,
         dragStart,
+      };
+    },
+    // 修改查询关键字
+    modifyKeyWord(state, action) {
+      let searchValue = action.payload;
+      console.log('searchValue_', action.payload);
+      return {
+        ...state,
+        searchKeyword: searchValue,
       };
     },
   },
