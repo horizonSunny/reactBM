@@ -9,6 +9,10 @@ let dragingIndex = -1;
   commodityClassify,
 }))
 export class BodyRow extends React.Component {
+  onDragStart(record) {
+    console.log('onDrag——', record);
+  }
+
   selectCas(record) {
     console.log('record_', record);
     const { dispatch } = this.props;
@@ -50,6 +54,7 @@ export class BodyRow extends React.Component {
     return connectDragSource(
       connectDropTarget(
         <tr
+          onDragStart={this.onDragStart.bind(this, info)}
           {...restProps}
           className={(className, info.id === classifyInfo ? 'testYellow' : '')}
           style={style}
