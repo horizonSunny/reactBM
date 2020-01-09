@@ -10,7 +10,9 @@ import { connect } from 'dva';
   commodityClassify,
 }))
 export default class CasCommodity extends React.Component {
-  state: {};
+  state = {
+    selectedRowKeys: [],
+  };
   components = {
     body: {
       row: commodityItem,
@@ -88,6 +90,7 @@ export default class CasCommodity extends React.Component {
           dataSource={this.props.commodityClassify.commodityInfo.pageList}
           components={this.components}
           rowSelection={this.rowSelection}
+          pagination={{ pageSize: 5, total: 10 }}
         />
       </div>
     );
