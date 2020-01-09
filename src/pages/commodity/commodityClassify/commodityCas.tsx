@@ -1,12 +1,10 @@
 import React from 'react';
-import { Table, Row, Col, Button } from 'antd';
+import { Row, Col } from 'antd';
 import { DndProvider } from 'react-dnd';
 import { connect } from 'dva';
 import HTML5Backend from 'react-dnd-html5-backend';
-import update from 'immutability-helper';
 // 外部引入
 import styles from './commodityCas.less';
-import { DragableBodyRow } from './component/commodityCas/casTr';
 import CasCommodity from './component/commodityCas/casCommodity';
 import CasTable from './component/commodityCas/casTable';
 
