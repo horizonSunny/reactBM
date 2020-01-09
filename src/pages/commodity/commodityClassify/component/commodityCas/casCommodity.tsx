@@ -88,8 +88,9 @@ export default class CasCommodity extends React.Component {
         <Table
           columns={columns}
           dataSource={this.props.commodityClassify.commodityInfo.pageList}
-          // components={this.components}
+          components={this.components}
           rowSelection={rowSelection}
+          rowKey={record => record.productId}
           pagination={{ pageSize: 5, total: 10 }}
         />
       </div>
