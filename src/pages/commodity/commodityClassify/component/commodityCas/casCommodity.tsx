@@ -18,14 +18,9 @@ export default class CasCommodity extends React.Component {
       row: commodityItem,
     },
   };
-  rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    getCheckboxProps: record => ({
-      disabled: record.name === 'Disabled User', // Column configuration not to be checked
-      name: record.name,
-    }),
+  onSelectChange = selectedRowKeys => {
+    console.log('selectedRowKeys changed: ', selectedRowKeys);
+    this.setState({ selectedRowKeys });
   };
   downSelect = () => {
     return (
@@ -52,6 +47,11 @@ export default class CasCommodity extends React.Component {
         key: 'productId',
       },
     ];
+    const { selectedRowKeys } = this.state;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange,
+    };
     return (
       <div className={styles['main']}>
         <div
@@ -88,8 +88,8 @@ export default class CasCommodity extends React.Component {
         <Table
           columns={columns}
           dataSource={this.props.commodityClassify.commodityInfo.pageList}
-          components={this.components}
-          rowSelection={this.rowSelection}
+          // components={this.components}
+          rowSelection={rowSelection}
           pagination={{ pageSize: 5, total: 10 }}
         />
       </div>
