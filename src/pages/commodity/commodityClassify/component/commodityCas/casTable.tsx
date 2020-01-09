@@ -15,11 +15,22 @@ export default class CasTable extends React.Component {
   };
   moveRow = (record, dragIndex, hoverIndex) => {
     // 这边对拖拽进行一个判断，判断拖拽对物体是不是本classify内的，不是对话直接return
-    console.log('moveRow', record, dragIndex, hoverIndex);
-    let _this = this;
+    // console.log('moveRow', record, dragIndex, hoverIndex);
     if (record.classify !== this.props.commodityClassify.dragStart) {
       console.log('不在同一行');
       return;
+    } else {
+      const { dispatch } = this.props;
+      if (dispatch) {
+        dispatch({
+          type: 'commodityClassify/reverseCas',
+          payload: {
+            classify: record.classify,
+            dragIndex,
+            hoverIndex,
+          },
+        });
+      }
     }
   };
   render() {

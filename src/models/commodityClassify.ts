@@ -106,7 +106,30 @@ const CommodityModel = {
       };
     },
     // 对分类位置进行变换
-    reverseCas(state, action) {},
+    reverseCas(state, action) {
+      const info = action.payload;
+      let reverseArr;
+      let item;
+      switch (info.classify) {
+        case 1:
+          reverseArr = state.casInfoOne;
+          break;
+        case 2:
+          reverseArr = state.casInfoTwo;
+          break;
+        case 3:
+          reverseArr = state.casInfoThree;
+          break;
+        default:
+          break;
+      }
+      item = reverseArr[info.dragIndex];
+      reverseArr[info.dragIndex] = reverseArr[info.hoverIndex];
+      reverseArr[info.hoverIndex] = item;
+      return {
+        ...state,
+      };
+    },
     // 选中分类类别
     selectCas(state, action) {
       console.log('action.payload_', action.payload);
