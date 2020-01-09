@@ -59,6 +59,9 @@ export default class CasCommodity extends React.Component {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-around',
+            border: '1px solid rgb(208,208,208)',
+            borderRadius: '5px',
+            height: '33px',
           }}
         >
           <div>
@@ -74,6 +77,7 @@ export default class CasCommodity extends React.Component {
           </div>
           <Search
             placeholder="请输入关键字"
+            className="searchInput"
             onChange={this.search.bind(this)}
             style={{ width: 200 }}
             value={this.props.commodityClassify.searchKeyword}
