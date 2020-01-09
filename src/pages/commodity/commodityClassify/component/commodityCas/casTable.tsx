@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'antd';
+import { Table, Button } from 'antd';
 import { DragableBodyRow } from './casTr';
 import { connect } from 'dva';
 
@@ -15,7 +15,6 @@ export default class CasTable extends React.Component {
   };
   moveRow = (record, dragIndex, hoverIndex) => {
     // 这边对拖拽进行一个判断，判断拖拽对物体是不是本classify内的，不是对话直接return
-    // console.log('moveRow', record, dragIndex, hoverIndex);
     if (record.classify !== this.props.commodityClassify.dragStart) {
       console.log('不在同一行');
       return;
@@ -41,9 +40,32 @@ export default class CasTable extends React.Component {
       },
     ];
     let dataSourceInfo = this.props.commodityClassify['casInfo' + this.props.levelInfo];
+    let classifyName;
+    switch (this.props.levelInfo) {
+      case 'One':
+        classifyName = '一级';
+        break;
+      case 'Two':
+        classifyName = '二级';
+        break;
+      case 'Three':
+        classifyName = '三级';
+        break;
+      default:
+        break;
+    }
     return (
       <div>
-        <div className="titleChoose">213123</div>
+        <Button
+          icon="plus-circle"
+          style={{
+            width: '99%',
+            position: 'relative',
+            left: '1px',
+          }}
+        >
+          新建{classifyName}分类
+        </Button>
         <Table
           className="noHead"
           columns={columns}

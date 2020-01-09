@@ -62,7 +62,7 @@ export class BodyRow extends React.Component {
         <tr
           onDragStart={this.onDragStart.bind(this, info)}
           {...restProps}
-          className={(className, info.id === classifyInfo ? 'testYellow' : '')}
+          className={(className, info.id === classifyInfo ? 'testColor' : '')}
           style={style}
           onClick={this.selectCas.bind(this, info)}
         />,
