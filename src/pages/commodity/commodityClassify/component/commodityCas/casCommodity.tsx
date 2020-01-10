@@ -104,7 +104,10 @@ export default class CasCommodity extends React.Component {
           components={this.components}
           rowSelection={rowSelection}
           rowKey={record => record.productId}
-          pagination={{ pageSize: 5, total: 10 }}
+          pagination={{
+            pageSize: 5,
+            total: this.props.commodityClassify.commodityInfo.pageList.length,
+          }}
         />
       </div>
     );
