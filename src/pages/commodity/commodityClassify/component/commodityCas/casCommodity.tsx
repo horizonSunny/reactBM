@@ -28,7 +28,7 @@ export default class CasCommodity extends React.Component {
         <Button type="danger" onClick={this.removeCom.bind(this)}>
           移除
         </Button>
-        <Button>分类至</Button>
+        <Button>分类至 >|</Button>
       </div>
     );
   };
