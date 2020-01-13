@@ -56,9 +56,9 @@ const columns = [
     key: 'operate',
     render: (text, record) => (
       <span>
-        <a onClick={this.goToNextPage.bind(this, record, 'detail')}>查看</a>
+        <a onClick={this.editorCategory.bind(this, record, 'detail')}>编辑</a>
         <Divider type="vertical" />
-        <a onClick={this.goToNextPage.bind(this, record, 'editor')}>编辑</a>
+        <a onClick={this.deleteCategory.bind(this, record)}>删除</a>
       </span>
     ),
   },
@@ -127,7 +127,8 @@ export default class FindList extends React.Component {
       },
     ],
   };
-  goToNextPage(record, operate) {}
+  deleteCategory(record) {}
+  editorCategory(record) {}
   render() {
     const { columns } = this.state;
     return (
