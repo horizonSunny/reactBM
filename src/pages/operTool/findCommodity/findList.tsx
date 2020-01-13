@@ -6,10 +6,24 @@ import router from 'umi/router';
 import { connect } from 'dva';
 import dataInfo from '../../../../mock/quick';
 
-@connect(({ commodityClassify }) => ({
-  commodityClassify,
+@connect(({ operTool }) => ({
+  operTool,
 }))
 export default class FindList extends React.Component {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'operTool/getCategoryList',
+        payload: {
+          pageNumber: 0,
+          pageSize: 1000,
+        },
+      }).then(() => {
+        console.log('operTool');
+      });
+    }
+  }
   state = {
     columns: [
       {
@@ -63,12 +77,18 @@ export default class FindList extends React.Component {
             )}
             {dataIndex !== 0 && (
               <div>
-                <Icon type="caret-up" />
+                <Icon
+                  type="caret-up"
+                  onClick={this.reverseCategoryList.bind(this, dataIndex, 'up')}
+                />
               </div>
             )}
             {dataIndex + 1 !== dataInfo.data.pageList.length && (
               <div>
-                <Icon type="caret-down" />
+                <Icon
+                  type="caret-down"
+                  onClick={this.reverseCategoryList.bind(this, dataIndex, 'down')}
+                />
               </div>
             )}
             {dataIndex + 1 === dataInfo.data.pageList.length && (
@@ -100,6 +120,31 @@ export default class FindList extends React.Component {
       // query: { id: params.productId },
     });
   }
+  // reverse排序
+  reverseCategoryList(index, direction) {
+    console.log('index_', index, '_direction_', direction);
+    let startId = this.props.operTool.categoryList[index]['quickCategoryId'];
+    let endId;
+    switch (direction) {
+      case 'up':
+        endId = this.props.operTool.categoryList[index - 1]['quickCategoryId'];
+        break;
+      case 'down':
+        endId = this.props.operTool.categoryList[index + 1]['quickCategoryId'];
+        break;
+      default:
+        break;
+    }
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'operTool/reverseCategoryList',
+        payload: {
+          quickCategoryIds: [startId, endId],
+        },
+      });
+    }
+  }
   render() {
     const { columns } = this.state;
     return (
@@ -118,7 +163,7 @@ export default class FindList extends React.Component {
             clear: 'both',
           }}
         ></div>
-        <Table columns={columns} dataSource={dataInfo.data.pageList} />
+        <Table columns={columns} dataSource={this.props.operTool.categoryList} />
       </PageHeaderWrapper>
     );
   }
