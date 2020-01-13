@@ -13,3 +13,9 @@ export async function reverseCategoryList(params: Object) {
     data: params,
   });
 }
+// 删除快速分类
+export async function deleteCategoryItem(params: Object) {
+  return request('/admin/v1/quickCategory/delete/' + params['quickCategoryId'], {
+    method: 'delete',
+  });
+}

@@ -113,7 +113,18 @@ export default class FindList extends React.Component {
       },
     ],
   };
-  deleteCategory(record) {}
+  deleteCategory(record) {
+    console.log('record_', record.quickCategoryId);
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'operTool/deleteCategoryItem',
+        payload: {
+          quickCategoryId: record.quickCategoryId,
+        },
+      });
+    }
+  }
   editorCategory(record?) {
     router.push({
       pathname: '/operTool/findCommodity/newCategory',
@@ -163,7 +174,7 @@ export default class FindList extends React.Component {
             clear: 'both',
           }}
         ></div>
-        <Table columns={columns} dataSource={this.props.operTool.categoryList} />
+        <Table columns={columns} dataSource={this.props.operTool.categoryList} pagination={false} />
       </PageHeaderWrapper>
     );
   }

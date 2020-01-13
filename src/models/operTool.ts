@@ -1,6 +1,6 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
-import { getCategoryList, reverseCategoryList } from '@/services/operTool';
+import { getCategoryList, reverseCategoryList, deleteCategoryItem } from '@/services/operTool';
 const CommodityModel = {
   namespace: 'operTool',
   state: {
@@ -23,6 +23,15 @@ const CommodityModel = {
       yield put({
         type: 'reverseCategory',
         payload: payload.quickCategoryIds,
+      });
+    },
+    // 删除listItem
+    *deleteCategoryItem({ payload }, { call, put }) {
+      const response = yield call(deleteCategoryItem, payload);
+      console.log('in_reverseCategoryList_', response);
+      yield put({
+        type: 'deleteCategory',
+        payload: payload.quickCategoryId,
       });
     },
   },
@@ -49,6 +58,16 @@ const CommodityModel = {
       state.categoryList[endIndex] = item;
       return {
         ...state,
+      };
+    },
+    // 删除id
+    deleteCategory(state, action) {
+      const newArr = state.categoryList.filter(item => {
+        return item.quickCategoryId !== action.payload;
+      });
+      return {
+        ...state,
+        categoryList: newArr,
       };
     },
   },
