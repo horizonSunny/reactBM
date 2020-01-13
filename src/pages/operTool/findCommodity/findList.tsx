@@ -105,7 +105,7 @@ export default class FindList extends React.Component {
         key: 'operate',
         render: (text, record) => (
           <span>
-            <a onClick={this.editorCategory.bind(this)}>编辑</a>
+            <a onClick={this.editorCategory.bind(this, record)}>编辑</a>
             <Divider type="vertical" />
             <a onClick={this.deleteCategory.bind(this, record)}>删除</a>
           </span>
@@ -126,10 +126,15 @@ export default class FindList extends React.Component {
     }
   }
   editorCategory(record?) {
-    router.push({
+    let obj = {
       pathname: '/operTool/findCommodity/newCategory',
-      // query: { id: params.productId },
-    });
+    };
+    if (record) {
+      // 编辑
+      obj.query = { id: record };
+    }
+    console.log('obj_', obj);
+    router.push(obj);
   }
   // reverse排序
   reverseCategoryList(index, direction) {
@@ -165,7 +170,7 @@ export default class FindList extends React.Component {
           type="danger"
           icon="plus-circle"
           className="buttonAdd"
-          onClick={this.editorCategory.bind(this)}
+          onClick={this.editorCategory.bind(this, '')}
         >
           添加
         </Button>
