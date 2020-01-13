@@ -64,6 +64,14 @@ export default class FindList extends React.Component {
     return (
       <PageHeaderWrapper className={styles['main']}>
         {/* <Title level={4}>商品编辑</Title> */}
+        <Button type="danger" icon="plus-circle" className="buttonAdd">
+          添加
+        </Button>
+        <div
+          style={{
+            clear: 'both',
+          }}
+        ></div>
         <Table columns={columns} dataSource={dataInfo.data.pageList} />
       </PageHeaderWrapper>
     );
