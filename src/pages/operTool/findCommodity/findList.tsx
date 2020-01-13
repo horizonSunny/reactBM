@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table, Button, Divider } from 'antd';
+import { Table, Button, Divider, Icon } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import styles from './findList.less';
 import router from 'umi/router';
@@ -54,7 +54,30 @@ export default class FindList extends React.Component {
         title: '调整排序',
         dataIndex: 'sort',
         key: 'sort',
-        render: text => <a>{text}</a>,
+        render: (text, record, dataIndex) => (
+          <div className="iconFont">
+            {dataIndex === 0 && (
+              <div>
+                <Icon type="caret-up" className="disableIcon" />
+              </div>
+            )}
+            {dataIndex !== 0 && (
+              <div>
+                <Icon type="caret-up" />
+              </div>
+            )}
+            {dataIndex + 1 !== dataInfo.data.pageList.length && (
+              <div>
+                <Icon type="caret-down" />
+              </div>
+            )}
+            {dataIndex + 1 === dataInfo.data.pageList.length && (
+              <div>
+                <Icon type="caret-down" className="disableIcon" />
+              </div>
+            )}
+          </div>
+        ),
       },
       {
         title: '操作',
