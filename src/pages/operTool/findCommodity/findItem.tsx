@@ -27,6 +27,7 @@ function beforeUpload(file) {
 class FindItem extends React.Component {
   state = {
     loading: false,
+    tags: ['Unremovable', 'Tag 2', 'Tag 3'],
   };
   // 上传图片变化
   handleChange = info => {
@@ -45,6 +46,8 @@ class FindItem extends React.Component {
     }
   };
   handleSubmit() {}
+  //  关闭标签
+  handleClose() {}
   render() {
     // 上传图片
     const uploadButton = (
@@ -66,6 +69,7 @@ class FindItem extends React.Component {
         sm: { span: 8 },
       },
     };
+    const { tags } = this.state;
     return (
       <PageHeaderWrapper className={styles['main']}>
         <Form {...formItemLayout} onSubmit={this.handleSubmit}>
@@ -106,14 +110,19 @@ class FindItem extends React.Component {
             })(<Input />)}
           </Form.Item>
           <Form.Item label="关联商品分类">
-            {getFieldDecorator('cateClassify', {
-              rules: [
-                {
-                  required: true,
-                  message: '请填写关联商品!',
-                },
-              ],
-            })(<Input />)}
+            {tags.map(item => {
+              return (
+                <Tag
+                  closable
+                  onClose={e => {
+                    e.preventDefault();
+                    this.handleClose(item);
+                  }}
+                >
+                  {item}
+                </Tag>
+              );
+            })}
           </Form.Item>
         </Form>
       </PageHeaderWrapper>
