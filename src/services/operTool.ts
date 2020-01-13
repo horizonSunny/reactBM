@@ -19,3 +19,10 @@ export async function deleteCategoryItem(params: Object) {
     method: 'delete',
   });
 }
+// 新增接口
+export async function newCategoryItem(params: Object) {
+  return request('/admin/v1/quickCategory/insert', {
+    method: 'post',
+    data: params,
+  });
+}

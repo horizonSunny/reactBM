@@ -129,10 +129,30 @@ export default class FindList extends React.Component {
     let obj = {
       pathname: '/operTool/findCommodity/newCategory',
     };
+    console.log('record_', record);
+    let recordInfo;
+    const { dispatch } = this.props;
     if (record) {
       // 编辑
+      recordInfo = {
+        categorys: record['categorys'],
+        image: record['image'],
+        quickCategoryName: record['categoryName'],
+        quickCategoryId: record['quickCategoryId'],
+      };
       obj.query = { id: record };
+    } else {
+      // 新建
+      recordInfo = {
+        categorys: record['categorys'],
+        image: '',
+        quickCategoryName: '',
+      };
     }
+    dispatch({
+      type: 'operTool/saveCategory',
+      payload: recordInfo,
+    });
     console.log('obj_', obj);
     router.push(obj);
   }

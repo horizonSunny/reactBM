@@ -1,6 +1,11 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
-import { getCategoryList, reverseCategoryList, deleteCategoryItem } from '@/services/operTool';
+import {
+  getCategoryList,
+  reverseCategoryList,
+  deleteCategoryItem,
+  newCategoryItem,
+} from '@/services/operTool';
 const CommodityModel = {
   namespace: 'operTool',
   state: {
@@ -33,6 +38,15 @@ const CommodityModel = {
         type: 'deleteCategory',
         payload: payload.quickCategoryId,
       });
+    },
+    // 新增快速照耀
+    *newCategoryItem({ payload }, { call, put }) {
+      const response = yield call(newCategoryItem, payload);
+      console.log('in_newCategoryItem_', response);
+      // yield put({
+      //   type: 'deleteCategory',
+      //   payload: payload.quickCategoryId,
+      // });
     },
   },
 
@@ -68,6 +82,13 @@ const CommodityModel = {
       return {
         ...state,
         categoryList: newArr,
+      };
+    },
+    // 保存编辑数据
+    saveCategory(state, action) {
+      return {
+        ...state,
+        categoryItem: action.payload,
       };
     },
   },
