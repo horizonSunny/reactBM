@@ -1,0 +1,57 @@
+export default {
+  code: 1,
+  msg: null,
+  data: {
+    pageNumber: 0,
+    pageSize: 10,
+    totalElements: 3,
+    totalPages: 1,
+    pageList: [
+      {
+        quickCategoryId: 1,
+        categoryName: '感冒发烧',
+        image: 'https://product-img-bucket.oss-cn-shanghai.aliyuncs.com/home_Cold.png',
+        status: 1,
+        createTime: '2020-01-08 17:06:49',
+        updateTime: '2020-01-08 17:06:49',
+      },
+      {
+        quickCategoryId: 2,
+        categoryName: '咳嗽用药',
+        image: 'https://product-img-bucket.oss-cn-shanghai.aliyuncs.com/home_cough.png',
+        status: 1,
+        createTime: '2020-01-08 17:09:04',
+        updateTime: '2020-01-12 22:09:08',
+      },
+      {
+        quickCategoryId: 3,
+        categoryName: '皮肤用药',
+        image: 'https://product-img-bucket.oss-cn-shanghai.aliyuncs.com/home_skin.png',
+        status: 1,
+        categorys: [
+          {
+            quickCategoryRelationId: 10,
+            categoryId: 2,
+            cateName: '医疗器械',
+            categoryId1: 33,
+            cateName1: '体温计',
+            categoryId2: null,
+            cateName2: null,
+          },
+          {
+            quickCategoryRelationId: 11,
+            categoryId: 5,
+            cateName: '常备药品',
+            categoryId1: null,
+            cateName1: null,
+            categoryId2: null,
+            cateName2: null,
+          },
+        ],
+        createTime: '2020-01-08 17:51:23',
+        updateTime: '2020-01-12 22:09:43',
+      },
+    ],
+    lastPage: true,
+  },
+};
