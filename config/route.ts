@@ -81,6 +81,25 @@ const route = [
               },
             ],
           },
+          // 运营工具模块
+          {
+            path: '/operTool',
+            name: '运营工具',
+            icon: 'tool',
+            routes: [
+              {
+                path: '/operTool/findCommodity',
+                name: '快速找药',
+                component: './operTool/findCommodity/findList.tsx',
+              },
+              {
+                path: '/operTool/findCommodity/newCategory',
+                name: '添加分类',
+                component: './operTool/findCommodity/findItem.tsx',
+                hideInMenu: true,
+              },
+            ],
+          },
           // 用户
           // {
           //   path: '/admin',
