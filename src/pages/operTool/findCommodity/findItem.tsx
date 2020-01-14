@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tag, Form, Input, Upload, Icon, message } from 'antd';
+import { Tag, Form, Input, Upload, Icon, message, Button } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import styles from './findItem.less';
 import { connect } from 'dva';
@@ -58,7 +58,14 @@ class FindItem extends React.Component {
       );
     }
   };
-  handleSubmit() {}
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFieldsAndScroll((err, values) => {
+      if (!err) {
+        console.log('Received values of form: ', values);
+      }
+    });
+  };
   //  关闭标签
   handleClose() {}
   render() {
@@ -136,6 +143,16 @@ class FindItem extends React.Component {
                 </Tag>
               );
             })}
+          </Form.Item>
+          <Form.Item
+            wrapperCol={{
+              xs: { span: 24, offset: 0 },
+              sm: { span: 16, offset: 8 },
+            }}
+          >
+            <Button type="primary" htmlType="submit">
+              提交
+            </Button>
           </Form.Item>
         </Form>
       </PageHeaderWrapper>
