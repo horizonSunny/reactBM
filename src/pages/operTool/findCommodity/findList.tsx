@@ -150,22 +150,11 @@ export default class FindList extends React.Component {
       recordInfo = {
         // categorys: record['categorys'],
         categorys: [
-          {
-            quickCategoryRelationId: 10,
-            categoryId: 2,
-            cateName: '医疗器械',
-            categoryId1: 33,
-            cateName1: '体温计',
-            categoryId2: 44,
-            cateName2: '啊啊啊',
-          },
-          {
-            quickCategoryRelationId: 11,
-            categoryId: 5,
-            cateName: '常备药品',
-            categoryId1: 2,
-            cateName1: '231',
-          },
+          [
+            { categoryId: 2, cateName: '医疗体检' },
+            { categoryId: 33, cateName: '健康体检' },
+            { categoryId: 276, cateName: '乳腺癌检测' },
+          ],
         ],
         // image: 'https://product-img-bucket.oss-cn-shanghai.aliyuncs.com/bitmap.png',
         image: '',
