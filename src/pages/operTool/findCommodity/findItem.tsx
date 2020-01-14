@@ -21,13 +21,32 @@ function beforeUpload(file) {
   }
   return isJpgOrPng && isLt2M;
 }
+// tags
+function Tags(props) {
+  return props.tags.map(item => {
+    return (
+      <Tag
+        closable
+        onClose={e => {
+          e.preventDefault();
+          props.handleClose(item);
+        }}
+      >
+        {item['cateName'] +
+          (item['cateName1'] ? '/' + item['cateName1'] : '') +
+          (item['cateName2'] ? '/' + item['cateName2'] : '')}
+      </Tag>
+    );
+  });
+}
 @connect(({ operTool }) => ({
   operTool,
 }))
 class FindItem extends React.Component {
   state = {
     loading: false,
-    tags: ['Tag 2', 'Tag 3', 'Unremovable', 'Tag 2', 'Tag 3', 'Unremovable', 'Tag 2', 'Tag 3'],
+    tags: this.props.operTool.categoryItem['categorys'],
+    imageUrl: this.props.operTool.categoryItem['image'],
   };
   // 上传图片变化
   handleChange = info => {
@@ -54,7 +73,15 @@ class FindItem extends React.Component {
     });
   };
   //  关闭标签
-  handleClose() {}
+  handleClose(tag) {
+    console.log('tag_', this.state.tags);
+    const newTags = this.state.tags.filter(item => {
+      return tag['quickCategoryRelationId'] !== item['quickCategoryRelationId'];
+    });
+    this.setState({
+      tags: newTags,
+    });
+  }
   render() {
     // 上传图片
     const uploadButton = (
@@ -98,12 +125,8 @@ class FindItem extends React.Component {
                 beforeUpload={beforeUpload}
                 onChange={this.handleChange}
               >
-                {this.props.operTool.categoryItem['image'] !== '' ? (
-                  <img
-                    src={this.props.operTool.categoryItem['image']}
-                    alt="avatar"
-                    style={{ width: '100%' }}
-                  />
+                {imageUrl ? (
+                  <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
                 ) : (
                   uploadButton
                 )}
@@ -122,19 +145,15 @@ class FindItem extends React.Component {
             })(<Input />)}
           </Form.Item>
           <Form.Item label="关联商品分类">
-            {tags.map(item => {
-              return (
-                <Tag
-                  closable
-                  onClose={e => {
-                    e.preventDefault();
-                    this.handleClose(item);
-                  }}
-                >
-                  {item}
-                </Tag>
-              );
-            })}
+            {getFieldDecorator('cateClassify', {
+              initialValue: this.props.operTool.categoryItem['quickCategoryName'],
+              rules: [
+                {
+                  required: true,
+                  message: '请选择关联商品分类!',
+                },
+              ],
+            })(<Tags tags={tags} handleClose={this.handleClose.bind(this)}></Tags>)}
           </Form.Item>
           <Form.Item
             wrapperCol={{
