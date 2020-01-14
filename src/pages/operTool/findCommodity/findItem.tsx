@@ -33,9 +33,9 @@ function Tags(props) {
           props.handleClose(item);
         }}
       >
-        {item['cateName'] +
-          (item['cateName1'] ? '/' + item['cateName1'] : '') +
-          (item['cateName2'] ? '/' + item['cateName2'] : '')}
+        {item.map((info, index) => {
+          return index + 1 !== item.length ? info['cateName'] + '/' : info['cateName'];
+        })}
       </Tag>
     );
   });
