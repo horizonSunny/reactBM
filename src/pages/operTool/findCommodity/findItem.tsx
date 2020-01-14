@@ -3,7 +3,7 @@ import { Tag, Form, Input, Upload, Icon, message, Button, TreeSelect } from 'ant
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import styles from './findItem.less';
 import { connect } from 'dva';
-import { filterTreeStatus } from '@/utils/filterProperty';
+import { filterTreeStatus, comparisonObject } from '@/utils/filterProperty';
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -86,29 +86,9 @@ class FindItem extends React.Component {
   //  关闭标签
   handleClose(tag) {
     console.log('tag_', this.state.tags);
-    let obj;
-    if (tag.hasOwnProperty('categoryId2')) {
-      obj = {
-        name: 'categoryId2',
-        id: tag['categoryId2'],
-      };
-    } else if (tag.hasOwnProperty('categoryId1')) {
-      obj = {
-        name: 'categoryId1',
-        id: tag['categoryId1'],
-      };
-    } else if (tag.hasOwnProperty('categoryId')) {
-      obj = {
-        name: 'categoryId',
-        id: tag['categoryId'],
-      };
-    }
-    const name = obj.name;
-    console.log('obj_', obj);
     const newTags = this.state.tags.filter(item => {
-      if (!item[name]) {
-        return item;
-      } else if (item[name] !== obj['id']) {
+      const compare = comparisonObject(item, tag);
+      if (!compare) {
         return item;
       }
     });
@@ -122,37 +102,7 @@ class FindItem extends React.Component {
     this.setState({ value });
     const newArr = value.split('_');
     const filterArr = filterTreeStatus(this.props.operTool.categoryTree, newArr, 0);
-    let obj;
-    switch (filterArr.length) {
-      case 1:
-        obj = {
-          cateName: filterArr[0]['name'],
-          categoryId: Number(filterArr[0]['id']),
-        };
-        break;
-      case 2:
-        obj = {
-          cateName: filterArr[0]['name'],
-          categoryId: Number(filterArr[0]['id']),
-          cateName1: filterArr[1]['name'],
-          categoryId1: Number(filterArr[1]['id']),
-        };
-        break;
-      case 3:
-        obj = {
-          cateName: filterArr[0]['name'],
-          categoryId: Number(filterArr[0]['id']),
-          cateName1: filterArr[1]['name'],
-          categoryId1: Number(filterArr[1]['id']),
-          cateName2: filterArr[2]['name'],
-          categoryId2: Number(filterArr[2]['id']),
-        };
-        break;
-      default:
-        break;
-    }
-    this.state.tags.push(obj);
-    console.log('testObj_', obj);
+    this.state.tags.push(filterArr);
   }
   render() {
     // 上传图片
