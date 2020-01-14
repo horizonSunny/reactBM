@@ -70,7 +70,6 @@ class FindItem extends React.Component {
     // this.props.onChange(fileList);
   };
   getPdfURL = () => {
-    const _this = this;
     const props = {
       name: 'file',
       action: serverUrl + '/admin/v1/uploadFile',
@@ -90,9 +89,29 @@ class FindItem extends React.Component {
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
+        const { dispatch } = this.props;
+        const ids = [];
+        this.state.tags.forEach(element => {
+          let length = element.length - 1;
+          ids.push(element[length]['categoryId']);
+        });
+        console.log('ids123_', this.state.tags);
+        console.log('ids_', ids);
+        if (dispatch) {
+          dispatch({
+            type: 'operTool/newCategoryItem',
+            payload: {
+              categoryIds: ids,
+              image: this.state.imageUrl,
+              quickCategoryId: this.props.operTool.categoryItem['quickCategoryId']
+                ? this.props.operTool.categoryItem['quickCategoryId']
+                : undefined,
+              quickCategoryName: values['cateName'],
+            },
+          });
+        }
       }
     });
-    console.log('this.state.imageUrl_', this.props.operTool.categoryItem);
   };
   //  关闭标签
   handleClose(tag) {

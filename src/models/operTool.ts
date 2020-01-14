@@ -5,6 +5,7 @@ import {
   reverseCategoryList,
   deleteCategoryItem,
   newCategoryItem,
+  editorCategoryItem,
 } from '@/services/operTool';
 import { categoryType } from '@/services/comdClassify';
 import { filterStatusTree } from '@/utils/filterProperty';
@@ -43,12 +44,15 @@ const CommodityModel = {
     },
     // 新增快速照耀
     *newCategoryItem({ payload }, { call, put }) {
-      const response = yield call(newCategoryItem, payload);
-      console.log('in_newCategoryItem_', response);
-      // yield put({
-      //   type: 'deleteCategory',
-      //   payload: payload.quickCategoryId,
-      // });
+      // const response = yield call(newCategoryItem, payload);
+      let response;
+      console.log('in_newCategoryItem_', payload);
+      if (payload.quickCategoryId) {
+        //编辑
+        response = yield call(editorCategoryItem, payload);
+      } else {
+        response = yield call(newCategoryItem, payload);
+      }
     },
     // 为生成treeSelect选择器data
     *categoryTree(_, { call, put }) {

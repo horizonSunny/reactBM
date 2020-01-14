@@ -138,34 +138,25 @@ export default class FindList extends React.Component {
     const { dispatch } = this.props;
     if (record) {
       // 编辑
+      console.log('in 摆埃及');
       recordInfo = {
         categorys: record['categorys'],
         image: record['image'],
         quickCategoryName: record['categoryName'],
         quickCategoryId: record['quickCategoryId'],
       };
-      obj.query = { id: record };
     } else {
       // 新建
       recordInfo = {
-        // categorys: record['categorys'],
-        categorys: [
-          [
-            { categoryId: 2, cateName: '医疗体检' },
-            { categoryId: 33, cateName: '健康体检' },
-            { categoryId: 276, cateName: '乳腺癌检测' },
-          ],
-        ],
-        // image: 'https://product-img-bucket.oss-cn-shanghai.aliyuncs.com/bitmap.png',
+        categorys: [],
         image: '',
-        quickCategoryName: '123',
+        quickCategoryName: '',
       };
     }
     dispatch({
       type: 'operTool/saveCategory',
       payload: recordInfo,
     });
-    console.log('obj_', obj);
     router.push(obj);
   }
   // reverse排序
