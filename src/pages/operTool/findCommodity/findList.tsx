@@ -145,8 +145,9 @@ export default class FindList extends React.Component {
       // 新建
       recordInfo = {
         categorys: record['categorys'],
+        // image: 'https://product-img-bucket.oss-cn-shanghai.aliyuncs.com/bitmap.png',
         image: '',
-        quickCategoryName: '',
+        quickCategoryName: '123',
       };
     }
     dispatch({

@@ -21,8 +21,8 @@ function beforeUpload(file) {
   }
   return isJpgOrPng && isLt2M;
 }
-@connect(({ commodityClassify }) => ({
-  commodityClassify,
+@connect(({ operTool }) => ({
+  operTool,
 }))
 class FindItem extends React.Component {
   state = {
@@ -98,8 +98,12 @@ class FindItem extends React.Component {
                 beforeUpload={beforeUpload}
                 onChange={this.handleChange}
               >
-                {imageUrl ? (
-                  <img src={imageUrl} alt="avatar" style={{ width: '100%' }} />
+                {this.props.operTool.categoryItem['image'] !== '' ? (
+                  <img
+                    src={this.props.operTool.categoryItem['image']}
+                    alt="avatar"
+                    style={{ width: '100%' }}
+                  />
                 ) : (
                   uploadButton
                 )}
@@ -108,6 +112,7 @@ class FindItem extends React.Component {
           </Form.Item>
           <Form.Item label="分类名称">
             {getFieldDecorator('cateName', {
+              initialValue: this.props.operTool.categoryItem['quickCategoryName'],
               rules: [
                 {
                   required: true,
