@@ -92,7 +92,7 @@ class FindItem extends React.Component {
         console.log('Received values of form: ', values);
       }
     });
-    console.log('this.state.imageUrl_', this.state.imageUrl);
+    console.log('this.state.imageUrl_', this.props.operTool.categoryItem);
   };
   //  关闭标签
   handleClose(tag) {
