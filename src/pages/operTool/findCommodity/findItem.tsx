@@ -86,8 +86,31 @@ class FindItem extends React.Component {
   //  关闭标签
   handleClose(tag) {
     console.log('tag_', this.state.tags);
+    let obj;
+    if (tag.hasOwnProperty('categoryId2')) {
+      obj = {
+        name: 'categoryId2',
+        id: tag['categoryId2'],
+      };
+    } else if (tag.hasOwnProperty('categoryId1')) {
+      obj = {
+        name: 'categoryId1',
+        id: tag['categoryId1'],
+      };
+    } else if (tag.hasOwnProperty('categoryId')) {
+      obj = {
+        name: 'categoryId',
+        id: tag['categoryId'],
+      };
+    }
+    const name = obj.name;
+    console.log('obj_', obj);
     const newTags = this.state.tags.filter(item => {
-      return tag['quickCategoryRelationId'] !== item['quickCategoryRelationId'];
+      if (!item[name]) {
+        return item;
+      } else if (item[name] !== obj['id']) {
+        return item;
+      }
     });
     this.setState({
       tags: newTags,

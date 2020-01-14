@@ -43,13 +43,17 @@ export default class FindList extends React.Component {
         dataIndex: 'categorys',
         key: 'categorys',
         render: value => (
-          <a>
+          <span>
             {value &&
               value.length !== 0 &&
               value.map(item => {
-                return item['cateName'] + ',';
+                return item.map((info, index) => {
+                  return index + 1 !== item.length
+                    ? info['cateName'] + '/'
+                    : info['cateName'] + ', ';
+                });
               })}
-          </a>
+          </span>
         ),
       },
       {
