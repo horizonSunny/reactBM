@@ -3,6 +3,7 @@ import { Tag, Form, Input, Upload, Icon, message, Button, TreeSelect } from 'ant
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import styles from './findItem.less';
 import { connect } from 'dva';
+import { filterTreeStatus } from '@/utils/filterProperty';
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -40,30 +41,6 @@ function Tags(props) {
   });
 }
 
-const treeData = [
-  {
-    title: 'Node1',
-    value: '0-0',
-    key: '0-0',
-    children: [
-      {
-        title: 'Child Node1',
-        value: '0-0-1',
-        key: '0-0-1',
-      },
-      {
-        title: 'Child Node2',
-        value: '0-0-2',
-        key: '0-0-2',
-      },
-    ],
-  },
-  {
-    title: 'Node2',
-    value: '0-1',
-    key: '0-1',
-  },
-];
 @connect(({ operTool }) => ({
   operTool,
 }))
@@ -118,8 +95,12 @@ class FindItem extends React.Component {
   }
   // 树状选择
   treeSelectChange(value) {
-    console.log('value_', value);
-    this.setState({ value });
+    // console.log('value_', value);
+    const newArr = value.split('_');
+    console.log('testOnewArrbj_', newArr);
+    const testObj = filterTreeStatus(this.props.operTool.categoryTree, newArr, 0);
+    console.log('testObj_', testObj);
+    // this.setState({ value });
   }
   render() {
     // 上传图片

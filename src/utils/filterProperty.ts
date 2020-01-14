@@ -59,9 +59,28 @@ export function filterClassify(obj, level = 0) {
 export function filterStatusTree(obj, key = '') {
   obj.forEach(data => {
     data.value = key === '' ? data.id + '' : key + '_' + data.id;
-    data.key = data.id;
+    data.key = data.id + '';
     data.title = data.cateName;
     data.children && data.children.length !== 0 && filterStatusTree(data.children, data.value);
   });
   return obj;
+}
+// 对商品进行过滤，找出选中节点的父类节点
+export function filterTreeStatus(obj, array, index = 0, resultTree?) {
+  console.log('array_info_', array);
+  if (!resultTree) {
+    resultTree = [];
+  }
+  obj.forEach(data => {
+    if (data.key === array[index]) {
+      console.log('data.cateName_', data.cateName);
+      resultTree.push({
+        name: data.cateName,
+        id: data.id,
+      });
+      let newIndex = index + 1;
+      array.length >= newIndex && filterTreeStatus(data.children, array, newIndex, resultTree);
+    }
+  });
+  return resultTree;
 }
