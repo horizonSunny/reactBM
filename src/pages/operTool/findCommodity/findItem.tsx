@@ -72,6 +72,7 @@ class FindItem extends React.Component {
     loading: false,
     tags: this.props.operTool.categoryItem['categorys'],
     imageUrl: this.props.operTool.categoryItem['image'],
+    value: '',
   };
   // 上传图片变化
   handleChange = info => {
@@ -106,6 +107,11 @@ class FindItem extends React.Component {
     this.setState({
       tags: newTags,
     });
+  }
+  // 树状选择
+  treeSelectChange(value) {
+    console.log('value_', value);
+    this.setState({ value });
   }
   render() {
     // 上传图片
@@ -178,7 +184,28 @@ class FindItem extends React.Component {
                   message: '请选择关联商品分类!',
                 },
               ],
-            })(<Tags tags={tags} handleClose={this.handleClose.bind(this)}></Tags>)}
+            })(
+              <div>
+                <Tags tags={tags} handleClose={this.handleClose.bind(this)}></Tags>
+                <TreeSelect
+                  style={{ width: '70%' }}
+                  label="请选择分类"
+                  value={this.state.value}
+                  dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+                  treeData={treeData}
+                  placeholder="Please select"
+                  treeDefaultExpandAll
+                  onChange={this.treeSelectChange.bind(this)}
+                />
+
+                <Button
+                  style={{ marginLeft: '10px' }}
+                  type="primary"
+                  icon="plus-circle"
+                  size="small"
+                />
+              </div>,
+            )}
           </Form.Item>
           <Form.Item
             wrapperCol={{
