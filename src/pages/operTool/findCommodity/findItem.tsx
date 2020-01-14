@@ -74,6 +74,14 @@ class FindItem extends React.Component {
     imageUrl: this.props.operTool.categoryItem['image'],
     value: '',
   };
+  componentDidMount() {
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'operTool/categoryTree',
+      });
+    }
+  }
   // 上传图片变化
   handleChange = info => {
     if (info.file.status === 'uploading') {
@@ -192,7 +200,7 @@ class FindItem extends React.Component {
                   label="请选择分类"
                   value={this.state.value}
                   dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
-                  treeData={treeData}
+                  treeData={this.props.operTool.categoryTree}
                   placeholder="Please select"
                   treeDefaultExpandAll
                   onChange={this.treeSelectChange.bind(this)}

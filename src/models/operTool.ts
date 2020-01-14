@@ -6,6 +6,7 @@ import {
   deleteCategoryItem,
   newCategoryItem,
 } from '@/services/operTool';
+import { categoryType } from '@/services/comdClassify';
 const CommodityModel = {
   namespace: 'operTool',
   state: {
@@ -48,6 +49,15 @@ const CommodityModel = {
       //   payload: payload.quickCategoryId,
       // });
     },
+    // 为生成treeSelect选择器data
+    *categoryTree(_, { call, put }) {
+      const response = yield call(categoryType);
+      console.log('response_categoryTree_', response);
+      yield put({
+        type: 'saveCategoryTree',
+        payload: response,
+      });
+    },
   },
 
   reducers: {
@@ -89,6 +99,13 @@ const CommodityModel = {
       return {
         ...state,
         categoryItem: action.payload,
+      };
+    },
+    // 保存分类数据
+    saveCategoryTree(state, action) {
+      return {
+        ...state,
+        categoryTree: action.payload.data,
       };
     },
   },
