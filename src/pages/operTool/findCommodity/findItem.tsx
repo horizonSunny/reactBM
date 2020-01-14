@@ -83,6 +83,10 @@ class FindItem extends React.Component {
   // 提交
   handleSubmit = e => {
     e.preventDefault();
+    this.props.form.setFieldsValue({
+      img: this.state.imageUrl ? this.state.imageUrl : '',
+      cateClassify: this.state.tags ? this.state.tags : '',
+    });
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
         console.log('Received values of form: ', values);
