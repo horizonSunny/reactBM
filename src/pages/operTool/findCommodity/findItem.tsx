@@ -96,11 +96,40 @@ class FindItem extends React.Component {
   // 树状选择
   treeSelectChange(value) {
     // console.log('value_', value);
+    this.setState({ value });
     const newArr = value.split('_');
-    console.log('testOnewArrbj_', newArr);
-    const testObj = filterTreeStatus(this.props.operTool.categoryTree, newArr, 0);
-    console.log('testObj_', testObj);
-    // this.setState({ value });
+    const filterArr = filterTreeStatus(this.props.operTool.categoryTree, newArr, 0);
+    let obj;
+    switch (filterArr.length) {
+      case 1:
+        obj = {
+          cateName: filterArr[0]['name'],
+          categoryId: Number(filterArr[0]['id']),
+        };
+        break;
+      case 2:
+        obj = {
+          cateName: filterArr[0]['name'],
+          categoryId: Number(filterArr[0]['id']),
+          cateName1: filterArr[1]['name'],
+          categoryId1: Number(filterArr[1]['id']),
+        };
+        break;
+      case 3:
+        obj = {
+          cateName: filterArr[0]['name'],
+          categoryId: Number(filterArr[0]['id']),
+          cateName1: filterArr[1]['name'],
+          categoryId1: Number(filterArr[1]['id']),
+          cateName2: filterArr[2]['name'],
+          categoryId2: Number(filterArr[2]['id']),
+        };
+        break;
+      default:
+        break;
+    }
+    this.state.tags.push(obj);
+    console.log('testObj_', obj);
   }
   render() {
     // 上传图片
@@ -184,14 +213,22 @@ class FindItem extends React.Component {
                   treeData={this.props.operTool.categoryTree}
                   placeholder="Please select"
                   onChange={this.treeSelectChange.bind(this)}
+                  suffixIcon={
+                    <Icon
+                      type="plus-circle"
+                      style={{
+                        fontSize: '14px',
+                      }}
+                    />
+                  }
                 />
 
-                <Button
+                {/* <Button
                   style={{ marginLeft: '10px' }}
                   type="primary"
                   icon="plus-circle"
                   size="small"
-                />
+                /> */}
               </div>,
             )}
           </Form.Item>

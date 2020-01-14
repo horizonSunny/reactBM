@@ -67,13 +67,11 @@ export function filterStatusTree(obj, key = '') {
 }
 // 对商品进行过滤，找出选中节点的父类节点
 export function filterTreeStatus(obj, array, index = 0, resultTree?) {
-  console.log('array_info_', array);
   if (!resultTree) {
     resultTree = [];
   }
   obj.forEach(data => {
     if (data.key === array[index]) {
-      console.log('data.cateName_', data.cateName);
       resultTree.push({
         name: data.cateName,
         id: data.id,
