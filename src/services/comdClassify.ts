@@ -2,7 +2,11 @@ import request from '@/utils/request';
 
 // 获取商品种类数据
 export async function categoryType() {
-  return request('/admin/v1/category/productype');
+  return request('/admin/v1/category/getCategorys', {
+    params: {
+      status: 0,
+    },
+  });
 }
 // 根据id查询商品信息
 // export async function product(params: any) {

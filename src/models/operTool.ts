@@ -7,6 +7,7 @@ import {
   newCategoryItem,
 } from '@/services/operTool';
 import { categoryType } from '@/services/comdClassify';
+import { filterStatusTree } from '@/utils/filterProperty';
 const CommodityModel = {
   namespace: 'operTool',
   state: {
@@ -103,9 +104,11 @@ const CommodityModel = {
     },
     // 保存分类数据
     saveCategoryTree(state, action) {
+      const result = filterStatusTree(action.payload.data);
+      console.log('result_', result);
       return {
         ...state,
-        categoryTree: action.payload.data,
+        categoryTree: result,
       };
     },
   },

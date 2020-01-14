@@ -202,7 +202,6 @@ class FindItem extends React.Component {
                   dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
                   treeData={this.props.operTool.categoryTree}
                   placeholder="Please select"
-                  treeDefaultExpandAll
                   onChange={this.treeSelectChange.bind(this)}
                 />
 

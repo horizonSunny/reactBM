@@ -53,3 +53,15 @@ export function filterClassify(obj, level = 0) {
   });
   return resultClassify;
 }
+
+// 对商品分类做过滤生成带有key和value对分类
+// 商品类别过滤器
+export function filterStatusTree(obj, key = '') {
+  obj.forEach(data => {
+    data.value = key === '' ? data.id + '' : key + '_' + data.id;
+    data.key = data.id;
+    data.title = data.cateName;
+    data.children && data.children.length !== 0 && filterStatusTree(data.children, data.value);
+  });
+  return obj;
+}
