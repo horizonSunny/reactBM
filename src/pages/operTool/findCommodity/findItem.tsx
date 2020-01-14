@@ -27,7 +27,20 @@ function beforeUpload(file) {
 class FindItem extends React.Component {
   state = {
     loading: false,
-    tags: ['Unremovable', 'Tag 2', 'Tag 3'],
+    tags: [
+      'Unremovable',
+      'Tag 2',
+      'Tag 3',
+      'Unremovable',
+      'Tag 2',
+      'Tag 3',
+      'Unremovable',
+      'Tag 2',
+      'Tag 3',
+      'Unremovable',
+      'Tag 2',
+      'Tag 3',
+    ],
   };
   // 上传图片变化
   handleChange = info => {
