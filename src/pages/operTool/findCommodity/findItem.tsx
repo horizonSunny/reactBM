@@ -3,6 +3,7 @@ import { Tag, Form, Input, Upload, Icon, message, Button, TreeSelect } from 'ant
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import styles from './findItem.less';
 import { connect } from 'dva';
+import { serverUrl } from '@/utils/request';
 import { filterTreeStatus, comparisonObject } from '@/utils/filterProperty';
 
 function getBase64(img, callback) {
@@ -60,21 +61,26 @@ class FindItem extends React.Component {
     }
   }
   // 上传图片变化
-  handleChange = info => {
-    if (info.file.status === 'uploading') {
-      this.setState({ loading: true });
-      return;
-    }
-    if (info.file.status === 'done') {
-      // Get this url from response in real world.
-      getBase64(info.file.originFileObj, imageUrl =>
-        this.setState({
-          imageUrl,
-          loading: false,
-        }),
-      );
-    }
+  handleChange = ({ fileList, file, event }) => {
+    console.log('file_', file);
+    console.log('fileList_', fileList);
+    this.setState({
+      imageUrl: file['response'] ? file['response']['data'] : '',
+    });
+    // this.props.onChange(fileList);
   };
+  getPdfURL = () => {
+    const _this = this;
+    const props = {
+      name: 'file',
+      action: serverUrl + '/admin/v1/uploadFile',
+      headers: {
+        authorization: sessionStorage.getItem('token'),
+      },
+    };
+    return props;
+  };
+  // 提交
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
@@ -82,6 +88,7 @@ class FindItem extends React.Component {
         console.log('Received values of form: ', values);
       }
     });
+    console.log('this.state.imageUrl_', this.state.imageUrl);
   };
   //  关闭标签
   handleClose(tag) {
@@ -139,11 +146,10 @@ class FindItem extends React.Component {
               ],
             })(
               <Upload
-                name="avatar"
+                {...this.getPdfURL()}
                 listType="picture-card"
                 className="avatar-uploader"
                 showUploadList={false}
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 beforeUpload={beforeUpload}
                 onChange={this.handleChange}
               >
