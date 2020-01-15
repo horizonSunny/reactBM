@@ -30,7 +30,15 @@ export default class FindList extends React.Component {
         title: 'icon',
         dataIndex: 'image',
         key: 'quickCategoryId',
-        render: text => <img src={text} />,
+        render: text => (
+          <img
+            src={text}
+            style={{
+              width: '80px',
+              height: '80px',
+            }}
+          />
+        ),
       },
       {
         title: '名称',

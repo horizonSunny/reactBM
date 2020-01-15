@@ -3,6 +3,7 @@ import { Tag, Form, Input, Upload, Icon, message, Button, TreeSelect } from 'ant
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import styles from './findItem.less';
 import { connect } from 'dva';
+import router from 'umi/router';
 import { serverUrl } from '@/utils/request';
 import { filterTreeStatus, comparisonObject } from '@/utils/filterProperty';
 
@@ -108,6 +109,8 @@ class FindItem extends React.Component {
                 : undefined,
               quickCategoryName: values['cateName'],
             },
+          }).then(res => {
+            router.push('/operTool/findCommodity');
           });
         }
       }
