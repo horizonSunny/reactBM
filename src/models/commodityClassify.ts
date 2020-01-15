@@ -25,6 +25,9 @@ const CommodityModel = {
     commodityInfo: commodityMessage.data,
     // 分类下商品的查询关键字
     searchKeyword: '',
+    // 是否切换分类类,true代表刷新完,false代表刚分类切换过
+    isSwitchover: true,
+    selectedRowKeys: [],
   },
   effects: {
     // 获取分类类型,对分类类型进行切分,化为分别的三级分类样式
@@ -63,6 +66,12 @@ const CommodityModel = {
           },
         };
       }
+      // 清空数据
+      yield put({
+        type: 'modifyCommodity',
+        payload: [],
+      });
+      // 放入刷新获取的数据
       yield put({
         type: 'resetCommodity',
         payload: response.data,
@@ -187,6 +196,21 @@ const CommodityModel = {
       return {
         ...state,
         commodityInfo: action.payload,
+      };
+    },
+    // 修改刷新状态
+    modifySwitchover(state, action) {
+      return {
+        ...state,
+        isSwitchover: action.payload,
+      };
+    },
+    // 修改清空选中商品数据
+    modifyCommodity(state, action) {
+      console.log('action_modifyCommodity_', action.payload);
+      return {
+        ...state,
+        selectedRowKeys: action.payload,
       };
     },
   },

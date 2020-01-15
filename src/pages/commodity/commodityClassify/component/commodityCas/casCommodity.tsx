@@ -11,7 +11,7 @@ import { connect } from 'dva';
 }))
 export default class CasCommodity extends React.Component {
   state = {
-    selectedRowKeys: [],
+    selectedRowKeys: this.props.commodityClassify.selectedRowKeys,
   };
   components = {
     body: {
@@ -20,7 +20,14 @@ export default class CasCommodity extends React.Component {
   };
   onSelectChange = selectedRowKeys => {
     console.log('selectedRowKeys changed: ', selectedRowKeys);
-    this.setState({ selectedRowKeys });
+    // this.setState({ selectedRowKeys });
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'commodityClassify/modifyCommodity',
+        payload: selectedRowKeys,
+      });
+    }
   };
   downSelect = () => {
     return (
@@ -60,7 +67,8 @@ export default class CasCommodity extends React.Component {
         key: 'productId',
       },
     ];
-    const { selectedRowKeys } = this.state;
+    // 这里必须用状态管理中的数据,要是this.state会留存上一次的数据
+    const { selectedRowKeys } = this.props.commodityClassify;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,

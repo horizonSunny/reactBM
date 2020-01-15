@@ -22,7 +22,10 @@ export class BodyRow extends React.Component {
   selectCas(record) {
     console.log('record_', record);
     const { dispatch } = this.props;
-    if (dispatch) {
+    // 查看当前选择的分类id
+    const item = this.props.commodityClassify;
+    const arr = [item.casOneId, item.casTwoId, item.casThreeId];
+    if (dispatch && !arr.includes(record.id)) {
       dispatch({
         type: 'commodityClassify/selectCas',
         payload: record,
