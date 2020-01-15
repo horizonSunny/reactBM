@@ -3,7 +3,12 @@ import { Reducer } from 'redux';
 
 // 以下是mock数据
 import classifyInfo, { commodityMessage } from '../../mock/commdityClassify';
-import { categoryType, categoryProduct, deleteCategory } from '@/services/comdClassify';
+import {
+  categoryType,
+  categoryProduct,
+  deleteCategory,
+  reorderCategory,
+} from '@/services/comdClassify';
 
 import { filterClassify } from '@/utils/filterProperty';
 
@@ -87,6 +92,36 @@ const CommodityModel = {
         payload: casInfoThree,
       });
     },
+    // 调换各级分类的位置
+    *reverseCasInfo({ payload }, { select, call, put }) {
+      const state = yield select(state => state.commodityClassify);
+      console.log('state_', state);
+      const { dragIndex, hoverIndex } = payload;
+      let reverseArr;
+      switch (payload.classify) {
+        case 1:
+          reverseArr = state.casInfoOne;
+          break;
+        case 2:
+          reverseArr = state.casInfoTwo;
+          break;
+        case 3:
+          reverseArr = state.casInfoThree;
+          break;
+        default:
+          break;
+      }
+      const idArr = [reverseArr[dragIndex]['id'], reverseArr[hoverIndex]['id']];
+      yield call(reorderCategory, { categoryIds: idArr });
+      // 改变顺序
+      yield put({
+        type: 'reverseCas',
+        payload: {
+          ...payload,
+          reverseArr,
+        },
+      });
+    },
   },
 
   reducers: {
@@ -113,21 +148,8 @@ const CommodityModel = {
     // 对分类位置进行变换
     reverseCas(state, action) {
       const info = action.payload;
-      let reverseArr;
+      let reverseArr = info.reverseArr;
       let item;
-      switch (info.classify) {
-        case 1:
-          reverseArr = state.casInfoOne;
-          break;
-        case 2:
-          reverseArr = state.casInfoTwo;
-          break;
-        case 3:
-          reverseArr = state.casInfoThree;
-          break;
-        default:
-          break;
-      }
       item = reverseArr[info.dragIndex];
       reverseArr[info.dragIndex] = reverseArr[info.hoverIndex];
       reverseArr[info.hoverIndex] = item;

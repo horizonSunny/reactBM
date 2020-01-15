@@ -22,7 +22,7 @@ export default class CasTable extends React.Component {
       const { dispatch } = this.props;
       if (dispatch) {
         dispatch({
-          type: 'commodityClassify/reverseCas',
+          type: 'commodityClassify/reverseCasInfo',
           payload: {
             classify: record.classify,
             dragIndex,

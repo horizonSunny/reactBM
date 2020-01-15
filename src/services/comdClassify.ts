@@ -19,6 +19,13 @@ export async function deleteCategory(params: any) {
     data: params,
   });
 }
+// 分类顺序调整
+export async function reorderCategory(params: any) {
+  return request('/admin/v1/category/update/order', {
+    method: 'PUT',
+    data: params,
+  });
+}
 // // 编辑商品
 // export async function editorProduct(params: any) {
 //   return request('/admin/v1/product', {
