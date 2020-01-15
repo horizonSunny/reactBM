@@ -3,7 +3,7 @@ import { Reducer } from 'redux';
 
 // 以下是mock数据
 import classifyInfo, { commodityMessage } from '../../mock/commdityClassify';
-import { categoryType, categoryProduct } from '@/services/comdClassify';
+import { categoryType, categoryProduct, deleteCategory } from '@/services/comdClassify';
 
 import { filterClassify } from '@/utils/filterProperty';
 
@@ -71,9 +71,20 @@ const CommodityModel = {
     // 移除选中药品
     *removeCommodity(_, { select, call, put }) {
       // 清空选中数据
+      const state = yield select(state => state);
+      console.log('state_', state);
+      const { casThreeId, selectedRowKeys, casInfoThree } = state.commodityClassify;
+      const response = yield call(deleteCategory, {
+        categoryId: casThreeId,
+        productIds: selectedRowKeys,
+      });
       yield put({
         type: 'modifyCommodity',
         payload: [],
+      });
+      yield put({
+        type: 'selectCas',
+        payload: casInfoThree,
       });
     },
   },
@@ -172,21 +183,6 @@ const CommodityModel = {
       return {
         ...state,
         searchKeyword: searchValue,
-      };
-    },
-    // 移除选中的药物
-    removeCommodity(state, action) {
-      const selectArr = action.payload;
-      const removeEndArr = state.commodityInfo.pageList.filter(item => {
-        return !selectArr.includes(item['productId']);
-      });
-      const obj = {
-        ...state.commodityInfo,
-        pageList: removeEndArr,
-      };
-      return {
-        ...state,
-        commodityInfo: obj,
       };
     },
     // 修改药物列表

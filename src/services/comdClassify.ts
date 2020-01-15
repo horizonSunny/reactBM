@@ -12,6 +12,13 @@ export async function categoryProduct(params: any) {
     params: params,
   });
 }
+// 从分类中移除产品
+export async function deleteCategory(params: any) {
+  return request('/admin/v1/category/delete', {
+    method: 'delete',
+    data: params,
+  });
+}
 // // 编辑商品
 // export async function editorProduct(params: any) {
 //   return request('/admin/v1/product', {
