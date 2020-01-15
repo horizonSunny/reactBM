@@ -1,17 +1,17 @@
 import request from '@/utils/request';
 
 // 获取商品种类数据
-export async function categoryType() {
+export async function categoryType(params: any) {
   return request('/admin/v1/category/getCategorys', {
-    params: {
-      status: 0,
-    },
+    params: params,
   });
 }
-// 根据id查询商品信息
-// export async function product(params: any) {
-//   return request('/admin/v1/product/' + params['id']);
-// }
+// 根据第三级分类id查询商品信息
+export async function categoryProduct(params: any) {
+  return request('/admin/v1/category/search/categoryProduct', {
+    params: params,
+  });
+}
 // // 编辑商品
 // export async function editorProduct(params: any) {
 //   return request('/admin/v1/product', {
