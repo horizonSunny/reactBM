@@ -122,6 +122,37 @@ const CommodityModel = {
         },
       });
     },
+    // 依据关键字进行查询
+    *selectCasInKeyword({ payload, callback }, { select, call, put }) {
+      const state = yield select(state => state.commodityClassify);
+      const id = state.casThreeId;
+      let response;
+      if (id) {
+        response = yield call(categoryProduct, {
+          categoryId: id,
+          keyword: state.searchKeyword,
+          pageNumber: 0,
+          pageSize: 10000,
+          status: 0,
+        });
+      } else {
+        response = {
+          data: {
+            pageList: [],
+          },
+        };
+      }
+      // 清空数据
+      yield put({
+        type: 'modifyCommodity',
+        payload: [],
+      });
+      // 放入刷新获取的数据
+      yield put({
+        type: 'resetCommodity',
+        payload: response.data,
+      });
+    },
   },
 
   reducers: {

@@ -46,6 +46,15 @@ export default class CasCommodity extends React.Component {
       });
     }
   };
+  onSearch = e => {
+    console.log('onSearch_', e);
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'commodityClassify/selectCasInKeyword',
+      });
+    }
+  };
   // 移除选中的药物
   removeCom() {
     const { dispatch } = this.props;
@@ -100,6 +109,7 @@ export default class CasCommodity extends React.Component {
             onChange={this.search.bind(this)}
             style={{ width: 200 }}
             value={this.props.commodityClassify.searchKeyword}
+            onSearch={this.onSearch.bind(this)}
           />
         </div>
         <Table
