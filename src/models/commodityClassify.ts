@@ -6,14 +6,7 @@ import classifyInfo, { commodityMessage } from '../../mock/commdityClassify';
 import { categoryType, categoryProduct } from '@/services/comdClassify';
 
 import { filterClassify } from '@/utils/filterProperty';
-// import {
-//   productList,
-//   product,
-//   editorProduct,
-//   newProduct,
-//   productype,
-//   shelve,
-// } from '@/services/commodity';
+
 function findChildren(data, id) {
   let item = data.find(item => item.id === id);
   return item['children'];
@@ -39,8 +32,6 @@ const CommodityModel = {
         type: 'sortCas',
         payload: response,
       });
-      // const commdityClassify = filterClassify(state.classifyInfo.data);
-      console.log('classification_response_', response);
     },
     // 选中分类，改变分类选中项，同时发送请求查找最新商品
     *selectCas({ payload, callback }, { select, call, put }) {
@@ -75,6 +66,14 @@ const CommodityModel = {
       yield put({
         type: 'resetCommodity',
         payload: response.data,
+      });
+    },
+    // 移除选中药品
+    *removeCommodity(_, { select, call, put }) {
+      // 清空选中数据
+      yield put({
+        type: 'modifyCommodity',
+        payload: [],
       });
     },
   },
@@ -192,7 +191,7 @@ const CommodityModel = {
     },
     // 修改药物列表
     resetCommodity(state, action) {
-      console.log('action_', action);
+      console.log('action_resetCommodity_', action);
       return {
         ...state,
         commodityInfo: action.payload,

@@ -10,9 +10,7 @@ import { connect } from 'dva';
   commodityClassify,
 }))
 export default class CasCommodity extends React.Component {
-  state = {
-    selectedRowKeys: this.props.commodityClassify.selectedRowKeys,
-  };
+  state = {};
   components = {
     body: {
       row: commodityItem,
@@ -51,11 +49,9 @@ export default class CasCommodity extends React.Component {
   // 移除选中的药物
   removeCom() {
     const { dispatch } = this.props;
-    const { selectedRowKeys } = this.state;
     if (dispatch) {
       dispatch({
         type: 'commodityClassify/removeCommodity',
-        payload: selectedRowKeys,
       });
     }
   }
