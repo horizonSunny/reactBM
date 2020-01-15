@@ -20,7 +20,11 @@ export default class Table extends React.Component {
       dispatch({
         type: 'commodityClassify/classification',
       }).then(() => {
-        console.log('this.props.commodityClassify_', this.props.commodityClassify);
+        // 查询单个分类的商品
+        dispatch({
+          type: 'commodityClassify/selectCas',
+          payload: this.props.commodityClassify.casInfoOne[0],
+        });
       });
     }
   }
