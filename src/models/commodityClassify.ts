@@ -83,13 +83,14 @@ const CommodityModel = {
         categoryId: casThreeId,
         productIds: selectedRowKeys,
       });
+      // 从当前列表中过滤出移除后的选项
+      yield put({
+        type: 'filterRmAfter',
+      });
+      // 清空已经选择的商品
       yield put({
         type: 'modifyCommodity',
         payload: [],
-      });
-      yield put({
-        type: 'selectCas',
-        payload: casInfoThree,
       });
     },
     // 调换各级分类的位置
@@ -259,6 +260,17 @@ const CommodityModel = {
       return {
         ...state,
         selectedRowKeys: action.payload,
+      };
+    },
+    // 从当前选中的列表中移除删除项
+    filterRmAfter(state) {
+      const newCommodityArr = state.commodityInfo.pageList.filter(item => {
+        return state.selectedRowKeys.indexOf(item.productId) < 0;
+      });
+      state.commodityInfo.pageList = newCommodityArr;
+      return {
+        ...state,
+        commodityInfo: state.commodityInfo,
       };
     },
   },
