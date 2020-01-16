@@ -2,6 +2,7 @@ import React from 'react';
 import { Table, Button } from 'antd';
 import { DragableBodyRow } from './casTr';
 import { connect } from 'dva';
+import AddClassifyModal from '../../modelComponent/addClassify';
 
 @connect(({ commodityClassify }) => ({
   commodityClassify,
@@ -32,6 +33,14 @@ export default class CasTable extends React.Component {
       }
     }
   };
+  // 子类弹出框
+  onRef = ref => {
+    this.child = ref;
+  };
+  clickModal(classifyName) {
+    console.log('click', this.child);
+    this.child.showModal(classifyName);
+  }
   render() {
     const columns = [
       {
@@ -63,6 +72,7 @@ export default class CasTable extends React.Component {
             position: 'relative',
             left: '1px',
           }}
+          onClick={this.clickModal.bind(this, classifyName)}
         >
           新建{classifyName}分类
         </Button>
@@ -78,6 +88,7 @@ export default class CasTable extends React.Component {
             moveRow: this.moveRow.bind(this, record),
           })}
         />
+        <AddClassifyModal onRef={this.onRef}></AddClassifyModal>
       </div>
     );
   }
