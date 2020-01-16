@@ -3,6 +3,7 @@ import { Table, Input, Button } from 'antd';
 import { commodityItem } from './commodityItem';
 const { Search } = Input;
 import styles from './casCommodity.less';
+import AddCommodity from '../../modelComponent/addCommodity';
 
 import { connect } from 'dva';
 
@@ -64,6 +65,13 @@ export default class CasCommodity extends React.Component {
       });
     }
   }
+  //  为此分类下添加商品
+  onRef = ref => {
+    this.child = ref;
+  };
+  clickModal() {
+    this.child.showModal();
+  }
   render() {
     const columns = [
       {
@@ -120,6 +128,7 @@ export default class CasCommodity extends React.Component {
             size="small"
             shape="circle"
             icon="plus"
+            onClick={this.clickModal.bind(this)}
           />
         </div>
         <Table
@@ -133,6 +142,7 @@ export default class CasCommodity extends React.Component {
             total: this.props.commodityClassify.commodityInfo.pageList.length,
           }}
         />
+        <AddCommodity onRef={this.onRef}></AddCommodity>
       </div>
     );
   }
