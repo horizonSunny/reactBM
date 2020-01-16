@@ -111,6 +111,16 @@ export default class CasCommodity extends React.Component {
             value={this.props.commodityClassify.searchKeyword}
             onSearch={this.onSearch.bind(this)}
           />
+          <Button
+            type="danger"
+            style={{
+              fontSize: '14px',
+              width: '20px',
+            }}
+            size="small"
+            shape="circle"
+            icon="plus"
+          />
         </div>
         <Table
           columns={columns}
