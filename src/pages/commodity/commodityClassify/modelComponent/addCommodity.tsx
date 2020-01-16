@@ -18,6 +18,14 @@ export default class AddCommodityModal extends React.Component {
     },
   };
   showModal = () => {
+    const { dispatch } = this.props;
+    console.log('this.props.commodityClassify_', this.props.commodityClassify.selectedProductKeys);
+    if (dispatch) {
+      dispatch({
+        type: 'commodityClassify/productSearch',
+        payload: '',
+      });
+    }
     this.setState({
       visible: true,
     });
@@ -27,11 +35,7 @@ export default class AddCommodityModal extends React.Component {
     const { dispatch } = this.props;
     if (dispatch) {
       dispatch({
-        type: 'commodityClassify/categoryInsert',
-        payload: {
-          classify: this.state.classify,
-          cateName: this.state.newCateName,
-        },
+        type: 'commodityClassify/productInsert',
       });
     }
     this.setState({
@@ -40,19 +44,19 @@ export default class AddCommodityModal extends React.Component {
   };
 
   handleCancel = e => {
-    console.log(e);
-    this.setState({
-      visible: false,
-    });
+    console.log('handleCancel_', e);
+    // 清空选中项
+    const { dispatch } = this.props;
+    if (dispatch) {
+      dispatch({
+        type: 'commodityClassify/modifyProduct',
+        payload: [],
+      });
+      this.setState({
+        visible: false,
+      });
+    }
   };
-  // input输入改变
-  onChange(e) {
-    const { value } = e.target;
-    console.log('value_', value);
-    this.setState({
-      newCateName: value,
-    });
-  }
   // 搜索
   onSearch(e) {
     console.log('e_', e);
@@ -88,6 +92,7 @@ export default class AddCommodityModal extends React.Component {
             style={{
               marginLeft: '20px',
             }}
+            onClick={this.handleOk.bind(this)}
           >
             添加
           </Button>
@@ -125,7 +130,6 @@ export default class AddCommodityModal extends React.Component {
       <div>
         <Modal
           visible={this.state.visible}
-          onOk={this.handleOk}
           onCancel={this.handleCancel}
           footer={null}
           style={{

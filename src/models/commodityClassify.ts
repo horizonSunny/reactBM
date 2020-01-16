@@ -192,12 +192,12 @@ const CommodityModel = {
         },
       });
     },
-    // 往三级分类里面添加弹窗商品信息
-    *productInsert({ payload }, { select, call, put }) {
+    // 往三级分类里面添加商品信息
+    *productInsert(_, { select, call, put }) {
       const state = yield select(state => state.commodityClassify);
       const response = yield call(productInsert, {
         categoryId: state.casThreeId,
-        productIds: [],
+        productIds: state.selectedProductKeys,
       });
     },
     // 弹窗查询可添加药品
