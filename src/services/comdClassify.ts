@@ -33,6 +33,15 @@ export async function categoryInsert(params: any) {
     data: params,
   });
 }
+
+// 往三级分类里面添加商品
+export async function productInsert(params: any) {
+  return request('/admin/v1/category/insert/product', {
+    method: 'POST',
+    data: params,
+  });
+}
+
 // // 编辑商品
 // export async function editorProduct(params: any) {
 //   return request('/admin/v1/product', {

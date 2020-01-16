@@ -9,6 +9,7 @@ import {
   deleteCategory,
   reorderCategory,
   categoryInsert,
+  productInsert,
 } from '@/services/comdClassify';
 
 import { filterClassify } from '@/utils/filterProperty';
@@ -27,6 +28,11 @@ const CommodityModel = {
     // 是否切换分类类,true代表刷新完,false代表刚分类切换过
     isSwitchover: true,
     selectedRowKeys: [],
+    // 弹窗的可添加商品list
+    modalProductList: {
+      pageList: [],
+      total: 0,
+    },
   },
   effects: {
     // 获取分类类型,对分类类型进行切分,化为分别的三级分类样式
@@ -186,6 +192,30 @@ const CommodityModel = {
         },
       });
     },
+    // 往三级分类里面添加弹窗商品信息
+    *productInsert({ payload }, { select, call, put }) {
+      const state = yield select(state => state.commodityClassify);
+      const response = yield call(productInsert, {
+        categoryId: state.casThreeId,
+        productIds: [],
+      });
+    },
+    // 弹窗查询可添加药品
+    *productSearch({ payload }, { select, call, put }) {
+      const state = yield select(state => state.commodityClassify);
+      const response = yield call(categoryProduct, {
+        categoryId: state['casThreeId'],
+        pageNumber: 0,
+        keyword: payload,
+        pageSize: 20,
+        status: 1,
+      });
+      // 往弹窗里面添加数据
+      yield put({
+        type: 'resetProduct',
+        payload: response.data,
+      });
+    },
   },
 
   reducers: {
@@ -334,6 +364,22 @@ const CommodityModel = {
       console.log('statecasInfoThree_', state['casInfoThree']);
       return {
         ...state,
+      };
+    },
+    // 修改清空弹框选中添加商品数据
+    modifyProduct(state, action) {
+      console.log('action_modifyProduct_', action.payload);
+      return {
+        ...state,
+        selectedProductKeys: action.payload,
+      };
+    },
+    // 重置弹窗可显示的可添加商品信息
+    resetProduct(state, action) {
+      console.log('action_resetProduct_', action.payload);
+      return {
+        ...state,
+        modalProductList: action.payload,
       };
     },
   },
