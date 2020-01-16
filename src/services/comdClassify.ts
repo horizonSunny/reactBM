@@ -26,6 +26,13 @@ export async function reorderCategory(params: any) {
     data: params,
   });
 }
+// 添加分类接口
+export async function categoryInsert(params: any) {
+  return request('/admin/v1/category/insert', {
+    method: 'POST',
+    data: params,
+  });
+}
 // // 编辑商品
 // export async function editorProduct(params: any) {
 //   return request('/admin/v1/product', {

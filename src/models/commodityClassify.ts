@@ -8,6 +8,7 @@ import {
   categoryProduct,
   deleteCategory,
   reorderCategory,
+  categoryInsert,
 } from '@/services/comdClassify';
 
 import { filterClassify } from '@/utils/filterProperty';
@@ -124,7 +125,7 @@ const CommodityModel = {
       });
     },
     // 依据关键字进行查询
-    *selectCasInKeyword({ payload, callback }, { select, call, put }) {
+    *selectCasInKeyword(_, { select, call, put }) {
       const state = yield select(state => state.commodityClassify);
       const id = state.casThreeId;
       let response;
@@ -152,6 +153,37 @@ const CommodityModel = {
       yield put({
         type: 'resetCommodity',
         payload: response.data,
+      });
+    },
+    // 添加分类接口
+    *categoryInsert({ payload }, { select, call, put }) {
+      const state = yield select(state => state.commodityClassify);
+      console.log('payload_', payload);
+      let parentId;
+      switch (payload['classify']) {
+        case 1:
+          parentId = 0;
+          break;
+        case 2:
+          parentId = state['casOneId'];
+          break;
+        case 3:
+          parentId = state['casTwoId'];
+          break;
+        default:
+          break;
+      }
+      const response = yield call(categoryInsert, {
+        cateName: payload['cateName'],
+        parentId,
+      });
+      // 往对应的分类级里面添加分类
+      yield put({
+        type: 'categoryAdd',
+        payload: {
+          ...response,
+          classify: payload['classify'],
+        },
       });
     },
   },
@@ -271,6 +303,37 @@ const CommodityModel = {
       return {
         ...state,
         commodityInfo: state.commodityInfo,
+      };
+    },
+    // 往对应的分类级里面添加分类
+    categoryAdd(state, action) {
+      console.log('action_', action.payload);
+      const { data, classify } = action.payload;
+      switch (classify) {
+        case 1:
+          state['casInfoOne'].push({
+            ...data,
+            classify,
+          });
+          break;
+        case 2:
+          state['casInfoTwo'].push({
+            ...data,
+            classify,
+          });
+          break;
+        case 3:
+          state['casInfoThree'].push({
+            ...data,
+            classify,
+          });
+          break;
+        default:
+          break;
+      }
+      console.log('statecasInfoThree_', state['casInfoThree']);
+      return {
+        ...state,
       };
     },
   },

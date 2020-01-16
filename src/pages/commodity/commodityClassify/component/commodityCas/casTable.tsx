@@ -38,7 +38,6 @@ export default class CasTable extends React.Component {
     this.child = ref;
   };
   clickModal(classifyName) {
-    console.log('click', this.child);
     this.child.showModal(classifyName);
   }
   render() {
