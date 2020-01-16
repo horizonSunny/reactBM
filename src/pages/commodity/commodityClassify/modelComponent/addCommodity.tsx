@@ -123,7 +123,7 @@ export default class AddCommodityModal extends React.Component {
     // 这里必须用状态管理中的数据,要是this.state会留存上一次的数据
     const { selectedProductKeys } = this.props.commodityClassify;
     const rowSelection = {
-      selectedProductKeys,
+      selectedRowKeys: selectedProductKeys,
       onChange: this.onSelectChange,
     };
     return (

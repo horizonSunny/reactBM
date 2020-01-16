@@ -376,7 +376,6 @@ const CommodityModel = {
     },
     // 重置弹窗可显示的可添加商品信息
     resetProduct(state, action) {
-      console.log('action_resetProduct_', action.payload);
       return {
         ...state,
         modalProductList: action.payload,
