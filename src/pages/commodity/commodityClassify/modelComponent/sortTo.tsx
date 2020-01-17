@@ -24,10 +24,13 @@ export default class SortTo extends React.Component {
 
   handleOk = e => {
     const { dispatch } = this.props;
+    const idArr = this.state.value.split('_');
+    const id = idArr[idArr.length - 1];
+    console.log(id);
     if (dispatch) {
       dispatch({
-        type: 'commodityClassify/categoryInsert',
-        payload: {},
+        type: 'commodityClassify/productInsertTo',
+        payload: id,
       });
     }
     this.setState({
@@ -58,10 +61,10 @@ export default class SortTo extends React.Component {
           onCancel={this.handleCancel}
           footer={[
             <Button key="back" onClick={this.handleCancel}>
-              确定
+              取消
             </Button>,
             <Button key="submit" type="primary" onClick={this.handleOk}>
-              取消
+              确定
             </Button>,
           ]}
         >
