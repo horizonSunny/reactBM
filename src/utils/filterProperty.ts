@@ -130,3 +130,33 @@ export function comparisonObject(sourceObj, compareObj) {
   }
   return true;
 }
+
+// 对商品分类做过滤生成带有key和value对分类 同时对父节点设置disabled
+// 商品类别过滤器
+export function filterStatusDiabTree(obj, key = '', level = 0) {
+  let levelInfo = level + 1;
+  obj.forEach(data => {
+    switch (levelInfo) {
+      case 1:
+        data['classify'] = 1;
+        break;
+      case 2:
+        data['classify'] = 2;
+        break;
+      case 3:
+        data['classify'] = 3;
+        break;
+      default:
+        break;
+    }
+    data.value = key === '' ? data.id + '' : key + '_' + data.id;
+    data.key = data.id + '';
+    data.title = data.cateName;
+    data.disabled = data['classify'] === 3 ? false : true;
+    if (data.children && data.children.length !== 0) {
+      data.disabled = true;
+      filterStatusDiabTree(data.children, data.value, levelInfo);
+    }
+  });
+  return obj;
+}

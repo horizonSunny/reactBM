@@ -3,6 +3,7 @@ import { Reducer } from 'redux';
 
 // 以下是mock数据
 import classifyInfo, { commodityMessage } from '../../mock/commdityClassify';
+import { filterStatusDiabTree } from '@/utils/filterProperty';
 import {
   categoryType,
   categoryProduct,
@@ -216,6 +217,16 @@ const CommodityModel = {
         payload: response.data,
       });
     },
+    // 获取商品分类，并对父级分类数据进行禁用，只能获取三级分类
+    *classifyDisabled(_, { select, call, put }) {
+      const response = yield call(categoryType, {
+        status: 0,
+      });
+      yield put({
+        type: 'classifyDisabledMod',
+        payload: response.data,
+      });
+    },
   },
 
   reducers: {
@@ -379,6 +390,15 @@ const CommodityModel = {
       return {
         ...state,
         modalProductList: action.payload,
+      };
+    },
+    // 弹窗用的分类，对父级分类设置disable
+    classifyDisabledMod(state, action) {
+      const treeDis = filterStatusDiabTree(action.payload);
+      console.log('treeDis_', treeDis);
+      return {
+        ...state,
+        classifyDisabledInfo: treeDis,
       };
     },
   },

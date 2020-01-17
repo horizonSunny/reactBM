@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Modal, Input } from 'antd';
+import { Button, Modal, TreeSelect, Icon } from 'antd';
 
 import { connect } from 'dva';
 
@@ -10,10 +10,15 @@ export default class SortTo extends React.Component {
   componentDidMount() {
     this.props.onRef(this);
   }
-  state = { visible: false, title: '' };
+  state = { visible: false, value: '' };
   showModal = classifyName => {
-    console.log('classifyName_', this.props.commodityClassify);
-    const props = this.props.commodityClassify;
+    const { dispatch } = this.props;
+    console.log('in sortTo');
+    if (dispatch) {
+      dispatch({
+        type: 'commodityClassify/classifyDisabled',
+      });
+    }
     this.setState({ visible: true });
   };
 
@@ -36,8 +41,12 @@ export default class SortTo extends React.Component {
       visible: false,
     });
   };
-  // input输入改变
-  onChange(e) {}
+  // 树状选择
+  treeSelectChange(value) {
+    // console.log('value_', value);
+    this.setState({ value });
+    const newArr = value.split('_');
+  }
   render() {
     const { visible, title } = this.state;
     return (
@@ -49,14 +58,30 @@ export default class SortTo extends React.Component {
           onCancel={this.handleCancel}
           footer={[
             <Button key="back" onClick={this.handleCancel}>
-              cnacel
+              确定
             </Button>,
             <Button key="submit" type="primary" onClick={this.handleOk}>
-              add
+              取消
             </Button>,
           ]}
         >
-          <Input placeholder="请填写分类名称" onChange={this.onChange.bind(this)} />
+          <TreeSelect
+            style={{ width: '70%' }}
+            label="请选择分类"
+            value={this.state.value}
+            dropdownStyle={{ maxHeight: 400, overflow: 'auto' }}
+            treeData={this.props.commodityClassify.classifyDisabledInfo}
+            placeholder="Please select"
+            onChange={this.treeSelectChange.bind(this)}
+            suffixIcon={
+              <Icon
+                type="plus-circle"
+                style={{
+                  fontSize: '14px',
+                }}
+              />
+            }
+          />
         </Modal>
       </div>
     );
