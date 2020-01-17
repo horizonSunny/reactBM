@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Modal, Table, Input } from 'antd';
 import styles from './addCommodity.less';
 import { connect } from 'dva';
-import { commodityItem } from '../component/commodityCas/commodityItem';
+import { commodityItem } from './commodityItem';
 const { Search } = Input;
 @connect(({ commodityClassify }) => ({
   commodityClassify,
@@ -125,6 +125,10 @@ export default class AddCommodityModal extends React.Component {
     const rowSelection = {
       selectedRowKeys: selectedProductKeys,
       onChange: this.onSelectChange,
+      getCheckboxProps: record => ({
+        disabled: record.status === 2, // Column configuration not to be checked
+        name: record.productCommonName,
+      }),
     };
     return (
       <div>
