@@ -41,11 +41,3 @@ export async function productInsert(params: any) {
     data: params,
   });
 }
-
-// // 编辑商品
-// export async function editorProduct(params: any) {
-//   return request('/admin/v1/product', {
-//     method: 'PUT',
-//     data: params,
-//   });
-// }
