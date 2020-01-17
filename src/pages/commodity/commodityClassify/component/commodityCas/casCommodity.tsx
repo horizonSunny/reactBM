@@ -4,7 +4,7 @@ import { commodityItem } from './commodityItem';
 const { Search } = Input;
 import styles from './casCommodity.less';
 import AddCommodity from '../../modelComponent/addCommodity';
-
+import SortTo from '../../modelComponent/sortTo';
 import { connect } from 'dva';
 
 @connect(({ commodityClassify }) => ({
@@ -34,7 +34,7 @@ export default class CasCommodity extends React.Component {
         <Button type="danger" onClick={this.removeCom.bind(this)}>
           移除
         </Button>
-        <Button>分类至 >|</Button>
+        <Button onClick={this.clickSortModal.bind(this)}>分类至 >|</Button>
       </div>
     );
   };
@@ -71,6 +71,13 @@ export default class CasCommodity extends React.Component {
   };
   clickModal() {
     this.child.showModal();
+  }
+  // 分类至弹窗
+  onSortTo = ref => {
+    this.childSortTo = ref;
+  };
+  clickSortModal() {
+    this.childSortTo.showModal();
   }
   render() {
     const columns = [
@@ -143,6 +150,7 @@ export default class CasCommodity extends React.Component {
           }}
         />
         <AddCommodity onRef={this.onRef}></AddCommodity>
+        <SortTo onRef={this.onSortTo}></SortTo>
       </div>
     );
   }

@@ -56,7 +56,9 @@ const CommodityModel = {
     },
     // 为生成treeSelect选择器data
     *categoryTree(_, { call, put }) {
-      const response = yield call(categoryType);
+      const response = yield call(categoryType, {
+        status: 0,
+      });
       console.log('response_categoryTree_', response);
       yield put({
         type: 'saveCategoryTree',

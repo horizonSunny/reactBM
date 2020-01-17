@@ -6,7 +6,7 @@ import { connect } from 'dva';
 @connect(({ commodityClassify }) => ({
   commodityClassify,
 }))
-export default class AddClassifyModal extends React.Component {
+export default class SortTo extends React.Component {
   componentDidMount() {
     this.props.onRef(this);
   }
@@ -14,56 +14,20 @@ export default class AddClassifyModal extends React.Component {
   showModal = classifyName => {
     console.log('classifyName_', this.props.commodityClassify);
     const props = this.props.commodityClassify;
-    let classify, classifyItem, classifyInfo;
-    switch (classifyName) {
-      case '一级':
-        (classify = 1),
-          (classifyItem = {
-            cateName: '',
-          });
-        classifyInfo = '添加一级分类';
-        break;
-      case '二级':
-        (classify = 2),
-          (classifyItem = props.casInfoOne.find(item => {
-            return item.id === props.casOneId;
-          }));
-        classifyInfo = '添加二级分类';
-        break;
-      case '三级':
-        (classify = 3),
-          (classifyItem = props.casInfoTwo.find(item => {
-            return item.id === props.casTwoId;
-          }));
-        classifyInfo = '添加三级分类';
-        break;
-
-      default:
-        break;
-    }
-    this.setState({
-      title: classifyItem['cateName'] + classifyInfo,
-      visible: true,
-      classify,
-    });
+    this.setState({ visible: true });
   };
 
   handleOk = e => {
     const { dispatch } = this.props;
-    if (this.state.newCateName) {
-      if (dispatch) {
-        dispatch({
-          type: 'commodityClassify/categoryInsert',
-          payload: {
-            classify: this.state.classify,
-            cateName: this.state.newCateName,
-          },
-        });
-      }
-      this.setState({
-        visible: false,
+    if (dispatch) {
+      dispatch({
+        type: 'commodityClassify/categoryInsert',
+        payload: {},
       });
     }
+    this.setState({
+      visible: false,
+    });
   };
 
   handleCancel = e => {
@@ -73,13 +37,7 @@ export default class AddClassifyModal extends React.Component {
     });
   };
   // input输入改变
-  onChange(e) {
-    const { value } = e.target;
-    console.log('value_', value);
-    this.setState({
-      newCateName: value,
-    });
-  }
+  onChange(e) {}
   render() {
     const { visible, title } = this.state;
     return (
@@ -91,10 +49,10 @@ export default class AddClassifyModal extends React.Component {
           onCancel={this.handleCancel}
           footer={[
             <Button key="back" onClick={this.handleCancel}>
-              取消
+              cnacel
             </Button>,
             <Button key="submit" type="primary" onClick={this.handleOk}>
-              添加
+              add
             </Button>,
           ]}
         >
