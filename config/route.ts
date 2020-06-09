@@ -112,14 +112,14 @@ const route = [
           },
           // 订单管理模块
           {
-            path: '/orderManagement',
+            path: '/orderMagt',
             name: '订单管理',
             icon: 'tool',
             routes: [
               {
-                path: '/orderManagement/inquiry',
+                path: '/orderMagt/inquiry',
                 name: '问诊单管理',
-                component: './operTool/findCommodity/findList.tsx',
+                component: './orderMagt/inquiry/inquiryAdm.tsx',
               },
             ],
           },
