@@ -25,12 +25,22 @@ const route = [
           },
           {
             path: '/businessAdm',
-            name: '企业管理',
+            name: '供应商管理',
             icon: 'home',
             routes: [
               {
                 path: '/businessAdm/enter',
-                name: '入驻企业',
+                name: '商户管理',
+                component: './businessAdm/businessEnter',
+              },
+              {
+                path: '/businessAdm/doctor',
+                name: '医生管理',
+                component: './businessAdm/businessEnter',
+              },
+              {
+                path: '/businessAdm/organization',
+                name: '医疗机构管理',
                 component: './businessAdm/businessEnter',
               },
               // {
@@ -97,6 +107,19 @@ const route = [
                 name: '添加分类',
                 component: './operTool/findCommodity/findItem.tsx',
                 hideInMenu: true,
+              },
+            ],
+          },
+          // 订单管理模块
+          {
+            path: '/orderManagement',
+            name: '订单管理',
+            icon: 'tool',
+            routes: [
+              {
+                path: '/orderManagement/inquiry',
+                name: '问诊单管理',
+                component: './operTool/findCommodity/findList.tsx',
               },
             ],
           },

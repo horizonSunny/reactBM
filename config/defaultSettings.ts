@@ -55,7 +55,7 @@ export default {
   menu: {
     locale: true,
   },
-  title: '药利多后台管理',
+  title: '燧人后台管理',
   pwa: false,
   iconfontUrl: '',
 } as DefaultSettings;
