@@ -1,0 +1,578 @@
+@charset "UTF-8";
+/**颜色集合**/
+:root {
+  --border-default-color: #d9d9d9;
+  --border-default-level1-color: #e5e5e5;
+  --border-default-level2-color: #f2f2f2;
+  --background-color: #fff;
+  --background-hover-color: #fafafa;
+}
+
+/**--全局配置--**/
+.eo_theme_modal_mask {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.eo_theme_mask_bg {
+  background: #f0f2f5;
+}
+
+.eo_theme_tp_btn {
+  background-color: #00795b;
+  color: #fff;
+}
+.eo_theme_tp_btn:hover {
+  background-color: #089462;
+}
+
+.eo_theme_tp_p_btn {
+  background-color: #388E3C;
+  color: #fff;
+}
+.eo_theme_tp_p_btn:hover {
+  background-color: #2E7D32;
+}
+
+.eo_theme_t_p_btn {
+  background-color: #3c7ce5;
+  color: #fff;
+}
+.eo_theme_t_p_btn:hover {
+  background-color: #3a85c1;
+}
+
+.eo-input,
+.eo-textarea,
+.eo-select {
+  border-color: #d9d9d9;
+  background-color: #fff;
+  color: #333;
+}
+.eo-input:hover,
+.eo-textarea:hover,
+.eo-select:hover {
+  border-color: #999;
+  transition: all 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+.eo-input:focus,
+.eo-textarea:focus,
+.eo-select:focus {
+  border-color: #089462 !important;
+}
+.eo-input:disabled,
+.eo-textarea:disabled,
+.eo-select:disabled {
+  color: #999;
+  background-color: #fafafa;
+}
+
+input:disabled {
+  color: #999 !important;
+  background-color: #fafafa !important;
+}
+
+.eo-tab-menu {
+  background-color: #efefef;
+}
+.eo-tab-menu .item-tab {
+  border-bottom-color: #efefef;
+}
+.eo-tab-menu .item-tab:hover {
+  border-color: #089462;
+}
+.eo-tab-menu .item-tab .tab-icon {
+  background-color: #00795b;
+}
+.eo-tab-menu .item-tab .icon-circle {
+  color: #00795b;
+}
+.eo-tab-menu .active-item {
+  border-bottom-color: #00795b;
+}
+.eo-tab-menu .active-item:hover {
+  border-bottom-color: #00795b;
+}
+.eo-tab-menu .disable-item {
+  color: #999;
+}
+.eo-tab-menu .disable-item:hover {
+  border-bottom-color: transparent;
+}
+
+/**--模块--**/
+.eo_theme_iblock {
+  background-color: #fff;
+  border-color: #d9d9d9;
+}
+
+.eo_theme_iblock_i {
+  border-color: #d9d9d9;
+  background-color: #fff;
+}
+.eo_theme_iblock_i:hover {
+  background-color: #fafafa;
+}
+
+.eo_theme_iblock_i_dp {
+  color: #b6b6b6;
+}
+
+.eo_theme_iblock_tb {
+  color: #607d8b;
+}
+
+.eo_theme_iblock_tp {
+  color: #555;
+}
+
+.eo_theme_rblock {
+  background-color: #f3f3f3;
+}
+
+.eo_theme_rblock_tp {
+  color: #b6b6b6;
+}
+
+.eo_theme_rblock_i_dp {
+  border-color: #b6b6b6;
+}
+
+/**--分组样式--**/
+.eo_theme_gd_container {
+  background-color: #fff;
+}
+
+.eo_theme_gd_container .sv-helper {
+  background-color: #eee;
+}
+
+.eo_theme_gd_d {
+  border-color: #e5e5e5;
+}
+
+.eo_theme_gd_lt {
+  border-color: #d9d9d9;
+}
+
+.eo_theme_gd_li {
+  color: #555;
+}
+
+.eo_theme_gd_li:hover {
+  background-color: #eee;
+}
+.eo_theme_gd_li:hover .eo_theme_gd_lt_icon {
+  color: #455A64;
+}
+
+.eo_theme_gd_li .iconfont {
+  color: #999;
+}
+
+.eo_theme_gd_li_fl {
+  background-color: #fff;
+  box-shadow: -5px 5px 15px #ededed;
+  border-color: #dcdcdc;
+}
+
+.eo_theme_gd_li_fli {
+  color: #555;
+}
+.eo_theme_gd_li_fli:hover {
+  background-color: #eee;
+  color: #607d8b;
+}
+
+.eo_theme_gd_li_fli_s {
+  color: #089462;
+}
+
+.eo_theme_gd_li_fli_a {
+  background-color: #eee;
+  color: #607d8b;
+}
+
+.eo_theme_gd_btn_c {
+  background-color: #fff;
+  color: #e83333;
+  border-color: #e83333;
+}
+.eo_theme_gd_btn_c:hover, .eo_theme_gd_btn_c:active {
+  background-color: #d03333;
+  color: #fff;
+  border-color: #d03333;
+}
+
+/**--列表样式--**/
+.eo_theme_lct_tra {
+  background-color: #ffecb3 !important;
+}
+
+.eo_theme_ldt,
+.eo_theme_lgt {
+  background-color: #fff;
+}
+
+.eo_theme_ldt thead th {
+  border-color: #d9d9d9;
+}
+
+.eo_theme_lgt thead th {
+  background-color: #f8f8f8;
+  color: #48555c;
+}
+
+.bottom-count-div {
+  background-color: #f8f8f8;
+  color: #48555c;
+}
+
+.eo_theme_ldt tbody tr:not(.unhover-tr):hover,
+.eo_theme_lgt tbody tr:not(.unhover-tr):hover {
+  background-color: #efefef;
+}
+
+.eo_theme_ldt_tdt {
+  color: #999;
+}
+
+.eo_theme_lrd {
+  background-color: #fff;
+}
+
+.eo_theme_lrt tbody tr {
+  color: #666;
+}
+.eo_theme_lrt tbody tr:nth-child(odd) {
+  background: #fafafa;
+}
+.eo_theme_lrt tbody tr:nth-child(even) {
+  background: #fff;
+}
+.eo_theme_lrt tbody tr:hover {
+  background: #f0f0f0;
+}
+
+/**--sidebar static--**/
+.s_style {
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  border-color: #d9d9d9;
+}
+
+.s0_style {
+  color: #666;
+  background-color: #eee;
+}
+.s0_style:hover {
+  color: #333;
+}
+
+/**--sidebar 一级--**/
+.s1_style {
+  background-color: #f9f9f9;
+}
+
+.logo_img_scc {
+  background-color: #40404c;
+}
+
+.s1_tip_style {
+  color: #fff;
+  background-color: #00795b;
+}
+
+.s0_logo_style {
+  border-color: #d9d9d9;
+  background-color: #fff;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.s1_i_style {
+  border-color: #e5e5e5;
+}
+.s1_i_style:hover {
+  background-color: #f0f2f5;
+}
+
+.s1_i_shrink_style {
+  border-color: #e5e5e5;
+}
+.s1_i_shrink_style:hover {
+  color: #000;
+  background-color: #e5e7e8;
+}
+
+/**--sidebar 二级--**/
+.s2_style {
+  background-color: #efefef;
+  border-right: 1px solid #d9d9d9;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.02);
+}
+
+.s2_c_shrink_style {
+  background-color: #fff;
+}
+
+.s2_i_style:hover {
+  background-color: #f0f2f5;
+}
+
+.s2_iaf_style,
+.s1_if_style {
+  color: #00795b;
+  background-color: rgba(0, 121, 91, 0.05);
+  border-right: 3px solid #00795b;
+}
+.s2_iaf_style .iconfont,
+.s1_if_style .iconfont {
+  color: inherit;
+}
+.s2_iaf_style:hover,
+.s1_if_style:hover {
+  background-color: rgba(0, 121, 91, 0.05);
+}
+
+/**--nav--**/
+.n0_style {
+  background-color: #343339;
+  border-color: #d9d9d9;
+  color: #fff;
+}
+
+.n_space_d_style {
+  background-color: #fff;
+  color: #333;
+}
+
+.n_sbtn_style {
+  background-color: #fff;
+  color: #555;
+  border-color: #d9d9d9;
+}
+
+.n_space_d_style:hover .n_sbtn_style {
+  border-color: #1e88e5;
+  color: #1e88e5;
+}
+
+.n_dv_c {
+  border-color: #d9d9d9;
+}
+
+.n_r_style {
+  color: #ddd;
+}
+
+.n_ra_style:hover {
+  color: #fff;
+}
+
+.n_list0_style:hover {
+  color: #99c6da;
+}
+
+.n_list1_style {
+  background-color: #fff;
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.12);
+}
+
+.n_list1_i_style:hover {
+  background-color: #f0f0f0;
+}
+
+/**--menu样式集--**/
+.m_i_tab_style {
+  border-color: #089462;
+  background-color: #fff;
+}
+
+.m_nav_item_style {
+  border-bottom-color: transparent;
+}
+.m_nav_item_style:hover {
+  border-bottom-color: #089462;
+}
+
+.m_nav_active_item_style {
+  border-bottom-color: #00795b;
+}
+.m_nav_active_item_style:hover {
+  border-bottom-color: #00795b;
+}
+
+.m_btn_d {
+  background-color: #fff;
+  border-color: #d9d9d9;
+}
+.m_btn_d:hover {
+  background-color: #fafafa;
+}
+
+.m_tab_d {
+  background-color: #fff;
+  border-color: #d9d9d9;
+}
+
+.m_i_tab_style .m_tab_d:hover {
+  background-color: #089462;
+  color: #fff;
+}
+
+.m_tab_a {
+  background-color: #00795b;
+  color: #fff;
+}
+
+.eo_theme_btn_delete .iconfont, .eo_theme_btn_success .iconfont, .eo_theme_btn_info .iconfont, .eo_theme_btn_orange .iconfont, .eo_theme_btn_warning .iconfont, .eo_theme_btn_danger .iconfont {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/**--按钮样式--**/
+.eo_theme_btn_default {
+  background-color: #fff;
+  color: #666;
+  border-color: #d9d9d9;
+}
+.eo_theme_btn_default:hover {
+  background-color: #fff;
+  color: #1e88e5;
+}
+.eo_theme_btn_default:disabled {
+  color: #999 !important;
+  background-color: #eee !important;
+  border-color: #d9d9d9 !important;
+}
+.eo_theme_btn_default:disabled .iconfont {
+  color: #999 !important;
+}
+.eo_theme_btn_default:hover {
+  border-color: #1e88e5;
+}
+
+.eo_theme_btn_delete {
+  background-color: #f2f2f2;
+  color: #a3a3a3;
+}
+.eo_theme_btn_delete:hover {
+  background-color: #e83333;
+  color: #fff;
+}
+.eo_theme_btn_delete:disabled {
+  color: #999 !important;
+  background-color: #eee !important;
+  border-color: #d9d9d9 !important;
+}
+.eo_theme_btn_delete:disabled .iconfont {
+  color: #999 !important;
+}
+
+.eo_theme_btn_success + .eo_theme_btn_success {
+  background-color: #046d53;
+}
+.eo_theme_btn_success + .eo_theme_btn_success:hover {
+  background-color: #045a45;
+}
+
+.btn_static_test_utac:hover + .eo_theme_btn_success {
+  background-color: #019e75;
+}
+
+.btn_static_test_utac:hover + .eo_theme_btn_info {
+  background-color: #3aa3ff;
+}
+
+.eo_theme_btn_success {
+  background-color: #00795b;
+  color: #fff;
+}
+.eo_theme_btn_success:hover {
+  background-color: #019e75;
+  color: #fff;
+}
+.eo_theme_btn_success:disabled {
+  color: #999 !important;
+  background-color: #eee !important;
+  border-color: #d9d9d9 !important;
+}
+.eo_theme_btn_success:disabled .iconfont {
+  color: #999 !important;
+}
+.eo_theme_btn_success:active {
+  background-color: #008d5a;
+}
+
+.eo_theme_btn_info {
+  background-color: #1890ff;
+  color: #fff;
+}
+.eo_theme_btn_info:hover {
+  background-color: #3aa3ff;
+  color: #fff;
+}
+.eo_theme_btn_info:disabled {
+  color: #999 !important;
+  background-color: #eee !important;
+  border-color: #d9d9d9 !important;
+}
+.eo_theme_btn_info:disabled .iconfont {
+  color: #999 !important;
+}
+.eo_theme_btn_info:active {
+  background-color: #137cdd;
+}
+
+.eo_theme_btn_orange {
+  background-color: #FF9800;
+  color: #fff;
+}
+.eo_theme_btn_orange:hover {
+  background-color: #f47c36;
+  color: #fff;
+}
+.eo_theme_btn_orange:disabled {
+  color: #999 !important;
+  background-color: #eee !important;
+  border-color: #d9d9d9 !important;
+}
+.eo_theme_btn_orange:disabled .iconfont {
+  color: #999 !important;
+}
+
+.eo_theme_btn_warning {
+  background-color: #FF5722;
+  color: #fff;
+}
+.eo_theme_btn_warning:hover {
+  background-color: #f44336;
+  color: #fff;
+}
+.eo_theme_btn_warning:disabled {
+  color: #999 !important;
+  background-color: #eee !important;
+  border-color: #d9d9d9 !important;
+}
+.eo_theme_btn_warning:disabled .iconfont {
+  color: #999 !important;
+}
+
+.eo_theme_btn_danger {
+  background-color: #e83333;
+  color: #fff;
+}
+.eo_theme_btn_danger:hover {
+  background-color: #fd5858;
+  color: #fff;
+}
+.eo_theme_btn_danger:disabled {
+  color: #999 !important;
+  background-color: #eee !important;
+  border-color: #d9d9d9 !important;
+}
+.eo_theme_btn_danger:disabled .iconfont {
+  color: #999 !important;
+}
+.eo_theme_btn_danger:active {
+  background-color: #d52828;
+}
+
+/*# sourceMappingURL=default.css.map */
