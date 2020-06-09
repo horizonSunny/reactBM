@@ -25,11 +25,6 @@ const inquiry = {
       pageNumber: 0,
       pageSize: 10,
       total: 0,
-      showSizeChanger: true,
-      showQuickJumper: true,
-      showTotal: total => {
-        return `共 ${total} 条`;
-      },
     },
     currentRecord: {},
     channel: [],
@@ -43,9 +38,6 @@ const inquiry = {
 
   effects: {
     *queryList({ payload }, { call, put }) {
-      if (payload.province && payload.province.length > 0) {
-        payload.province = payload.province.join(',');
-      }
       const response = yield call(queryBusiness, payload);
       if (response && response.code === 1) {
         yield put({
@@ -169,10 +161,11 @@ const inquiry = {
         pageSize: action.payload.pageSize,
         total: action.payload.totalElements,
       };
+      // debugger;
       return {
         ...state,
         businessData: action.payload.pageList || [],
-        pageNation: pagenation,
+        pagenation: pagenation,
       };
     },
     formChange(state, action) {
@@ -182,13 +175,9 @@ const inquiry = {
       };
     },
     pageNationChange(state, action) {
-      let tempPagenation = {
-        ...state.pagenation,
-        ...action.payload,
-      };
       return {
         ...state,
-        pagenation: tempPagenation,
+        pagenation: action.payload,
       };
     },
     record(state, action) {

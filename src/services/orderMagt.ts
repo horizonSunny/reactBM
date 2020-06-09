@@ -2,7 +2,7 @@ import request from '@/utils/request';
 
 export async function queryBusiness(params) {
   console.log('列表最终参数为:', params);
-  return request('/admin/v1/tenant', {
+  return request('/patient/wzOrderBack/getWzOrderPage', {
     method: 'get',
     params: params,
   });

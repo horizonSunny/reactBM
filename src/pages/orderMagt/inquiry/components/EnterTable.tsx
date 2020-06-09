@@ -2,6 +2,7 @@ import { Table, Switch, Button, Modal, message } from 'antd';
 import React, { Component } from 'react';
 import router from 'umi/router';
 import { connect } from 'dva';
+import { statusFilter } from '@/utils/orderStatusFilter';
 const { confirm } = Modal;
 @connect(({ inquiry }) => ({
   inquiry: inquiry,
@@ -9,60 +10,38 @@ const { confirm } = Modal;
 class EnterTable extends Component {
   columns = [
     {
-      title: '企业编码',
-      dataIndex: 'tenantCode',
-      key: 'tenantCode',
+      title: '订单编码',
+      dataIndex: 'orderNo',
+      key: 'orderNo',
     },
     {
-      title: '入驻时间',
+      title: '创建时间',
       dataIndex: 'createTime',
       key: 'createTime',
     },
     {
-      title: '企业名称',
-      dataIndex: 'tenantName',
-      key: 'tenantName',
+      title: '用户ID',
+      dataIndex: 'patientId',
+      key: 'patientId',
     },
     {
-      title: '管理员',
-      dataIndex: 'adminName',
-      key: 'adminName',
+      title: '患者姓名',
+      dataIndex: 'medicineName',
+      key: 'medicineName',
     },
     {
-      title: '管理员手机号',
-      dataIndex: 'adminTel',
-      key: 'adminTel',
+      title: '咨询医生',
+      dataIndex: 'doctorName',
+      key: 'doctorName',
     },
     {
-      title: '地区',
-      dataIndex: 'address',
-      key: 'address',
-      render: (text, record) => (
-        <span>
-          {record.province}
-          {record.city}
-        </span>
-      ),
-    },
-    {
-      title: '渠道',
-      dataIndex: 'channel',
-      key: 'channel',
-    },
-    {
-      title: '状态',
-      dataIndex: 'status',
-      key: 'status',
-      render: (text, record) => (
-        <span>
-          {text ? '启售' : '禁售'}{' '}
-          <Switch
-            checked={text ? true : false}
-            defaultChecked={text ? true : false}
-            onChange={() => this.handleSwitchChange(text, record)}
-          />
-        </span>
-      ),
+      title: '订单状态',
+      dataIndex: 'orderStatus',
+      key: 'orderStatus',
+      render: (text, record) => {
+        const textInfo = statusFilter(text);
+        return text;
+      },
     },
     {
       title: '操作',
@@ -73,13 +52,6 @@ class EnterTable extends Component {
         <div>
           <Button type="primary" onClick={() => this.handleView(text, record)}>
             查看
-          </Button>
-          <Button
-            style={{ marginLeft: '8px' }}
-            type="primary"
-            onClick={() => this.handleUpdate(text, record)}
-          >
-            编辑
           </Button>
         </div>
       ),
