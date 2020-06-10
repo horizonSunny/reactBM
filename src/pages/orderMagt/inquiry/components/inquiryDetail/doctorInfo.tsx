@@ -21,7 +21,7 @@ class Doctor extends Component {
           <div className={`${styles.infopart}`}>咨询医生</div>
         </div>
         <div className={`${styles.doctor}`}>
-          <img src="" alt="" />
+          <img src={doctor.icon} alt="" />
           <div className={`${styles.doctorDetails}`}>
             <div>
               {doctor.name} {doctor.title} {doctor.departments}

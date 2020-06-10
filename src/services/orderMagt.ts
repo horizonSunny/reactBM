@@ -36,6 +36,14 @@ export async function getWzOrderPage(params) {
     params: params,
   });
 }
+//根据问诊单号获取消息
+export async function getMessageByOrderNo(params) {
+  console.log('根据问诊单号获取消息:', params);
+  return request('/message/wzChat/getMessageByOrderNo', {
+    method: 'get',
+    params: params,
+  });
+}
 
 export async function getWzOrderDetails(params) {
   console.log('问诊单:', params);
