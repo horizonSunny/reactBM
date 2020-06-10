@@ -37,10 +37,10 @@ class PatientInfo extends Component {
       orderNo: params['id'],
     }).then(res => {
       const filterSource = res.data.filter(item => {
-        return item.msgSource == (1 || 2);
+        return item.msgSource == 1 || item.msgSource == 2;
       });
       const filterMsgType = filterSource.filter(item => {
-        return item.msgType == (1 || 3);
+        return item.msgType == 1 || item.msgType == 3;
       });
       console.log('filterMsgType_', filterMsgType);
 
@@ -136,12 +136,16 @@ class PatientInfo extends Component {
                         }}
                       />
                     )}
-                    <span>
-                      {item.msgContent}
-                      {item.msgContent}
-                      {item.msgContent}
-                      {item.msgContent}
-                    </span>
+                    {item['msgType'] == 1 && <span>{item.msgContent}</span>}
+                    {item['msgType'] == 3 && (
+                      <img
+                        src={item.msgContent}
+                        style={{
+                          width: '80px',
+                          height: '80px',
+                        }}
+                      ></img>
+                    )}
                   </div>
                 </div>
               );
