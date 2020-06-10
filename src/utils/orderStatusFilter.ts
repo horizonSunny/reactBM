@@ -14,7 +14,7 @@ function statusFilter(status) {
       textInfo = '支付超时关单';
       break;
     case '91':
-      textInfo = '支付超时关单';
+      textInfo = '接诊超时关单';
       break;
     case '92':
       textInfo = '用户取消关单';

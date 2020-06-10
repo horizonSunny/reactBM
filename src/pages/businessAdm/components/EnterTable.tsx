@@ -39,7 +39,8 @@ class EnterTable extends Component {
       key: 'address',
       render: (text, record) => (
         <span>
-          {record.province}{record.city}
+          {record.province}
+          {record.city}
         </span>
       ),
     },
@@ -100,13 +101,11 @@ class EnterTable extends Component {
         dispatch({
           type: 'businessAdm/switchStatus',
           payload: tempParam,
-        }).then(
-          (data) => {
-            if (data.code === 1) {
-              message.success('修改成功!')
-            }
+        }).then(data => {
+          if (data.code === 1) {
+            message.success('修改成功!');
           }
-        )
+        });
       },
       onCancel() {
         console.log('Cancel');
@@ -116,7 +115,7 @@ class EnterTable extends Component {
   handleView = (text, record) => {
     console.log('当前行的数据为:', text, record);
     const { dispatch } = this.props;
-    const { recordPagenation } = this.props.businessAdm;
+    const { recordpagination } = this.props.businessAdm;
     dispatch({
       type: 'businessAdm/currentRecord',
       payload: { ...record },
@@ -125,11 +124,11 @@ class EnterTable extends Component {
     dispatch({
       type: 'businessAdm/getOperationRecord',
       payload: {
-        ...recordPagenation,
-        'tenantId': record.tenantId,
-        'pageNumber': 0,
-        'totalElements': 0
-      }
+        ...recordpagination,
+        tenantId: record.tenantId,
+        pageNumber: 0,
+        totalElements: 0,
+      },
     });
     router.push('/businessAdm/enter/particulars');
   };
@@ -145,13 +144,13 @@ class EnterTable extends Component {
   onChange = (pagination, filters, sorter) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'businessAdm/queryPagenationChange',
+      type: 'businessAdm/querypaginationChange',
       payload: { ...pagination },
     }).then(() => {
-      const { queryForm, pagenation } = this.props.businessAdm;
+      const { queryForm, pagination } = this.props.businessAdm;
       let params = {
         ...queryForm,
-        ...pagenation,
+        ...pagination,
       };
       // 查询列表
       dispatch({
@@ -168,7 +167,7 @@ class EnterTable extends Component {
         rowKey="tenantId"
         dataSource={businessAdm.businessData}
         columns={this.columns}
-        pagination={businessAdm.pagenation}
+        pagination={businessAdm.pagination}
         onChange={this.onChange}
         scroll={{ x: 1200 }}
       />

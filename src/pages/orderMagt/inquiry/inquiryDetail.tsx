@@ -13,7 +13,7 @@ import { Title, DoctorInfo, OrderInfo, PatientInfo } from './components/inquiryD
 class Particulars extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
-    // const { queryForm, pagenation } = this.props.inquiry;
+    // const { queryForm, pagination } = this.props.inquiry;
     let params = {
       orderNo: 'WO20200609162217165751',
     };

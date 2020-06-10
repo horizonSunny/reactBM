@@ -7,20 +7,20 @@ import EnterTable from './components/EnterTable';
 import { connect } from 'dva';
 
 @connect(({ businessAdm }) => ({
-  businessAdm: businessAdm
+  businessAdm: businessAdm,
 }))
 class BusinessEnter extends Component {
-  componentDidMount () {
+  componentDidMount() {
     const { dispatch } = this.props;
-    const { queryForm, pagenation } = this.props.businessAdm
+    const { queryForm, pagination } = this.props.businessAdm;
     let params = {
       ...queryForm,
-      ...pagenation
-    }
+      ...pagination,
+    };
     // 查询列表
     dispatch({
       type: 'businessAdm/queryList',
-      payload: { ...params }
+      payload: { ...params },
     });
   }
   render() {

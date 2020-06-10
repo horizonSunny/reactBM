@@ -54,9 +54,9 @@ class Title extends Component {
       <div className={`${styles.title}`}>
         <div className={`${styles.infopart}`}>
           <span>{statusFilter(currentOrder.orderStatus)}</span>
-          {currentOrder.surplusTime && (
+          {currentOrder.surplusTime > 0 && (
             <span className={`${styles.timeRemaining}`}>
-              剩余{this.state.hour}小时{this.state.minute}分{this.state.second}秒自动关闭
+              剩余{this.state.hour}小时{this.state.minute}分{this.state.second}秒，咨询自动结束
             </span>
           )}
         </div>

@@ -1,6 +1,13 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
-import { queryBusiness, insertBusiness, saveBusiness, switchStatus, queryChannel, queryOperation } from '@/services/businessAdm';
+import {
+  queryBusiness,
+  insertBusiness,
+  saveBusiness,
+  switchStatus,
+  queryChannel,
+  queryOperation,
+} from '@/services/businessAdm';
 const businessAdm = {
   namespace: 'businessAdm',
 
@@ -15,7 +22,7 @@ const businessAdm = {
       tenantName: '',
       province: [],
     },
-    pagenation: {
+    pagination: {
       pageNumber: 0,
       pageSize: 10,
       total: 0,
@@ -28,11 +35,11 @@ const businessAdm = {
     currentRecord: {},
     channel: [],
     operaRecord: [],
-    recordPagenation: {
+    recordpagination: {
       pageNumber: 0,
       pageSize: 10,
-      totalElements: 0
-    }
+      totalElements: 0,
+    },
   },
 
   effects: {
@@ -56,9 +63,9 @@ const businessAdm = {
       });
       return payload;
     },
-    *queryPagenationChange({ payload }, { call, put }) {
+    *querypaginationChange({ payload }, { call, put }) {
       yield put({
-        type: 'pageNationChange',
+        type: 'paginationChange',
         payload: payload,
       });
       return payload;
@@ -123,7 +130,7 @@ const businessAdm = {
       }
       return response;
     },
-    *initChannel(_, { call, put }){
+    *initChannel(_, { call, put }) {
       const response = yield call(queryChannel);
       if (response && response.code === 1) {
         yield put({
@@ -133,7 +140,7 @@ const businessAdm = {
       }
       return response;
     },
-    *getOperationRecord({ payload }, { call, put }){
+    *getOperationRecord({ payload }, { call, put }) {
       yield put({
         type: 'operaRecord',
         payload: [],
@@ -145,20 +152,20 @@ const businessAdm = {
           payload: response.data.pageList,
         });
         yield put({
-          type: 'recordPagenation',
+          type: 'recordpagination',
           payload: {
             pageNumber: response.data.pageNumber,
             pageSize: response.data.pageSize,
-            totalElements: response.data.totalElements
+            totalElements: response.data.totalElements,
           },
         });
       }
-    }
+    },
   },
 
   reducers: {
     queryData(state, action) {
-      let pagenation = {
+      let pagination = {
         pageNumber: action.payload.pageNumber,
         pageSize: action.payload.pageSize,
         total: action.payload.totalElements,
@@ -166,7 +173,7 @@ const businessAdm = {
       return {
         ...state,
         businessData: action.payload.pageList || [],
-        pageNation: pagenation,
+        pagination: pagination,
       };
     },
     formChange(state, action) {
@@ -175,14 +182,14 @@ const businessAdm = {
         queryForm: action.payload,
       };
     },
-    pageNationChange(state, action) {
-      let tempPagenation = {
-        ...state.pagenation,
+    paginationChange(state, action) {
+      let temppagination = {
+        ...state.pagination,
         ...action.payload,
       };
       return {
         ...state,
-        pagenation: tempPagenation,
+        pagination: temppagination,
       };
     },
     record(state, action) {
@@ -223,10 +230,10 @@ const businessAdm = {
         operaRecord: action.payload,
       };
     },
-    recordPagenation(state, action) {
+    recordpagination(state, action) {
       return {
         ...state,
-        recordPagenation: action.payload,
+        recordpagination: action.payload,
       };
     },
   },

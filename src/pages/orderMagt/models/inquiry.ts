@@ -13,7 +13,7 @@ const inquiry = {
       type: 0,
       orderNo: '',
     },
-    pagenation: {
+    pagination: {
       pageNumber: 0,
       pageSize: 10,
     },
@@ -38,16 +38,12 @@ const inquiry = {
       });
       return payload;
     },
-    *queryPagenationChange({ payload }, { call, put }) {
-      let pagenation = {
-        pageNumber: payload.current - 1,
-        pageSize: payload.pageSize,
-      };
+    *querypaginationChange({ payload }, { call, put }) {
       yield put({
-        type: 'pageNationChange',
-        payload: pagenation,
+        type: 'paginationChange',
+        payload: payload,
       });
-      return pagenation;
+      return payload;
     },
     // 获取问诊单详情
     *getWzOrderDetails({ payload }, { call, put }) {
@@ -62,16 +58,17 @@ const inquiry = {
 
   reducers: {
     queryData(state, action) {
-      let pagenation = {
+      let pagination = {
         pageNumber: action.payload.pageNumber,
         pageSize: action.payload.pageSize,
         total: action.payload.totalElements,
+        current: action.payload.pageNumber + 1,
       };
       // debugger;
       return {
         ...state,
         businessData: action.payload.pageList || [],
-        pagenation: pagenation,
+        pagination: pagination,
       };
     },
     formChange(state, action) {
@@ -80,10 +77,10 @@ const inquiry = {
         queryForm: action.payload,
       };
     },
-    pageNationChange(state, action) {
+    paginationChange(state, action) {
       return {
         ...state,
-        pagenation: action.payload,
+        pagination: action.payload,
       };
     },
     saveCurrentOrder(state, action) {

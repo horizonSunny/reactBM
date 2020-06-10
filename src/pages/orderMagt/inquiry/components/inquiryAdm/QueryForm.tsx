@@ -4,6 +4,7 @@ import { connect } from 'dva';
 import styles from './QueryForm.less';
 import { newArea } from '@/utils/area.js';
 import router from 'umi/router';
+import { query } from '@/services/user';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -84,16 +85,21 @@ class QueryForm extends Component {
 
   handleQuery = () => {
     const { dispatch } = this.props;
-    const { queryForm, pagenation } = this.props.inquiry;
-    let params = {
-      ...queryForm,
-      ...pagenation,
-    };
-    // 查询列表
-    dispatch({
-      type: 'inquiry/queryList',
-      payload: { ...params },
-    });
+    const _this = this;
+    async function query() {
+      const { queryForm } = _this.props.inquiry;
+      let params = {
+        ...queryForm,
+        pageNumber: 0,
+        pageSize: 10,
+      };
+      // 查询列表
+      dispatch({
+        type: 'inquiry/queryList',
+        payload: { ...params },
+      });
+    }
+    query();
   };
   // handleInsert = () => {
   //   const { dispatch } = this.props;

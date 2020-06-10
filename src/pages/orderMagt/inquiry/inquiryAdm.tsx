@@ -12,10 +12,10 @@ import { connect } from 'dva';
 class BusinessEnter extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
-    const { queryForm, pagenation } = this.props.inquiry;
+    const { queryForm, pagination } = this.props.inquiry;
     let params = {
       ...queryForm,
-      ...pagenation,
+      ...pagination,
     };
     // 查询列表
     dispatch({

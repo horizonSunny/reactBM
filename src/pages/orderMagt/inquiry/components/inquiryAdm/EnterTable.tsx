@@ -66,15 +66,18 @@ class EnterTable extends Component {
   };
   onChange = (pagination, filters, sorter) => {
     const { dispatch } = this.props;
-    debugger;
+    const params = {
+      pageNumber: pagination.current - 1,
+      pageSize: 10,
+    };
     dispatch({
-      type: 'inquiry/queryPagenationChange',
-      payload: { ...pagination },
+      type: 'inquiry/querypaginationChange',
+      payload: { ...params },
     }).then(() => {
-      const { queryForm, pagenation } = this.props.inquiry;
+      const { queryForm, pagination } = this.props.inquiry;
       let params = {
         ...queryForm,
-        ...pagenation,
+        ...pagination,
       };
       // 查询列表
       dispatch({
@@ -85,13 +88,15 @@ class EnterTable extends Component {
   };
   render() {
     const { inquiry } = this.props;
+    console.log('inquiry.pagination_', inquiry.pagination);
+
     return (
       <Table
         style={{ paddingLeft: '10px', paddingRight: '10px' }}
         rowKey="tenantId"
         dataSource={inquiry.businessData}
         columns={this.columns}
-        pagination={inquiry.pagenation}
+        pagination={inquiry.pagination}
         onChange={this.onChange}
         scroll={{ x: 1200 }}
       />

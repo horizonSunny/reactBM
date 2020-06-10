@@ -22,23 +22,23 @@ class QueryForm extends Component {
       },
     };
   }
-  componentDidMount () {
-    this.initChannel()
+  componentDidMount() {
+    this.initChannel();
   }
   initChannel = () => {
-    console.log('???')
+    console.log('???');
     const { dispatch } = this.props;
     dispatch({
-      type: 'businessAdm/initChannel'
-    })
-  }
+      type: 'businessAdm/initChannel',
+    });
+  };
   handleSearch = e => {
     e.preventDefault();
     const { dispatch } = this.props;
     this.props.form.validateFields((err, values) => {
       let startTime = '';
       let endTime = '';
-      console.log('values.time:', values.time)
+      console.log('values.time:', values.time);
       if (values.time && values.time.length > 0) {
         startTime = new Date(values.time[0]).getTime();
         endTime = new Date(values.time[1]).getTime();
@@ -84,10 +84,10 @@ class QueryForm extends Component {
 
   handleQuery = () => {
     const { dispatch } = this.props;
-    const { queryForm, pagenation } = this.props.businessAdm;
+    const { queryForm, pagination } = this.props.businessAdm;
     let params = {
       ...queryForm,
-      ...pagenation,
+      ...pagination,
     };
     // 查询列表
     dispatch({
@@ -129,10 +129,12 @@ class QueryForm extends Component {
             <Form.Item {...formItemLayout} label="入住时间">
               {getFieldDecorator('time', {
                 // initialValue: [queryForm.startTime,queryForm.endTime]
-              })(<RangePicker 
-                showTime={{ format: 'HH:mm' }}
-                format="YYYY-MM-DD HH:mm"
-                style={{ width: '100%' }} />
+              })(
+                <RangePicker
+                  showTime={{ format: 'HH:mm' }}
+                  format="YYYY-MM-DD HH:mm"
+                  style={{ width: '100%' }}
+                />,
               )}
             </Form.Item>
           </Col>
@@ -156,13 +158,13 @@ class QueryForm extends Component {
               })(
                 <Select>
                   <Option value="">全部</Option>
-                  {
-                    channel.map((item, index) => {
-                      return (
-                        <Option value={item} key={index}>{ item }</Option>
-                      )
-                    })
-                  }
+                  {channel.map((item, index) => {
+                    return (
+                      <Option value={item} key={index}>
+                        {item}
+                      </Option>
+                    );
+                  })}
                 </Select>,
               )}
             </Form.Item>
