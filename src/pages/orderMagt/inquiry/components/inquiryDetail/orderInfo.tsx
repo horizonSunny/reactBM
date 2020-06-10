@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import styles from './index.less';
 import { statusFilter } from '@/utils/orderStatusFilter';
-import tipsIcon from '@/assets/order/Tips-icon.svg';
 
 @connect(({ inquiry }) => ({
   inquiry,

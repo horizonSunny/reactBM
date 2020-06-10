@@ -3,7 +3,6 @@ import { connect } from 'dva';
 import styles from './index.less';
 import { Modal } from 'antd';
 import { statusFilter } from '@/utils/orderStatusFilter';
-import tipsIcon from '@/assets/order/Tips-icon.svg';
 
 @connect(({ inquiry }) => ({
   inquiry,
@@ -45,7 +44,7 @@ class PatientInfo extends Component {
     const { condition } = currentOrder;
     console.log('condition_', condition);
 
-    let imgParams = condition.conditionImg.split(',');
+    let imgParams = condition.conditionImg ? condition.conditionImg.split(',') : [];
     imgParams[imgParams.length - 1] === '' && imgParams.pop();
     console.log('imgParams_', imgParams);
 
