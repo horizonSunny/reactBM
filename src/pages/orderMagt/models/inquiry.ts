@@ -1,18 +1,10 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
-import {
-  queryBusiness,
-  insertBusiness,
-  saveBusiness,
-  switchStatus,
-  queryChannel,
-  queryOperation,
-} from '@/services/orderMagt';
+import { getWzOrderPage, getWzOrderDetails } from '@/services/orderMagt';
 const inquiry = {
   namespace: 'inquiry',
 
   state: {
-    businessData: [],
     queryForm: {
       endTime: '',
       startTime: '',
@@ -25,19 +17,12 @@ const inquiry = {
       pageNumber: 0,
       pageSize: 10,
     },
-    currentRecord: {},
-    channel: [],
-    operaRecord: [],
-    recordPagenation: {
-      pageNumber: 0,
-      pageSize: 10,
-      totalElements: 0,
-    },
+    currentOrder: {},
   },
 
   effects: {
     *queryList({ payload }, { call, put }) {
-      const response = yield call(queryBusiness, payload);
+      const response = yield call(getWzOrderPage, payload);
       if (response && response.code === 1) {
         yield put({
           type: 'queryData',
@@ -64,96 +49,14 @@ const inquiry = {
       });
       return pagenation;
     },
-    *currentRecord({ payload }, { call, put }) {
+    // 获取问诊单详情
+    *getWzOrderDetails({ payload }, { call, put }) {
+      const response = yield call(getWzOrderDetails, payload);
       yield put({
-        type: 'record',
-        payload: payload,
+        type: 'saveCurrentOrder',
+        payload: response.data,
       });
-      return payload;
-    },
-    *saveBusiness({ payload }, { call, put, select }) {
-      const data = yield select(state => state.inquiry.currentRecord);
-      let response = {};
-      let tempenterpriseQualification = [];
-      if (payload.enterpriseQualification.length > 0) {
-        payload.enterpriseQualification.forEach(item => {
-          if (!item.url) {
-            item.url = item.response.data;
-          }
-          tempenterpriseQualification.push({
-            name: item.name,
-            url: item.url,
-          });
-        });
-        payload.enterpriseQualification = tempenterpriseQualification;
-      }
-      let tempstoreLive = [];
-      if (payload.storeLive.length > 0) {
-        payload.storeLive.forEach(item => {
-          if (!item.url) {
-            item.url = item.response.data;
-          }
-          tempstoreLive.push(item.url);
-        });
-        payload.storeLive = tempstoreLive;
-      }
-      let tempParam = Object.assign({}, data, payload);
-      if (data && data.tenantId) {
-        // 更新
-        response = yield call(saveBusiness, tempParam);
-      } else {
-        // 新增
-        response = yield call(insertBusiness, tempParam);
-      }
-
-      if (response && response.code === 1) {
-        yield put({
-          type: 'saveData',
-          payload: response.data,
-        });
-      }
-      return response;
-    },
-    *switchStatus({ payload }, { call, put }) {
-      const response = yield call(switchStatus, payload);
-      if (response && response.code === 1) {
-        yield put({
-          type: 'switchSave',
-          payload: payload,
-        });
-      }
-      return response;
-    },
-    *initChannel(_, { call, put }) {
-      const response = yield call(queryChannel);
-      if (response && response.code === 1) {
-        yield put({
-          type: 'saveChannel',
-          payload: response.data,
-        });
-      }
-      return response;
-    },
-    *getOperationRecord({ payload }, { call, put }) {
-      yield put({
-        type: 'operaRecord',
-        payload: [],
-      });
-      const response = yield call(queryOperation, payload);
-      if (response && response.code === 1) {
-        yield put({
-          type: 'operaRecord',
-          payload: response.data.pageList,
-        });
-        yield put({
-          type: 'recordPagenation',
-          payload: {
-            pageNumber: response.data.pageNumber,
-            pageSize: response.data.pageSize,
-            totalElements: response.data.totalElements,
-          },
-        });
-      }
+      return;
     },
   },
 
@@ -183,48 +86,10 @@ const inquiry = {
         pagenation: action.payload,
       };
     },
-    record(state, action) {
+    saveCurrentOrder(state, action) {
       return {
         ...state,
-        currentRecord: action.payload,
-      };
-    },
-    saveData(state, action) {
-      return {
-        ...state,
-        currentRecord: action.payload,
-      };
-    },
-    switchSave(state, action) {
-      let tempbusinessData = state.businessData;
-      let result = action.payload;
-      tempbusinessData.map(item => {
-        if (item.tenantId === result.tenantId) {
-          item.status = result.status;
-        }
-        return item;
-      });
-      return {
-        ...state,
-        businessData: tempbusinessData,
-      };
-    },
-    saveChannel(state, action) {
-      return {
-        ...state,
-        channel: action.payload,
-      };
-    },
-    operaRecord(state, action) {
-      return {
-        ...state,
-        operaRecord: action.payload,
-      };
-    },
-    recordPagenation(state, action) {
-      return {
-        ...state,
-        recordPagenation: action.payload,
+        currentOrder: action.payload,
       };
     },
   },

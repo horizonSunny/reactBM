@@ -59,23 +59,10 @@ class EnterTable extends Component {
   ];
   handleView = (text, record) => {
     console.log('当前行的数据为:', text, record);
-    const { dispatch } = this.props;
-    const { recordPagenation } = this.props.inquiry;
-    dispatch({
-      type: 'inquiry/currentRecord',
-      payload: { ...record },
+    router.push({
+      pathname: '/orderMagt/inquiry/inquiryDetail',
+      query: { id: record.orderNo },
     });
-    // 获取操作日志
-    dispatch({
-      type: 'inquiry/getOperationRecord',
-      payload: {
-        ...recordPagenation,
-        tenantId: record.tenantId,
-        pageNumber: 0,
-        totalElements: 0,
-      },
-    });
-    router.push('/inquiry/enter/particulars');
   };
   onChange = (pagination, filters, sorter) => {
     const { dispatch } = this.props;

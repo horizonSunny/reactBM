@@ -121,6 +121,12 @@ const route = [
                 name: '问诊单管理',
                 component: './orderMagt/inquiry/inquiryAdm.tsx',
               },
+              {
+                path: '/orderMagt/inquiry/inquiryDetail',
+                name: '问诊单详情',
+                component: './orderMagt/inquiry/inquiryDetail.tsx',
+                hideInMenu: true,
+              },
             ],
           },
           // 用户

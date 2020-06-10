@@ -1,0 +1,144 @@
+@import '~antd/es/style/themes/default.less';
+
+.title {
+  display: flex;
+  justify-content: space-between;
+
+  .infopart {
+    font-size: @title-font-size;
+    font-weight: @title-font-weight;
+    color: #1B1B1B;
+
+    .timeRemaining {
+      margin-left: 10px;
+      font-size: @content-font-size;
+      font-weight: @content-font-weight;
+      color: rgba(137, 137, 137, 1);
+      line-height: @content-line-height;
+    }
+  }
+
+  .expressage {
+    img {
+      width: 18px;
+      height: 18px;
+    }
+
+    span {
+      margin-left: 2px;
+      font-size: @content-font-size;
+      font-weight: @content-font-weight;
+      color: rgba(245, 171, 28, 1);
+    }
+  }
+}
+
+.table {
+  margin-top: 10px;
+
+  .titleInfo {
+    height: 40px;
+    line-height: 40px;
+    font-size: @title-font-size;
+    font-weight: @title-font-weight;
+    color: rgba(27, 27, 27, 1);
+    border: 1px solid rgba(232, 232, 232, 1);
+    border-bottom: 0px;
+    padding: 0px 16px;
+  }
+
+  .tableContent {
+    border: 1px solid rgba(232, 232, 232, 1);
+    padding: 15px 31px;
+
+    .label {
+      font-size: @title-font-size;
+      font-weight: @content-font-weight;
+      color: rgba(27, 27, 27, 1);
+    }
+
+    .message {
+      font-size: @content-font-size;
+      font-weight: @content-font-weight;
+      color: rgba(27, 27, 27, 1);
+    }
+
+    .lineInfo {
+      margin-bottom: 10px;
+    }
+
+    .prescribImg {
+      width: 140px;
+      height: 140px;
+      margin: 0px 24px 24px 0px;
+    }
+  }
+
+  .footers {
+    height: 40px;
+    line-height: 40px;
+    border: 1px solid rgba(232, 232, 232, 1);
+    border-top: 0px;
+    padding: 0px 31px;
+    font-size: @content-font-size;
+    font-weight: @content-font-weight;
+    font-weight: 600;
+
+    .price {
+      color: #FA4949
+    }
+  }
+}
+
+.footer {
+  float: right;
+  margin-top: 39px;
+
+  :global {
+    .ant-btn {
+      width: 120px;
+      height: 36px;
+      line-height: 36px;
+      border-radius: 4px;
+      font-size: @title-font-size;
+      font-weight: @title-font-weight;
+      margin-left: 40px;
+      color: #fff;
+    }
+  }
+}
+
+.modal {
+  .labelInfo {
+    font-size: @title-font-size;
+    font-weight: @title-font-weight;
+    color: rgba(27, 27, 27, 1);
+    margin-right: 32px;
+  }
+
+  .contentInfo {
+    font-size: @content-font-size;
+    font-weight: @content-font-weight;
+    color: #1B1B1B;
+    margin-bottom: 12px;
+
+    span {
+      margin-right: 18px;
+    }
+  }
+
+  .deliver {
+    margin-top: 35px;
+    text-align: center;
+
+    :global {
+      .ant-btn {
+        width: 100px;
+        height: 34px;
+        background: rgba(72, 116, 239, 1);
+        border-radius: 4px;
+        color: #fff;
+      }
+    }
+  }
+}

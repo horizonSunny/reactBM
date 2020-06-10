@@ -11,6 +11,17 @@ import { Title, DoctorInfo, OrderInfo, PatientInfo } from './components/inquiryD
   inquiry: inquiry,
 }))
 class Particulars extends Component {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    // const { queryForm, pagenation } = this.props.inquiry;
+    let params = {
+      orderNo: 'WO20200609162217165751',
+    };
+    dispatch({
+      type: 'inquiry/getWzOrderDetails',
+      payload: params,
+    });
+  }
   render() {
     const { currentRecord } = this.props.inquiry;
 
@@ -19,9 +30,9 @@ class Particulars extends Component {
         <div className={styles.container}>
           <div className={`${styles.content}`}>
             <Title></Title>
-            <DoctorInfo></DoctorInfo>
+            {/*  <DoctorInfo></DoctorInfo>
             <OrderInfo></OrderInfo>
-            <PatientInfo></PatientInfo>
+            <PatientInfo></PatientInfo> */}
           </div>
         </div>
       </PageHeaderWrapper>

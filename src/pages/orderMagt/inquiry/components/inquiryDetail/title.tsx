@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import styles from './index.less';
-import { orderStatus } from '@/utils/configInfo';
+import { statusFilter } from '@/utils/orderStatusFilter';
 import tipsIcon from '@/assets/order/Tips-icon.svg';
 
 @connect(({ inquiry }) => ({
@@ -16,9 +16,9 @@ class Title extends Component {
 
   componentDidMount() {
     // const end = Date.parse(new Date('2018-11-29 24:00'));
-    // const { currentRecord } = this.props.inquiry;
-    const testTime = 7200000;
-    this.countFun(testTime);
+    const { currentOrder } = this.props.inquiry;
+    // const testTime = 7200000;
+    this.countFun(currentOrder.surplusTime);
   }
 
   componentWillUnmount() {
@@ -49,12 +49,12 @@ class Title extends Component {
   };
 
   render() {
-    const { currentRecord } = this.props.inquiry;
+    const { currentOrder } = this.props.inquiry;
     return (
       <div className={`${styles.title}`}>
         <div className={`${styles.infopart}`}>
-          <span>{orderStatus(currentRecord.orderStatus)}</span>
-          {currentRecord.orderStatus === 0 && (
+          <span>{statusFilter(currentOrder.orderStatus)}</span>
+          {currentOrder.surplusTime && (
             <span className={`${styles.timeRemaining}`}>
               剩余{this.state.hour}小时{this.state.minute}分{this.state.second}秒自动关闭
             </span>
