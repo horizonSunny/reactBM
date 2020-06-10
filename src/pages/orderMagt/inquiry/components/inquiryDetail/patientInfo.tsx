@@ -12,12 +12,14 @@ import routerParams from '@/utils/routerParams';
 class PatientInfo extends Component {
   state = {
     visible: false,
-    filterMsgInfo: [1],
+    magnifyVisible: false,
+    filterMsgInfo: [],
   };
 
   componentDidMount() {}
 
   componentWillUnmount() {}
+  // 查看聊天详情
   handleOk = e => {
     console.log(e);
     this.setState({
@@ -29,6 +31,23 @@ class PatientInfo extends Component {
     console.log(e);
     this.setState({
       visible: false,
+    });
+  };
+  // 查看商品图放大
+  showMagnifyModal = e => {
+    if (e.target.nodeName === 'IMG') {
+      // 判断img 节点
+      this.setState({
+        magnifyVisible: true,
+        imgSrc: e.target.src,
+      });
+    }
+  };
+
+  handleMagnifyOk = e => {
+    console.log(e);
+    this.setState({
+      magnifyVisible: false,
     });
   };
   getMessage = () => {
@@ -89,7 +108,9 @@ class PatientInfo extends Component {
           <div className={`${styles.patientItem}`}>
             <span className={`${styles.patientLabel}`}>病情图片:</span>
             {imgParams.map(item => {
-              return <img src={item} alt="" width="80" height="80" onClick={this.showModal} />;
+              return (
+                <img src={item} alt="" width="80" height="80" onClick={this.showMagnifyModal} />
+              );
             })}
           </div>
           <Modal
@@ -150,6 +171,15 @@ class PatientInfo extends Component {
                 </div>
               );
             })}
+          </Modal>
+          <Modal
+            visible={this.state.magnifyVisible}
+            onCancel={this.handleMagnifyOk}
+            footer={null}
+            centered
+            maskClosable
+          >
+            <img style={{ width: '100%' }} alt="" src={this.state.imgSrc} />
           </Modal>
         </div>
       </frameElement>
