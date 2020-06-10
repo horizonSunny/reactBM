@@ -57,33 +57,6 @@ class EnterTable extends Component {
       ),
     },
   ];
-  handleSwitchChange = (text, record) => {
-    console.log('switch切换:', text, record);
-    const { dispatch } = this.props;
-    confirm({
-      content: `是否${text ? '启售' : '禁售'}当前商户?`,
-      okText: '确定',
-      cancelText: '取消',
-      onOk() {
-        console.log('OK');
-        let tempParam = {
-          tenantId: record.tenantId,
-          status: text ? 0 : 1,
-        };
-        dispatch({
-          type: 'inquiry/switchStatus',
-          payload: tempParam,
-        }).then(data => {
-          if (data.code === 1) {
-            message.success('修改成功!');
-          }
-        });
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
-    });
-  };
   handleView = (text, record) => {
     console.log('当前行的数据为:', text, record);
     const { dispatch } = this.props;
@@ -104,17 +77,9 @@ class EnterTable extends Component {
     });
     router.push('/inquiry/enter/particulars');
   };
-  handleUpdate = (text, record) => {
-    console.log('当前行的数据为:', text, record);
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'inquiry/currentRecord',
-      payload: { ...record },
-    });
-    router.push('/inquiry/enter/edit');
-  };
   onChange = (pagination, filters, sorter) => {
     const { dispatch } = this.props;
+    debugger;
     dispatch({
       type: 'inquiry/queryPagenationChange',
       payload: { ...pagination },

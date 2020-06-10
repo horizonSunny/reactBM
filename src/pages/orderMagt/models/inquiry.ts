@@ -24,7 +24,6 @@ const inquiry = {
     pagenation: {
       pageNumber: 0,
       pageSize: 10,
-      total: 0,
     },
     currentRecord: {},
     channel: [],
@@ -55,11 +54,15 @@ const inquiry = {
       return payload;
     },
     *queryPagenationChange({ payload }, { call, put }) {
+      let pagenation = {
+        pageNumber: payload.current - 1,
+        pageSize: payload.pageSize,
+      };
       yield put({
         type: 'pageNationChange',
-        payload: payload,
+        payload: pagenation,
       });
-      return payload;
+      return pagenation;
     },
     *currentRecord({ payload }, { call, put }) {
       yield put({
