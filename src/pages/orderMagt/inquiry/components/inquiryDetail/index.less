@@ -3,11 +3,15 @@
 .title {
   display: flex;
   justify-content: space-between;
+  height: 50px;
+  line-height: 50px;
 
   .infopart {
     font-size: @title-font-size;
     font-weight: @title-font-weight;
     color: #1B1B1B;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
 
     .timeRemaining {
       margin-left: 10px;
@@ -33,77 +37,41 @@
   }
 }
 
-.table {
-  margin-top: 10px;
+.doctor {
+  display: flex;
+  padding: 20px 10px;
+  align-items: center;
 
-  .titleInfo {
-    height: 40px;
-    line-height: 40px;
-    font-size: @title-font-size;
-    font-weight: @title-font-weight;
-    color: rgba(27, 27, 27, 1);
-    border: 1px solid rgba(232, 232, 232, 1);
-    border-bottom: 0px;
-    padding: 0px 16px;
-  }
-
-  .tableContent {
-    border: 1px solid rgba(232, 232, 232, 1);
-    padding: 15px 31px;
-
-    .label {
-      font-size: @title-font-size;
-      font-weight: @content-font-weight;
-      color: rgba(27, 27, 27, 1);
-    }
-
-    .message {
-      font-size: @content-font-size;
-      font-weight: @content-font-weight;
-      color: rgba(27, 27, 27, 1);
-    }
-
-    .lineInfo {
-      margin-bottom: 10px;
-    }
-
-    .prescribImg {
-      width: 140px;
-      height: 140px;
-      margin: 0px 24px 24px 0px;
-    }
-  }
-
-  .footers {
-    height: 40px;
-    line-height: 40px;
-    border: 1px solid rgba(232, 232, 232, 1);
-    border-top: 0px;
-    padding: 0px 31px;
-    font-size: @content-font-size;
-    font-weight: @content-font-weight;
-    font-weight: 600;
-
-    .price {
-      color: #FA4949
-    }
+  img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50px;
+    background-color: #1890ff;
+    margin-right: 20px;
   }
 }
 
-.footer {
-  float: right;
-  margin-top: 39px;
+.patient {
+  padding: 10px 10px;
+  padding-bottom: 20px;
 
-  :global {
-    .ant-btn {
-      width: 120px;
-      height: 36px;
-      line-height: 36px;
-      border-radius: 4px;
-      font-size: @title-font-size;
-      font-weight: @title-font-weight;
-      margin-left: 40px;
-      color: #fff;
+  .patientItem {
+    height: auto;
+    line-height: 30px;
+    display: flex;
+    flex-wrap: wrap;
+
+    .patientLabel {
+      color: #1B1B1B;
+      margin-right: 10px;
+    }
+
+    img {
+      margin-right: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      cursor: pointer;
     }
   }
 }

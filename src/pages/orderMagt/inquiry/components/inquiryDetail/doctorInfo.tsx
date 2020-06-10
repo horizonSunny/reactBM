@@ -7,7 +7,7 @@ import tipsIcon from '@/assets/order/Tips-icon.svg';
 @connect(({ inquiry }) => ({
   inquiry,
 }))
-class Title extends Component {
+class Doctor extends Component {
   state = {};
 
   componentDidMount() {}
@@ -16,19 +16,25 @@ class Title extends Component {
 
   render() {
     const { currentOrder } = this.props.inquiry;
+    const { doctor } = currentOrder;
     return (
-      <div className={`${styles.title}`}>
-        <div className={`${styles.infopart}`}>
-          <span>{statusFilter(currentOrder.orderStatus)}</span>
-          {currentOrder.surplusTime && (
-            <span className={`${styles.timeRemaining}`}>
-              剩余{this.state.hour}小时{this.state.minute}分{this.state.second}秒自动关闭
-            </span>
-          )}
+      <frameElement>
+        <div className={`${styles.title} `} style={{ marginTop: '20px' }}>
+          <div className={`${styles.infopart}`}>咨询医生</div>
         </div>
-      </div>
+        <div className={`${styles.doctor}`}>
+          <img src="" alt="" />
+          <div className={`${styles.doctorDetails}`}>
+            <div>
+              {doctor.name} {doctor.title} {doctor.departments}
+            </div>
+            <div>{doctor.hospital}</div>
+            <div>{doctor.phone}</div>
+          </div>
+        </div>
+      </frameElement>
     );
   }
 }
 
-export default Title;
+export default Doctor;

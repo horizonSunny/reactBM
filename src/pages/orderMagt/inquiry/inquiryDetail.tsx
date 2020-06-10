@@ -23,17 +23,19 @@ class Particulars extends Component {
     });
   }
   render() {
-    const { currentRecord } = this.props.inquiry;
+    const { currentOrder } = this.props.inquiry;
 
     return (
       <PageHeaderWrapper>
         <div className={styles.container}>
-          <div className={`${styles.content}`}>
-            <Title></Title>
-            {/*  <DoctorInfo></DoctorInfo>
-            <OrderInfo></OrderInfo>
-            <PatientInfo></PatientInfo> */}
-          </div>
+          {currentOrder.id && (
+            <div className={`${styles.content}`}>
+              <Title></Title>
+              <DoctorInfo></DoctorInfo>
+              <PatientInfo></PatientInfo>
+              <OrderInfo></OrderInfo>
+            </div>
+          )}
         </div>
       </PageHeaderWrapper>
     );
