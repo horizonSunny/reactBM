@@ -1,25 +1,25 @@
 import React, { Component } from 'react';
 import { Card, Typography, Alert } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
-import styles from './inquiryAdm.less';
-import QueryForm from './businessComponent/inquiryAdm/QueryForm';
-import EnterTable from './businessComponent/inquiryAdm/EnterTable';
+import styles from './doctorAdm.less';
+import QueryForm from './doctorComponent/QueryForm';
+import EnterTable from './doctorComponent/EnterTable';
 import { connect } from 'dva';
 
-@connect(({ inquiry }) => ({
-  inquiry: inquiry,
+@connect(({ doctorAdm }) => ({
+  doctorAdm: doctorAdm,
 }))
 class BusinessEnter extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
-    const { queryForm, pagination } = this.props.inquiry;
+    const { queryForm, pagination } = this.props.doctorAdm;
     let params = {
       ...queryForm,
       ...pagination,
     };
     // 查询列表
     dispatch({
-      type: 'inquiry/queryList',
+      type: 'doctorAdm/queryList',
       payload: { ...params },
     });
   }

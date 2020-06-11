@@ -36,12 +36,12 @@ const route = [
               {
                 path: '/businessAdm/doctor',
                 name: '医生管理',
-                component: './businessAdm/businessEnter',
+                component: './businessAdm/doctorAdm',
               },
               {
                 path: '/businessAdm/organization',
                 name: '医疗机构管理',
-                component: './businessAdm/businessEnter',
+                component: './businessAdm/hospitalAdm',
               },
               // {
               //   path: 'examine',
