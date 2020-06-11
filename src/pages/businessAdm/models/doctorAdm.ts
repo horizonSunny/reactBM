@@ -1,12 +1,10 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
 import {
-  insertBusiness,
-  saveBusiness,
-  switchStatus,
-  queryOperation,
   //2.0
   getDoctorPage,
+  getDoctorDetails,
+  auditDoctor,
 } from '@/services/businessAdm';
 const doctorAdm = {
   namespace: 'doctorAdm',
@@ -23,6 +21,7 @@ const doctorAdm = {
       pageNumber: 0,
       pageSize: 10,
     },
+    currentDoctor: {},
   },
 
   effects: {
@@ -49,6 +48,20 @@ const doctorAdm = {
         payload: payload,
       });
       return payload;
+    },
+    *getDoctorDetails({ payload }, { call, put }) {
+      const response = yield call(getDoctorDetails, payload);
+      if (response && response.code === 1) {
+        yield put({
+          type: 'setCurrentDoctor',
+          payload: response.data,
+        });
+      }
+      return response;
+    },
+    *auditDoctor({ payload }, { call, put }) {
+      const response = yield call(auditDoctor, payload);
+      return response;
     },
   },
 
@@ -79,6 +92,12 @@ const doctorAdm = {
       return {
         ...state,
         pagination: temppagination,
+      };
+    },
+    setCurrentDoctor(state, action) {
+      return {
+        ...state,
+        currentDoctor: action.payload,
       };
     },
   },
