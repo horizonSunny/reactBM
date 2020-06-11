@@ -1,12 +1,19 @@
-import { Table, Switch, Button, Modal, message } from 'antd';
+import { Table, Switch, Button, Modal, Input, message } from 'antd';
 import React, { Component } from 'react';
 import router from 'umi/router';
 import { connect } from 'dva';
-const { confirm } = Modal;
+import { upDoctorStatus } from '@/services/businessAdm';
+
 @connect(({ doctorAdm }) => ({
   doctorAdm: doctorAdm,
 }))
 class EnterTable extends Component {
+  state = {
+    visible: false,
+    serviceState: true,
+    closeReason: '',
+    currentDoctor: {},
+  };
   columns = [
     {
       title: '医生编码',
@@ -70,6 +77,21 @@ class EnterTable extends Component {
       },
     },
     {
+      title: '状态',
+      dataIndex: 'status',
+      key: 'status',
+      render: (text, record) => (
+        <span>
+          {text == 1 ? '服务中' : '暂停'}
+          <Switch
+            checked={text == 1 ? true : false}
+            defaultChecked={text == 1 ? true : false}
+            onChange={() => this.handleSwitchChange(text, record)}
+          />
+        </span>
+      ),
+    },
+    {
       title: '操作',
       key: 'action',
       fixed: 'right',
@@ -85,30 +107,17 @@ class EnterTable extends Component {
   ];
   handleSwitchChange = (text, record) => {
     console.log('switch切换:', text, record);
-    const { dispatch } = this.props;
-    confirm({
-      content: `是否${text ? '启售' : '禁售'}当前商户?`,
-      okText: '确定',
-      cancelText: '取消',
-      onOk() {
-        console.log('OK');
-        let tempParam = {
-          tenantId: record.tenantId,
-          status: text ? 0 : 1,
-        };
-        dispatch({
-          type: 'doctorAdm/switchStatus',
-          payload: tempParam,
-        }).then(data => {
-          if (data.code === 1) {
-            message.success('修改成功!');
-          }
-        });
+    this.setState(
+      {
+        visible: true,
+        serviceState: text == 1 ? false : true,
+        currentDoctor: record,
       },
-      onCancel() {
-        console.log('Cancel');
+      () => {
+        // console.log(this.state.initSwitch); //此时的this.state.initSwitch为true
       },
-    });
+    );
+    // const { dispatch } = this.props;
   };
   handleView = (text, record) => {
     console.log('当前行的数据为:', text, record);
@@ -157,18 +166,96 @@ class EnterTable extends Component {
       });
     });
   };
+  // 开启或者关闭服务
+  handleOk = () => {
+    const params = {
+      doctorId: this.state.currentDoctor.id,
+      status: this.state.serviceState ? 1 : 2,
+    };
+    if (!this.state.serviceState) {
+      params.pauseReason = this.state.closeReason;
+    }
+    if (!this.state.serviceState && params.pauseReason == '') {
+      message.info('关闭原因不能为空');
+      return;
+    }
+    upDoctorStatus(params).then(res => {
+      if (res.code == 1) {
+        this.setState(
+          {
+            visible: false,
+          },
+          () => {
+            this.setState({
+              serviceState: true,
+              closeReason: '',
+              currentDoctor: {},
+            });
+          },
+        );
+        //重新请求
+        const { dispatch } = this.props;
+        const { queryForm, pagination } = this.props.doctorAdm;
+        let params = {
+          ...queryForm,
+          ...pagination,
+        };
+        // 查询列表
+        dispatch({
+          type: 'doctorAdm/queryList',
+          payload: { ...params },
+        });
+      } else {
+        message.info(res.msg);
+      }
+    });
+  };
+  handleCancel = () => {
+    this.setState(
+      {
+        visible: false,
+      },
+      () => {
+        this.setState({
+          serviceState: true,
+          closeReason: '',
+          currentDoctor: {},
+        });
+      },
+    );
+  };
+  closeReson = e => {
+    const { value } = e.target;
+    console.log('value_', value);
+    this.setState({
+      closeReason: value,
+    });
+  };
   render() {
     const { doctorAdm } = this.props;
     return (
-      <Table
-        style={{ paddingLeft: '10px', paddingRight: '10px' }}
-        rowKey="tenantId"
-        dataSource={doctorAdm.businessData}
-        columns={this.columns}
-        pagination={doctorAdm.pagination}
-        onChange={this.onChange}
-        scroll={{ x: 1200 }}
-      />
+      <div>
+        <Table
+          style={{ paddingLeft: '10px', paddingRight: '10px' }}
+          rowKey="tenantId"
+          dataSource={doctorAdm.businessData}
+          columns={this.columns}
+          pagination={doctorAdm.pagination}
+          onChange={this.onChange}
+          scroll={{ x: 1200 }}
+        />
+        <Modal
+          title={this.state.serviceState ? '开启服务' : '请填写关闭原因'}
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          {this.state.serviceState && <span>是否开启服务?</span>}
+          {!this.state.serviceState && '关闭原因：' && (
+            <Input width="25" onChange={this.closeReson}></Input>
+          )}
+        </Modal>
+      </div>
     );
   }
 }
