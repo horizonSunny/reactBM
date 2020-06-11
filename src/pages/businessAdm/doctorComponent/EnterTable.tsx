@@ -137,7 +137,11 @@ class EnterTable extends Component {
     //     totalElements: 0,
     //   },
     // });
-    router.push('/businessAdm/doctor/particulars');
+    // router.push('/businessAdm/doctor/particulars');
+    router.push({
+      pathname: '/businessAdm/doctor/particulars',
+      query: { id: record.id },
+    });
   };
   handleUpdate = (text, record) => {
     console.log('当前行的数据为:', text, record);

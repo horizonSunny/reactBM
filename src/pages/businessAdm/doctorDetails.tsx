@@ -11,13 +11,22 @@ import {
   Shopscene,
   Operationrecord,
 } from './doctorComponent/index';
+import routerParams from '@/utils/routerParams';
 
 class Particulars extends Component {
+  componentDidMount() {
+    const { dispatch } = this.props;
+    const params = routerParams(location.search);
+    dispatch({
+      type: 'doctorAdm/queryList',
+      // payload: { ...queryForm, ...pagination },
+    });
+  }
   handleEdit = () => {
-    router.push('/businessAdm/enter/edit');
+    // router.push('/businessAdm/enter/edit');
   };
   handleBack = () => {
-    router.push('/businessAdm/enter');
+    // router.push('/businessAdm/enter');
   };
   render() {
     return (
@@ -25,10 +34,10 @@ class Particulars extends Component {
         <div className={styles.container}>
           <div className={`${styles.content}`}>
             <Title></Title>
-            <BaseInfo></BaseInfo>
+            {/* <BaseInfo></BaseInfo>
             <Qualification></Qualification>
             <Shopscene></Shopscene>
-            <Operationrecord></Operationrecord>
+            <Operationrecord></Operationrecord> */}
           </div>
           <div className={`${styles.operation}`}>
             <Button type="primary" onClick={this.handleEdit}>
