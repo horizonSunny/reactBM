@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Card, Typography, Alert } from 'antd';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import styles from './businessEnter.less';
-import QueryForm from './components/QueryForm';
-import EnterTable from './components/EnterTable';
+import QueryForm from './businessComponent/QueryForm';
+import EnterTable from './businessComponent/EnterTable';
 import { connect } from 'dva';
 
 @connect(({ businessAdm }) => ({
