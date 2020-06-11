@@ -83,15 +83,17 @@ class PatientInfo extends Component {
         <div className={`${styles.title} `} style={{ marginTop: '20px' }}>
           <div className={`${styles.infopart}`}>
             咨询内容 &nbsp;{' '}
-            <a
-              href="javascript:void(0);"
-              style={{
-                fontSize: '12px',
-              }}
-              onClick={this.getMessage}
-            >
-              查看详情
-            </a>
+            {this.state.filterMsgInfo && (
+              <a
+                href="javascript:void(0);"
+                style={{
+                  fontSize: '12px',
+                }}
+                onClick={this.getMessage}
+              >
+                查看详情
+              </a>
+            )}
           </div>
         </div>
         <div className={`${styles.patient}`}>
