@@ -22,8 +22,8 @@ class EnterTable extends Component {
     },
     {
       title: '更新时间',
-      dataIndex: 'updateTime',
-      key: 'updateTime',
+      dataIndex: 'auditTime',
+      key: 'auditTime',
     },
     {
       title: '姓名',
@@ -150,9 +150,13 @@ class EnterTable extends Component {
   };
   onChange = (pagination, filters, sorter) => {
     const { dispatch } = this.props;
+    const params = {
+      pageNumber: pagination.current - 1,
+      pageSize: pagination.pageSize,
+    };
     dispatch({
       type: 'doctorAdm/querypaginationChange',
-      payload: { ...pagination },
+      payload: { ...params },
     }).then(() => {
       const { queryForm, pagination } = this.props.doctorAdm;
       let params = {
