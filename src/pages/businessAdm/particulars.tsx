@@ -10,7 +10,7 @@ import {
   Qualification,
   Shopscene,
   Operationrecord,
-} from './particularsComponents/index';
+} from './businessComponent/index';
 
 class Particulars extends Component {
   handleEdit = () => {
