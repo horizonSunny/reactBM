@@ -1,12 +1,12 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
 import {
-  queryBusiness,
   insertBusiness,
   saveBusiness,
   switchStatus,
-  queryChannel,
   queryOperation,
+  //2.0
+  getHospitalPage,
 } from '@/services/businessAdm';
 const hospitalAdm = {
   namespace: 'hospitalAdm',
@@ -14,40 +14,27 @@ const hospitalAdm = {
   state: {
     businessData: [],
     queryForm: {
-      adminName: '',
-      endTime: '',
-      startTime: '',
-      status: '',
-      channel: '',
-      tenantName: '',
-      province: [],
+      authStatus: '0',
+      doctorName: '',
+      hospitalName: '',
+      status: '0',
     },
     pagination: {
       pageNumber: 0,
       pageSize: 10,
-      total: 0,
-      showSizeChanger: true,
-      showQuickJumper: true,
-      showTotal: total => {
-        return `共 ${total} 条`;
-      },
     },
-    currentRecord: {},
-    channel: [],
-    operaRecord: [],
-    recordpagination: {
-      pageNumber: 0,
-      pageSize: 10,
-      totalElements: 0,
-    },
+    // currentRecord: {},
+    // operaRecord: [],
+    // recordpagination: {
+    //   pageNumber: 0,
+    //   pageSize: 10,
+    //   totalElements: 0,
+    // },
   },
 
   effects: {
     *queryList({ payload }, { call, put }) {
-      if (payload.province && payload.province.length > 0) {
-        payload.province = payload.province.join(',');
-      }
-      const response = yield call(queryBusiness, payload);
+      const response = yield call(getHospitalPage, payload);
       if (response && response.code === 1) {
         yield put({
           type: 'queryData',
@@ -130,16 +117,6 @@ const hospitalAdm = {
       }
       return response;
     },
-    *initChannel(_, { call, put }) {
-      const response = yield call(queryChannel);
-      if (response && response.code === 1) {
-        yield put({
-          type: 'saveChannel',
-          payload: response.data,
-        });
-      }
-      return response;
-    },
     *getOperationRecord({ payload }, { call, put }) {
       yield put({
         type: 'operaRecord',
@@ -216,12 +193,6 @@ const hospitalAdm = {
       return {
         ...state,
         businessData: tempbusinessData,
-      };
-    },
-    saveChannel(state, action) {
-      return {
-        ...state,
-        channel: action.payload,
       };
     },
     operaRecord(state, action) {

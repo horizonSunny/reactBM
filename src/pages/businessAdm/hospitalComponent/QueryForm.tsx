@@ -9,53 +9,30 @@ const { RangePicker } = DatePicker;
 const { Option } = Select;
 const options = newArea();
 
-@connect(({ businessAdm }) => ({
-  businessAdm: businessAdm,
+@connect(({ hospitalAdm }) => ({
+  hospitalAdm: hospitalAdm,
 }))
 class QueryForm extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      pagination: {
-        current: 0,
-        pageSize: 10,
-      },
-    };
+    this.state = {};
   }
-  componentDidMount() {
-    this.initChannel();
-  }
-  initChannel = () => {
-    console.log('???');
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'businessAdm/initChannel',
-    });
-  };
+  componentDidMount() {}
+
   handleSearch = e => {
     e.preventDefault();
     const { dispatch } = this.props;
     this.props.form.validateFields((err, values) => {
-      let startTime = '';
-      let endTime = '';
-      console.log('values.time:', values.time);
-      if (values.time && values.time.length > 0) {
-        startTime = new Date(values.time[0]).getTime();
-        endTime = new Date(values.time[1]).getTime();
-      }
       let params = {
-        adminName: values.adminName,
-        endTime: endTime,
-        startTime: startTime,
+        authStatus: values.authStatus,
+        doctorName: values.doctorName,
+        hospitalName: values.hospitalName,
         status: values.status,
-        channel: values.channel,
-        tenantName: values.tenantName,
-        province: values.province || [],
       };
       console.log('查询参数: ', params);
       // 查询列表
       dispatch({
-        type: 'businessAdm/queryFormChange',
+        type: 'hospitalAdm/queryFormChange',
         payload: { ...params },
       }).then(() => {
         this.handleQuery();
@@ -67,15 +44,13 @@ class QueryForm extends Component {
     const { dispatch } = this.props;
     this.props.form.resetFields();
     let params = {
-      adminName: '',
-      endTime: '',
-      startTime: '',
-      status: '',
-      channel: '',
-      tenantName: '',
+      authStatus: '0',
+      doctorName: '',
+      hospitalName: '',
+      status: '0',
     };
     dispatch({
-      type: 'businessAdm/queryFormChange',
+      type: 'hospitalAdm/queryFormChange',
       payload: { ...params },
     }).then(() => {
       this.handleQuery();
@@ -84,30 +59,21 @@ class QueryForm extends Component {
 
   handleQuery = () => {
     const { dispatch } = this.props;
-    const { queryForm, pagination } = this.props.businessAdm;
+    const { queryForm, pagination } = this.props.hospitalAdm;
     let params = {
       ...queryForm,
       ...pagination,
     };
     // 查询列表
     dispatch({
-      type: 'businessAdm/queryList',
+      type: 'hospitalAdm/queryList',
       payload: { ...params },
-    });
-  };
-  handleInsert = () => {
-    const { dispatch } = this.props;
-    dispatch({
-      type: 'businessAdm/currentRecord',
-      payload: {},
-    }).then(() => {
-      router.push('/businessAdm/enter/edit');
     });
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const { queryForm, channel } = this.props.businessAdm;
+    const { queryForm } = this.props.hospitalAdm;
 
     const formItemLayout = {
       labelCol: {
@@ -126,89 +92,56 @@ class QueryForm extends Component {
       <Form className={styles.searchform} onSubmit={this.handleSearch}>
         <Row gutter={24}>
           <Col span={8}>
-            <Form.Item {...formItemLayout} label="入住时间">
-              {getFieldDecorator('time', {
-                // initialValue: [queryForm.startTime,queryForm.endTime]
-              })(
-                <RangePicker
-                  showTime={{ format: 'HH:mm' }}
-                  format="YYYY-MM-DD HH:mm"
-                  style={{ width: '100%' }}
-                />,
-              )}
+            <Form.Item {...formItemLayout} label="管理员">
+              {getFieldDecorator('doctorName', {
+                initialValue: queryForm.doctorName,
+              })(<Input placeholder="请输入管理员姓名" />)}
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item {...formItemLayout} label="企业状态">
-              {getFieldDecorator('status', {
-                initialValue: queryForm.status,
+            <Form.Item {...formItemLayout} label="医疗机构名称">
+              {getFieldDecorator('hospitalName', {
+                initialValue: queryForm.hospitalName,
+              })(<Input placeholder="医疗机构名称" />)}
+            </Form.Item>
+          </Col>
+          <Col span={8}>
+            <Form.Item {...formItemLayout} label="审核状态">
+              {getFieldDecorator('authStatus', {
+                initialValue: queryForm.authStatus,
               })(
                 <Select>
-                  <Option value="">全部</Option>
-                  <Option value="1">启售</Option>
-                  <Option value="0">禁售</Option>
+                  <Option value="0">全部</Option>
+                  <Option value="1">待审核</Option>
+                  <Option value="2">审核驳回</Option>
+                  <Option value="3">审核通过</Option>
                 </Select>,
               )}
             </Form.Item>
           </Col>
           <Col span={8}>
-            <Form.Item {...formItemLayout} label="所属渠道">
-              {getFieldDecorator('channel', {
-                initialValue: queryForm.channel,
+            <Form.Item {...formItemLayout} label="服务状态">
+              {getFieldDecorator('status', {
+                initialValue: queryForm.status,
               })(
                 <Select>
-                  <Option value="">全部</Option>
-                  {channel.map((item, index) => {
-                    return (
-                      <Option value={item} key={index}>
-                        {item}
-                      </Option>
-                    );
-                  })}
+                  <Option value="0">全部</Option>
+                  <Option value="1">服务中</Option>
+                  <Option value="2">暂停</Option>
                 </Select>,
               )}
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={24}>
-          <Col span={8}>
-            <Form.Item {...formItemLayout} label="地区">
-              {getFieldDecorator('province', {
-                initialValue: queryForm.province,
-              })(<Cascader options={options} changeOnSelect placeholder="省市区" />)}
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item {...formItemLayout} label="企业名称">
-              {getFieldDecorator('tenantName', {
-                initialValue: queryForm.tenantName,
-              })(<Input placeholder="企业名称" />)}
-            </Form.Item>
-          </Col>
-          <Col span={8}>
-            <Form.Item {...formItemLayout} label="管理员">
-              {getFieldDecorator('adminName', {
-                initialValue: queryForm.adminName,
-              })(<Input placeholder="管理员" />)}
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row>
           <Col span={8} offset={16} style={{ textAlign: 'center' }}>
             <Button type="primary" htmlType="submit">
               搜索
             </Button>
-            <Button style={{ marginLeft: 8 }} onClick={this.handleReset}>
+            <Button style={{ marginLeft: '8px', marginRight: '8px' }} onClick={this.handleReset}>
               重置
             </Button>
-            <Button
-              type="danger"
-              icon="plus"
-              style={{ marginLeft: 16 }}
-              onClick={this.handleInsert}
-            >
-              添加
-            </Button>
+            <Button type="primary">添加机构</Button>
           </Col>
         </Row>
       </Form>
