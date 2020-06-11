@@ -34,21 +34,6 @@ const route = [
                 component: './businessAdm/businessEnter',
               },
               {
-                path: '/businessAdm/doctor',
-                name: '医生管理',
-                component: './businessAdm/doctorAdm',
-              },
-              {
-                path: '/businessAdm/organization',
-                name: '医疗机构管理',
-                component: './businessAdm/hospitalAdm',
-              },
-              // {
-              //   path: 'examine',
-              //   name: '入驻审核',
-              //   component: './commodity/commodityAdm/CommodityAdm.tsx',
-              // },
-              {
                 path: '/businessAdm/enter/particulars',
                 name: '查看详情',
                 component: './businessAdm/particulars',
@@ -60,6 +45,28 @@ const route = [
                 component: './businessAdm/businessEdit',
                 hideInMenu: true,
               },
+              // 2.0 医生模块和医疗机构模块
+              {
+                path: '/businessAdm/doctor',
+                name: '医生管理',
+                component: './businessAdm/doctorAdm',
+              },
+              {
+                path: '/businessAdm/doctor/particulars',
+                name: '医生资料详情',
+                component: './businessAdm/doctorDetails',
+                hideInMenu: true,
+              },
+              {
+                path: '/businessAdm/organization',
+                name: '医疗机构管理',
+                component: './businessAdm/hospitalAdm',
+              },
+              // {
+              //   path: 'examine',
+              //   name: '入驻审核',
+              //   component: './commodity/commodityAdm/CommodityAdm.tsx',
+              // },
             ],
           },
           {
