@@ -3,66 +3,71 @@ import React, { Component } from 'react';
 import router from 'umi/router';
 import { connect } from 'dva';
 const { confirm } = Modal;
-@connect(({ businessAdm }) => ({
-  businessAdm: businessAdm,
+@connect(({ doctorAdm }) => ({
+  doctorAdm: doctorAdm,
 }))
 class EnterTable extends Component {
   columns = [
     {
-      title: '企业编码',
-      dataIndex: 'tenantCode',
-      key: 'tenantCode',
+      title: '医生编码',
+      dataIndex: 'id',
+      key: 'id',
     },
     {
-      title: '入驻时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
+      title: '更新时间',
+      dataIndex: 'updateTime',
+      key: 'updateTime',
     },
     {
-      title: '企业名称',
-      dataIndex: 'tenantName',
-      key: 'tenantName',
+      title: '姓名',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
-      title: '管理员',
-      dataIndex: 'adminName',
-      key: 'adminName',
+      title: '性别',
+      dataIndex: 'sex',
+      key: 'sex',
+      render: text => <span>{text == 1 ? '男' : '女'}</span>,
     },
     {
-      title: '管理员手机号',
-      dataIndex: 'adminTel',
-      key: 'adminTel',
+      title: '年龄',
+      dataIndex: 'age',
+      key: 'age',
     },
     {
-      title: '地区',
-      dataIndex: 'address',
-      key: 'address',
-      render: (text, record) => (
-        <span>
-          {record.province}
-          {record.city}
-        </span>
-      ),
+      title: '职称',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
-      title: '渠道',
-      dataIndex: 'channel',
-      key: 'channel',
+      title: '医院/科室',
+      dataIndex: 'doctorHospital',
+      key: 'doctorHospitalList',
+      render: (text, record) => {
+        record.doctorHospitalList.map(item => {
+          return <span>{`${hospitalName}(${partName})`}</span>;
+        });
+      },
     },
     {
-      title: '状态',
-      dataIndex: 'status',
-      key: 'status',
-      render: (text, record) => (
-        <span>
-          {text ? '启售' : '禁售'}{' '}
-          <Switch
-            checked={text ? true : false}
-            defaultChecked={text ? true : false}
-            onChange={() => this.handleSwitchChange(text, record)}
-          />
-        </span>
-      ),
+      title: '好评率',
+      dataIndex: 'goodEstimate',
+      key: 'goodEstimate',
+    },
+    {
+      title: '审核状态',
+      dataIndex: 'authStatus',
+      key: 'authStatus',
+      render: (text, record) => {
+        switch (text) {
+          case '1':
+            return <span>待审核</span>;
+          case '2':
+            return <span>审核驳回</span>;
+          case '3':
+            return <span>审核通过</span>;
+        }
+      },
     },
     {
       title: '操作',
@@ -73,13 +78,6 @@ class EnterTable extends Component {
         <div>
           <Button type="primary" onClick={() => this.handleView(text, record)}>
             查看
-          </Button>
-          <Button
-            style={{ marginLeft: '8px' }}
-            type="primary"
-            onClick={() => this.handleUpdate(text, record)}
-          >
-            编辑
           </Button>
         </div>
       ),
@@ -99,7 +97,7 @@ class EnterTable extends Component {
           status: text ? 0 : 1,
         };
         dispatch({
-          type: 'businessAdm/switchStatus',
+          type: 'doctorAdm/switchStatus',
           payload: tempParam,
         }).then(data => {
           if (data.code === 1) {
@@ -115,14 +113,14 @@ class EnterTable extends Component {
   handleView = (text, record) => {
     console.log('当前行的数据为:', text, record);
     const { dispatch } = this.props;
-    const { recordpagination } = this.props.businessAdm;
+    const { recordpagination } = this.props.doctorAdm;
     dispatch({
-      type: 'businessAdm/currentRecord',
+      type: 'doctorAdm/currentRecord',
       payload: { ...record },
     });
     // 获取操作日志
     dispatch({
-      type: 'businessAdm/getOperationRecord',
+      type: 'doctorAdm/getOperationRecord',
       payload: {
         ...recordpagination,
         tenantId: record.tenantId,
@@ -130,44 +128,44 @@ class EnterTable extends Component {
         totalElements: 0,
       },
     });
-    router.push('/businessAdm/enter/particulars');
+    router.push('/doctorAdm/enter/particulars');
   };
   handleUpdate = (text, record) => {
     console.log('当前行的数据为:', text, record);
     const { dispatch } = this.props;
     dispatch({
-      type: 'businessAdm/currentRecord',
+      type: 'doctorAdm/currentRecord',
       payload: { ...record },
     });
-    router.push('/businessAdm/enter/edit');
+    router.push('/doctorAdm/enter/edit');
   };
   onChange = (pagination, filters, sorter) => {
     const { dispatch } = this.props;
     dispatch({
-      type: 'businessAdm/querypaginationChange',
+      type: 'doctorAdm/querypaginationChange',
       payload: { ...pagination },
     }).then(() => {
-      const { queryForm, pagination } = this.props.businessAdm;
+      const { queryForm, pagination } = this.props.doctorAdm;
       let params = {
         ...queryForm,
         ...pagination,
       };
       // 查询列表
       dispatch({
-        type: 'businessAdm/queryList',
+        type: 'doctorAdm/queryList',
         payload: { ...params },
       });
     });
   };
   render() {
-    const { businessAdm } = this.props;
+    const { doctorAdm } = this.props;
     return (
       <Table
         style={{ paddingLeft: '10px', paddingRight: '10px' }}
         rowKey="tenantId"
-        dataSource={businessAdm.businessData}
+        dataSource={doctorAdm.businessData}
         columns={this.columns}
-        pagination={businessAdm.pagination}
+        pagination={doctorAdm.pagination}
         onChange={this.onChange}
         scroll={{ x: 1200 }}
       />

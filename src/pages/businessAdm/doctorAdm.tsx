@@ -13,15 +13,16 @@ class BusinessEnter extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
     const { queryForm, pagination } = this.props.doctorAdm;
-    let params = {
-      ...queryForm,
-      ...pagination,
-    };
     // 查询列表
+    // dispatch({
+    //   type: 'doctorAdm/queryFormChange',
+    //   payload: { ...params },
+    // }).then(() => {
     dispatch({
       type: 'doctorAdm/queryList',
-      payload: { ...params },
+      payload: { ...queryForm, ...pagination },
     });
+    // });
   }
   render() {
     return (

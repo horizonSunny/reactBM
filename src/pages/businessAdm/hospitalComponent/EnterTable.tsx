@@ -9,40 +9,35 @@ const { confirm } = Modal;
 class EnterTable extends Component {
   columns = [
     {
-      title: '企业编码',
-      dataIndex: 'tenantCode',
-      key: 'tenantCode',
+      title: '医生编码',
+      dataIndex: 'id',
+      key: 'id',
     },
     {
-      title: '入驻时间',
-      dataIndex: 'createTime',
-      key: 'createTime',
+      title: '更新时间',
+      dataIndex: 'updateTime',
+      key: 'updateTime',
     },
     {
-      title: '企业名称',
-      dataIndex: 'tenantName',
-      key: 'tenantName',
+      title: '姓名',
+      dataIndex: 'name',
+      key: 'name',
     },
     {
-      title: '管理员',
-      dataIndex: 'adminName',
-      key: 'adminName',
+      title: '性别',
+      dataIndex: 'sex',
+      key: 'sex',
+      render: text => <span>{text == 1 ? '男' : '女'}</span>,
     },
     {
-      title: '管理员手机号',
-      dataIndex: 'adminTel',
-      key: 'adminTel',
+      title: '年龄',
+      dataIndex: 'age',
+      key: 'age',
     },
     {
-      title: '地区',
-      dataIndex: 'address',
-      key: 'address',
-      render: (text, record) => (
-        <span>
-          {record.province}
-          {record.city}
-        </span>
-      ),
+      title: '职称',
+      dataIndex: 'title',
+      key: 'title',
     },
     {
       title: '渠道',
