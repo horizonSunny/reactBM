@@ -55,78 +55,46 @@ class HospitalEdit extends Component {
         }
       });
   }
-  // 手机校验
-  // phoneValidator = (rule, value, callback) => {
-  //   let reg = /^1(3[0-9]|4[5,7]|5[0,1,2,3,5,6,7,8,9]|6[2,5,6,7]|7[0,1,7,8]|8[0-9]|9[1,8,9])\d{8}$/;
-  //   if (value && value.length > 10 && !reg.test(value)) {
-  //     callback('手机号格式错误!');
-  //   }
-  //   callback();
-  // };
   // 保存上传
   handleSave = () => {
-    // const {
-    //   dispatch,
-    //   form: { validateFields },
-    // } = this.props;
-    // validateFields((err, values) => {
-    //   if (this.state.qualificationFileList.length > 0) {
-    //     this.props.form.setFieldsValue({
-    //       enterpriseQualification: this.state.qualificationFileList,
-    //     });
-    //   }
-    //   if (!err) {
-    //     let params = {
-    //       ...values,
-    //       tenantLogo: this.state.logoUrl,
-    //       adminCard: this.state.adminUrl,
-    //       enterpriseQualification: this.state.qualificationFileList,
-    //       storeLive: this.state.storeLiveFileList,
-    //     };
-    //     dispatch({
-    //       type: 'hospitalAdm/saveBusiness',
-    //       payload: params,
-    //     }).then(
-    //       data => {
-    //         if (data.code === 1) {
-    //           message.success('保存成功!');
-    //         } else {
-    //           message.info(data.msg);
-    //         }
-    //       },
-    //       () => {
-    //         message.error('网络连接失败,请稍后再试!');
-    //       },
-    //     );
-    //   }
-    // });
+    console.log('all_', this.state.hospitalInfo);
+
+    const {
+      dispatch,
+      form: { validateFields },
+    } = this.props;
+    validateFields((err, values) => {
+      debugger;
+      if (!err) {
+        //   let params = {
+        //     ...values,
+        //     tenantLogo: this.state.logoUrl,
+        //     adminCard: this.state.adminUrl,
+        //     enterpriseQualification: this.state.qualificationFileList,
+        //     storeLive: this.state.storeLiveFileList,
+        //   };
+        //   dispatch({
+        //     type: 'hospitalAdm/saveBusiness',
+        //     payload: params,
+        //   }).then(
+        //     data => {
+        //       if (data.code === 1) {
+        //         message.success('保存成功!');
+        //       } else {
+        //         message.info(data.msg);
+        //       }
+        //     },
+        //     () => {
+        //       message.error('网络连接失败,请稍后再试!');
+        //     },
+        //   );
+      }
+    });
   };
   // 返回
   handleBack = () => {
     router.push('/businessAdm/hospitalAdm');
   };
-  // editQualificationName = (type, value, editValue) => {
-  //   const { qualificationFileList } = this.state;
-  //   if (type === 'save') {
-  //     qualificationFileList.map(item => {
-  //       if (item.uid === value.uid) {
-  //         item.name = editValue;
-  //         value.edit = false;
-  //       }
-  //       return item;
-  //     });
-  //   } else {
-  //     qualificationFileList.map(item => {
-  //       if (item.uid === value.uid) {
-  //         value.edit = true;
-  //       }
-  //       return item;
-  //     });
-  //   }
-  //   this.setState({
-  //     qualificationFileList: qualificationFileList,
-  //   });
-  // };
   // 关闭弹窗
   handleCancel = () => this.setState({ previewVisible: false });
 
@@ -231,14 +199,27 @@ class HospitalEdit extends Component {
               <Form.Item label="身份证">
                 {getFieldDecorator('certNo', {
                   initialValue: hospitalInfo['certNo'],
-                  rules: [{ required: true, message: '请输入身份证!', type: 'string' }],
-                })(<Input maxLength={20} placeholder="请输入身份证" />)}
+                  rules: [
+                    { required: true, message: '请输入身份证!', type: 'string' },
+                    {
+                      pattern: /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/,
+                      message: '身份证格式错误！',
+                    },
+                  ],
+                })(<Input maxLength={18} placeholder="请输入身份证" />)}
               </Form.Item>
+
               <Form.Item label="手机号">
                 {getFieldDecorator('phone', {
                   initialValue: hospitalInfo['phone'],
-                  rules: [{ required: true, message: '请输入手机号!', type: 'string' }],
-                })(<Input maxLength={20} placeholder="请输入手机号" />)}
+                  rules: [
+                    { required: true, message: '请输入手机号!', type: 'string' },
+                    {
+                      pattern: /^1(3[0-9]|4[5,7]|5[0,1,2,3,5,6,7,8,9]|6[2,5,6,7]|7[0,1,7,8]|8[0-9]|9[1,8,9])\d{8}$/,
+                      message: '手机号格式错误！',
+                    },
+                  ],
+                })(<Input maxLength={11} placeholder="请输入手机号" />)}
               </Form.Item>
               <Form.Item label="医院概况">
                 {getFieldDecorator('hospitalDesc', {
@@ -286,6 +267,7 @@ class HospitalEdit extends Component {
                       onPreview={this.handlePreview}
                       onChange={this.handleStoreLiveChange}
                       accept=".png,.jpg,.jpeg"
+                      data={{ type: 'hospital' }}
                       headers={headers}
                     >
                       {hospitalInfo['qualifiImgs'].length >= 5 ? null : uploadButton}

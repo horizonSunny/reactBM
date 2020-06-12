@@ -66,7 +66,10 @@ class BusinessEdit extends Component {
     callback();
   };
   handleSave = () => {
-    const { dispatch, form: { validateFields } } = this.props;
+    const {
+      dispatch,
+      form: { validateFields },
+    } = this.props;
     validateFields((err, values) => {
       if (this.state.qualificationFileList.length > 0) {
         this.props.form.setFieldsValue({
@@ -103,27 +106,27 @@ class BusinessEdit extends Component {
     router.push('/businessAdm/enter');
   };
   editQualificationName = (type, value, editValue) => {
-    const {qualificationFileList} = this.state
+    const { qualificationFileList } = this.state;
     if (type === 'save') {
       qualificationFileList.map(item => {
         if (item.uid === value.uid) {
-          item.name = editValue
-          value.edit = false
+          item.name = editValue;
+          value.edit = false;
         }
-        return item
+        return item;
       });
     } else {
       qualificationFileList.map(item => {
         if (item.uid === value.uid) {
-          value.edit = true
+          value.edit = true;
         }
-        return item
+        return item;
       });
     }
     this.setState({
-      qualificationFileList: qualificationFileList
-    })
-  }
+      qualificationFileList: qualificationFileList,
+    });
+  };
   handleCancel = () => this.setState({ previewVisible: false });
 
   handleQualificationChange = ({ fileList }) => this.setState({ qualificationFileList: fileList });
@@ -162,7 +165,11 @@ class BusinessEdit extends Component {
       }
     }
   };
-
+  // // 城市选择
+  // areaData = (value, selectedOptions) => {
+  //   console.log('value_', value);
+  //   console.log('selectedOptions_', selectedOptions);
+  // };
   logoBeforeUpload = file => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
@@ -344,21 +351,35 @@ class BusinessEdit extends Component {
                       {qualificationFileList.length >= 10 ? null : uploadButton}
                     </Upload>
                     <span className={`${styles.editContent}`}>
-                      {
-                        qualificationFileList.map(item => {
-                          return (
-                            <Fragment>
-                              <div className={`${styles.editName}`}>
-                                {!item.edit?
-                                  <span key={item.uid} onClick={(e) => this.editQualificationName('edit', item, '')}>{item.name}<Icon type="edit" /></span>:
-                                  <Search key={item.uid} enterButton="保存" defaultValue={item.name} size="small" onSearch={value => this.editQualificationName('save', item, value) } />
-                                // <Input key={item.uid} maxLength={20} addonAfter={<Button size="small" type="primary" onClick={(e) => this.editQualificationName(e,defaultName)} icon="save" />} defaultValue={defaultName} />}
-                                }
-                              </div>
-                            </Fragment>
-                          )
-                        })
-                      }
+                      {qualificationFileList.map(item => {
+                        return (
+                          <Fragment>
+                            <div className={`${styles.editName}`}>
+                              {!item.edit ? (
+                                <span
+                                  key={item.uid}
+                                  onClick={e => this.editQualificationName('edit', item, '')}
+                                >
+                                  {item.name}
+                                  <Icon type="edit" />
+                                </span>
+                              ) : (
+                                <Search
+                                  key={item.uid}
+                                  enterButton="保存"
+                                  defaultValue={item.name}
+                                  size="small"
+                                  onSearch={value =>
+                                    this.editQualificationName('save', item, value)
+                                  }
+                                />
+                              )
+                              // <Input key={item.uid} maxLength={20} addonAfter={<Button size="small" type="primary" onClick={(e) => this.editQualificationName(e,defaultName)} icon="save" />} defaultValue={defaultName} />}
+                              }
+                            </div>
+                          </Fragment>
+                        );
+                      })}
                     </span>
                     <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                       <img alt="example" style={{ width: '100%' }} src={previewImage} />
