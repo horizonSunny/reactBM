@@ -70,7 +70,12 @@ class QueryForm extends Component {
       payload: { ...params },
     });
   };
-
+  // 添加机构
+  newHospital() {
+    router.push({
+      pathname: '/businessAdm/organization/edit',
+    });
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     const { queryForm } = this.props.hospitalAdm;
@@ -141,7 +146,9 @@ class QueryForm extends Component {
             <Button style={{ marginLeft: '8px', marginRight: '8px' }} onClick={this.handleReset}>
               重置
             </Button>
-            <Button type="primary">添加机构</Button>
+            <Button type="primary" onClick={this.newHospital}>
+              添加机构
+            </Button>
           </Col>
         </Row>
       </Form>

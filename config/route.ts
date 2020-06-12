@@ -68,6 +68,12 @@ const route = [
                 component: './businessAdm/hospitalDetails',
                 hideInMenu: true,
               },
+              {
+                path: '/businessAdm/organization/edit',
+                name: '编辑资料',
+                component: './businessAdm/hospitalEdit',
+                hideInMenu: true,
+              },
               // {
               //   path: 'examine',
               //   name: '入驻审核',
