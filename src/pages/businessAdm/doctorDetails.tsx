@@ -81,14 +81,14 @@ class Particulars extends Component {
             <Content></Content>
             <Record></Record>
           </div>
-          {currentDoctor.authStatus != 3 && (
+          {currentDoctor.authStatus && currentDoctor.authStatus == 1 && (
             <div className={`${styles.operation}`}>
               {currentDoctor.authStatus == 1 && (
                 <Button type="primary" onClick={this.auditPass}>
                   审核通过
                 </Button>
               )}
-              {currentDoctor.authStatus == 2 && (
+              {currentDoctor.authStatus == 1 && (
                 <Button type="primary" onClick={this.auditReject}>
                   审核驳回
                 </Button>

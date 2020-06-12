@@ -71,6 +71,13 @@ class Particulars extends Component {
       closeReason: value,
     });
   };
+  edit = e => {
+    const params = routerParams(location.search);
+    router.push({
+      pathname: '/businessAdm/organization/editor',
+      query: { id: params.id },
+    });
+  };
   render() {
     const { currentHospital } = this.props.hospitalAdm;
     return (
@@ -80,20 +87,25 @@ class Particulars extends Component {
             <Content></Content>
             <Record></Record>
           </div>
-          {currentHospital.authStatus && currentHospital.authStatus != 3 && (
-            <div className={`${styles.operation}`}>
-              {currentHospital.authStatus == 1 && (
-                <Button type="primary" onClick={this.auditPass}>
-                  审核通过
-                </Button>
-              )}
-              {currentHospital.authStatus == 2 && (
-                <Button type="primary" onClick={this.auditReject}>
-                  审核驳回
-                </Button>
-              )}
-            </div>
-          )}
+          {/* {currentHospital.authStatus && currentHospital.authStatus != 2 && ( */}
+          <div className={`${styles.operation}`}>
+            {currentHospital.authStatus == 1 && (
+              <Button type="primary" onClick={this.auditPass}>
+                审核通过
+              </Button>
+            )}
+            {currentHospital.authStatus == 1 && (
+              <Button type="primary" onClick={this.auditReject}>
+                审核驳回
+              </Button>
+            )}
+            {/* {currentHospital.authStatus == 3 && ( */}
+            <Button type="primary" onClick={this.edit}>
+              编辑
+            </Button>
+            {/* )} */}
+          </div>
+          {/* )} */}
           <Modal
             title="请填写关闭原因"
             visible={this.state.visible}
