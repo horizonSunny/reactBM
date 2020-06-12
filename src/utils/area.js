@@ -13763,3 +13763,44 @@ export function newArea() {
   });
   return newAreaData;
 }
+
+export function findAreaInfo(way = 'code', areaData) {
+  let province, city, area;
+  [province, city, area] = areaData;
+  const provinceInfo = Area.find(provinceMessage => {
+    if (way === 'code') {
+      return provinceMessage.provinceCode == province;
+    } else {
+      return provinceMessage.provinceName == province;
+    }
+  });
+  const cityInfo =
+    provinceInfo &&
+    provinceInfo.mallCityList.find(cityMessage => {
+      if (way === 'code') {
+        return cityMessage.cityCode == city;
+      } else {
+        return cityMessage.cityName == city;
+      }
+    });
+  const areaInfo =
+    cityInfo &&
+    cityInfo.mallAreaList.find(areaMessage => {
+      if (way === 'code') {
+        return areaMessage.areaCode == area;
+      } else {
+        return areaMessage.areaName == areaMessage;
+      }
+    });
+  return way === 'code'
+    ? [
+        provinceInfo && provinceInfo.provinceCode,
+        cityInfo && cityInfo.cityCode,
+        areaInfo && areaInfo.areaCode,
+      ]
+    : [
+        provinceInfo && provinceInfo.provinceName,
+        cityInfo && cityInfo.cityName,
+        areaInfo && areaInfo.areaName,
+      ];
+}

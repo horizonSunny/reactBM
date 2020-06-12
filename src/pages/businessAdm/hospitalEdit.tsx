@@ -3,7 +3,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import router from 'umi/router';
 import { connect } from 'dva';
 import styles from './businessEdit.less';
-import { newArea } from '../../utils/area.js';
+import { newArea, findAreaInfo } from '../../utils/area.js';
 import { Form, Select, Input, Cascader, Radio, Button, Upload, Icon, Modal, message } from 'antd';
 const { TextArea } = Input;
 const options = newArea();
@@ -48,10 +48,21 @@ class HospitalEdit extends Component {
         hospitalId: params.id,
       }).then(res => {
         if (res && res.code == 1) {
-          this.setState({
+          if (Array.isArray(res.data.qualifiImgs)) {
+          } else {
+            res.data.qualifiImgs = [];
+          }
+
+          const areaInfo = findAreaInfo('name', [res.data.province, res.data.city, res.data.area]);
+          // const areaInfo = findAreaInfo('code', ['120000', '120100', '120101']);
+          // res.data.province = areaInfo[0];
+          // res.data.city = areaInfo[1];
+          // res.data.area = areaInfo[2];
+          [res.data.province, res.data.city, res.data.area] = areaInfo;
+          const arr = this.setState({
             hospitalInfo: res.data,
           });
-          console.log('res.data_', res.data);
+          console.log('res.data_', this.state.hospitalInfo);
         }
       });
   }
