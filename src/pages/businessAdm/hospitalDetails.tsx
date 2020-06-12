@@ -4,7 +4,7 @@ import { connect } from 'dva';
 import { Button, Modal, Input, message } from 'antd';
 import router from 'umi/router';
 import styles from './particulars.less';
-import { Content, Record } from './doctorComponent/index';
+import { Content, Record } from './hospitalComponent/index';
 import routerParams from '@/utils/routerParams';
 @connect(({ hospitalAdm }) => ({
   hospitalAdm: hospitalAdm,
