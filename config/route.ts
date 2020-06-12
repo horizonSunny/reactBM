@@ -62,6 +62,12 @@ const route = [
                 name: '医疗机构管理',
                 component: './businessAdm/hospitalAdm',
               },
+              {
+                path: '/businessAdm/organization/particulars',
+                name: '详情',
+                component: './businessAdm/hospitalDetails',
+                hideInMenu: true,
+              },
               // {
               //   path: 'examine',
               //   name: '入驻审核',

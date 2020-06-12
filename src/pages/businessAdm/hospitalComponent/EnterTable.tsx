@@ -107,24 +107,10 @@ class EnterTable extends Component {
     // const { dispatch } = this.props;
   };
   handleView = (text, record) => {
-    console.log('当前行的数据为:', text, record);
-    const { dispatch } = this.props;
-    const { recordpagination } = this.props.hospitalAdm;
-    dispatch({
-      type: 'hospitalAdm/currentRecord',
-      payload: { ...record },
+    router.push({
+      pathname: '/businessAdm/organization/particulars',
+      query: { id: record.id },
     });
-    // 获取操作日志
-    dispatch({
-      type: 'hospitalAdm/getOperationRecord',
-      payload: {
-        ...recordpagination,
-        tenantId: record.tenantId,
-        pageNumber: 0,
-        totalElements: 0,
-      },
-    });
-    router.push('/hospitalAdm/enter/particulars');
   };
   handleUpdate = (text, record) => {
     console.log('当前行的数据为:', text, record);

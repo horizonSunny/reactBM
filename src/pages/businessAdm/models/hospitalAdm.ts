@@ -1,12 +1,9 @@
 import { Effect } from 'dva';
 import { Reducer } from 'redux';
 import {
-  insertBusiness,
-  saveBusiness,
-  switchStatus,
-  queryOperation,
   //2.0
   getHospitalPage,
+  getHospitalDetails,
 } from '@/services/businessAdm';
 const hospitalAdm = {
   namespace: 'hospitalAdm',
@@ -23,13 +20,7 @@ const hospitalAdm = {
       pageNumber: 0,
       pageSize: 10,
     },
-    // currentRecord: {},
-    // operaRecord: [],
-    // recordpagination: {
-    //   pageNumber: 0,
-    //   pageSize: 10,
-    //   totalElements: 0,
-    // },
+    currentHospital: {},
   },
 
   effects: {
@@ -57,86 +48,15 @@ const hospitalAdm = {
       });
       return payload;
     },
-    *currentRecord({ payload }, { call, put }) {
-      yield put({
-        type: 'record',
-        payload: payload,
-      });
-      return payload;
-    },
-    *saveBusiness({ payload }, { call, put, select }) {
-      const data = yield select(state => state.businessAdm.currentRecord);
-      let response = {};
-      let tempenterpriseQualification = [];
-      if (payload.enterpriseQualification.length > 0) {
-        payload.enterpriseQualification.forEach(item => {
-          if (!item.url) {
-            item.url = item.response.data;
-          }
-          tempenterpriseQualification.push({
-            name: item.name,
-            url: item.url,
-          });
-        });
-        payload.enterpriseQualification = tempenterpriseQualification;
-      }
-      let tempstoreLive = [];
-      if (payload.storeLive.length > 0) {
-        payload.storeLive.forEach(item => {
-          if (!item.url) {
-            item.url = item.response.data;
-          }
-          tempstoreLive.push(item.url);
-        });
-        payload.storeLive = tempstoreLive;
-      }
-      let tempParam = Object.assign({}, data, payload);
-      if (data && data.tenantId) {
-        // 更新
-        response = yield call(saveBusiness, tempParam);
-      } else {
-        // 新增
-        response = yield call(insertBusiness, tempParam);
-      }
-
+    *getHospitalDetails({ payload }, { call, put }) {
+      const response = yield call(getHospitalDetails, payload);
       if (response && response.code === 1) {
         yield put({
-          type: 'saveData',
+          type: 'saveHospitalDetails',
           payload: response.data,
         });
       }
       return response;
-    },
-    *switchStatus({ payload }, { call, put }) {
-      const response = yield call(switchStatus, payload);
-      if (response && response.code === 1) {
-        yield put({
-          type: 'switchSave',
-          payload: payload,
-        });
-      }
-      return response;
-    },
-    *getOperationRecord({ payload }, { call, put }) {
-      yield put({
-        type: 'operaRecord',
-        payload: [],
-      });
-      const response = yield call(queryOperation, payload);
-      if (response && response.code === 1) {
-        yield put({
-          type: 'operaRecord',
-          payload: response.data.pageList,
-        });
-        yield put({
-          type: 'recordpagination',
-          payload: {
-            pageNumber: response.data.pageNumber,
-            pageSize: response.data.pageSize,
-            totalElements: response.data.totalElements,
-          },
-        });
-      }
     },
   },
 
@@ -169,42 +89,10 @@ const hospitalAdm = {
         pagination: temppagination,
       };
     },
-    record(state, action) {
+    saveHospitalDetails(state, action) {
       return {
         ...state,
-        currentRecord: action.payload,
-      };
-    },
-    saveData(state, action) {
-      return {
-        ...state,
-        currentRecord: action.payload,
-      };
-    },
-    switchSave(state, action) {
-      let tempbusinessData = state.businessData;
-      let result = action.payload;
-      tempbusinessData.map(item => {
-        if (item.tenantId === result.tenantId) {
-          item.status = result.status;
-        }
-        return item;
-      });
-      return {
-        ...state,
-        businessData: tempbusinessData,
-      };
-    },
-    operaRecord(state, action) {
-      return {
-        ...state,
-        operaRecord: action.payload,
-      };
-    },
-    recordpagination(state, action) {
-      return {
-        ...state,
-        recordpagination: action.payload,
+        currentHospital: action.payload,
       };
     },
   },

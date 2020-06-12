@@ -32,7 +32,7 @@ const columns = [
 @connect(({ doctorAdm }) => ({
   doctorAdm: doctorAdm,
 }))
-class Title extends Component {
+class Record extends Component {
   render() {
     const { currentDoctor } = this.props.doctorAdm;
     return (
@@ -43,4 +43,4 @@ class Title extends Component {
   }
 }
 
-export default Title;
+export default Record;
