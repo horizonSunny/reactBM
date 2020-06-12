@@ -74,7 +74,7 @@ class Particulars extends Component {
   edit = e => {
     const params = routerParams(location.search);
     router.push({
-      pathname: '/businessAdm/organization/editor',
+      pathname: '/businessAdm/organization/edit',
       query: { id: params.id },
     });
   };
