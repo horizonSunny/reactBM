@@ -3,7 +3,7 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import router from 'umi/router';
 import { connect } from 'dva';
 import styles from './index.less';
-import { Form, Input, Button, Upload, Icon, Modal, message } from 'antd';
+import { Form, Input, Button, Upload, Icon, Modal, message, Radio } from 'antd';
 import { serverUrl } from '@/utils/request';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
@@ -25,6 +25,7 @@ class HospitalEdit extends Component {
         picImg: '', // 文章封面
         videoList: [], // 上传视频集合
         contentWrap: '', // 文章内容
+        type: 'doctor',
       },
     };
   }
@@ -139,7 +140,6 @@ class HospitalEdit extends Component {
     };
     const { contentEdit } = this.state;
     const excludeControls = ['emoji'];
-    const { editorState } = this.state;
     return (
       <PageHeaderWrapper>
         <div className={styles.container}>
@@ -150,6 +150,17 @@ class HospitalEdit extends Component {
                   initialValue: contentEdit['title'],
                   rules: [{ required: true, message: '请输入文章标题!', type: 'string' }],
                 })(<Input maxLength={20} placeholder="请输入文章标题" />)}
+              </Form.Item>
+              <Form.Item label="app类型">
+                {getFieldDecorator('type', {
+                  initialValue: contentEdit['type'],
+                  rules: [{ required: true, message: '请选择app类型!', type: 'string' }],
+                })(
+                  <Radio.Group size="large">
+                    <Radio value="doctor">医生端</Radio>
+                    <Radio value="patient">患者端</Radio>
+                  </Radio.Group>,
+                )}
               </Form.Item>
               <Form.Item label="请输入文章封面" extra="支持PNG,JPG,JPEG,大小控制在100kb内">
                 {getFieldDecorator('picImg', {
