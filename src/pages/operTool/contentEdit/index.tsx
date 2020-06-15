@@ -3,16 +3,11 @@ import { PageHeaderWrapper } from '@ant-design/pro-layout';
 import router from 'umi/router';
 import { connect } from 'dva';
 import styles from './index.less';
-import { newArea, findAreaInfo } from '@/utils/area.js';
-import { Form, Select, Input, Cascader, Radio, Button, Upload, Icon, Modal, message } from 'antd';
-const { TextArea } = Input;
-const options = newArea();
+import { Form, Input, Button, Upload, Icon, Modal, message } from 'antd';
 import { serverUrl } from '@/utils/request';
-import { thisExpression } from '@babel/types';
 import { getHospitalDetails } from '@/services/businessAdm';
 import routerParams from '@/utils/routerParams';
 
-const { Search } = Input;
 @connect(({ hospitalAdm }) => ({
   hospitalAdm: hospitalAdm,
 }))
@@ -24,51 +19,17 @@ class HospitalEdit extends Component {
       uploadUrl: serverUrl + '/admin/v1/uploadFileWeb',
       previewVisible: false,
       previewImage: '',
-      // storeLiveFileList: tempStoreLive || [],
-      // qualificationFileList: tempQualification || [],
-      hospitalInfo: {
-        name: '', // 机构名称
-        province: '',
-        city: '',
-        area: '',
-        address: '', // 详细地址
-        doctorName: '', // 管理员姓名
-        certNo: '', // 管理员身份证
-        phone: '', // 管理员手机号
-        hospitalDesc: '', // 概况
-        qualifiImgs: [], // 医院资质图片
-        picImg: '', // 医院门头照片
+      contentEdit: {
+        title: '', // 文章标题
+        picImg: '', // 文章封面
+        videoList: [], // 上传视频集合
       },
     };
   }
-  componentDidMount() {
-    const params = routerParams(location.search);
-    params.id &&
-      getHospitalDetails({
-        hospitalId: params.id,
-      }).then(res => {
-        if (res && res.code == 1) {
-          if (Array.isArray(res.data.qualifiImgs)) {
-          } else {
-            res.data.qualifiImgs = [];
-          }
-
-          const areaInfo = findAreaInfo('name', [res.data.province, res.data.city, res.data.area]);
-          // const areaInfo = findAreaInfo('code', ['120000', '120100', '120101']);
-          // res.data.province = areaInfo[0];
-          // res.data.city = areaInfo[1];
-          // res.data.area = areaInfo[2];
-          [res.data.province, res.data.city, res.data.area] = areaInfo;
-          const arr = this.setState({
-            hospitalInfo: res.data,
-          });
-          console.log('res.data_', this.state.hospitalInfo);
-        }
-      });
-  }
+  componentDidMount() {}
   // 保存上传
   handleSave = () => {
-    console.log('all_', this.state.hospitalInfo);
+    console.log('all_', this.state.contentEdit);
 
     const {
       dispatch,
@@ -103,41 +64,35 @@ class HospitalEdit extends Component {
     });
   };
   // 返回
-  handleBack = () => {
-    router.push('/businessAdm/hospitalAdm');
-  };
+  // handleBack = () => {
+  //   router.push('/businessAdm/hospitalAdm');
+  // };
   // 关闭弹窗
   handleCancel = () => this.setState({ previewVisible: false });
 
   // handleQualificationChange = ({ fileList }) => this.setState({ qualificationFileList: fileList });
 
-  handleStoreLiveChange = ({ fileList }) => {
-    console.log('handleStoreLiveChange_', fileList);
-    let data = Object.assign({}, this.state.hospitalInfo, {
-      qualifiImgs: fileList,
+  handleVideoLiveChange = ({ fileList }) => {
+    let data = Object.assign({}, this.state.contentEdit, {
+      videoList: fileList,
     });
-    this.setState({ hospitalInfo: data });
-  };
-  // 查看已经上传的图片
-  handlePreview = async file => {
-    this.setState({
-      previewImage: file.thumbUrl || file.url,
-      previewVisible: true,
+    this.setState({ contentEdit: data }, () => {
+      console.log('handleVideoLiveChange_', this.state.contentEdit);
     });
   };
 
   picImgChange = info => {
     if (info.file.status === 'done') {
       if (info.file.response.code === 1) {
-        let data = Object.assign({}, this.state.hospitalInfo, {
+        let data = Object.assign({}, this.state.contentEdit, {
           picImg: info.file.response.data,
         });
         this.setState(
           {
-            hospitalInfo: data,
+            contentEdit: data,
           },
           () => {
-            console.log('hospitalInfo_', this.state.hospitalInfo);
+            console.log('contentEdit_', this.state.contentEdit);
           },
         );
       }
@@ -173,119 +128,78 @@ class HospitalEdit extends Component {
       labelCol: { span: 6 },
       wrapperCol: { span: 12 },
     };
-    const { hospitalInfo, previewVisible, previewImage } = this.state;
+    const { contentEdit, previewVisible, previewImage } = this.state;
+
     return (
       <PageHeaderWrapper>
         <div className={styles.container}>
           <div className={`${styles.content}`}>
             <Form {...formItemLayout}>
-              <Form.Item label="机构名称">
-                {getFieldDecorator('name', {
-                  initialValue: hospitalInfo['name'],
-                  rules: [{ required: true, message: '请输入机构名称!', type: 'string' }],
-                })(<Input maxLength={20} placeholder="请输入机构名称" />)}
+              <Form.Item label="title">
+                {getFieldDecorator('title', {
+                  initialValue: contentEdit['title'],
+                  rules: [{ required: true, message: '请输入文章标题!', type: 'string' }],
+                })(<Input maxLength={20} placeholder="请输入文章标题" />)}
               </Form.Item>
-              <Form.Item label="所在城市">
-                {getFieldDecorator('areaData', {
-                  initialValue: [
-                    hospitalInfo['province'],
-                    hospitalInfo['city'],
-                    hospitalInfo['area'],
-                  ],
-                  rules: [{ required: true, message: '请选择城市所在' }],
-                })(<Cascader options={options} changeOnSelect placeholder="省市区" />)}
-              </Form.Item>
-              <Form.Item label="详细地址">
-                {getFieldDecorator('address', {
-                  initialValue: hospitalInfo['address'],
-                  rules: [{ required: true, message: '请输入详细地址!', type: 'string' }],
-                })(<Input maxLength={20} placeholder="请输入详细地址" />)}
-              </Form.Item>
-              <Form.Item label="管理员姓名">
-                {getFieldDecorator('doctorName', {
-                  initialValue: hospitalInfo['doctorName'],
-                  rules: [{ required: true, message: '请输入管理员姓名!', type: 'string' }],
-                })(<Input maxLength={20} placeholder="请输入管理员姓名" />)}
-              </Form.Item>
-              <Form.Item label="身份证">
-                {getFieldDecorator('certNo', {
-                  initialValue: hospitalInfo['certNo'],
-                  rules: [
-                    { required: true, message: '请输入身份证!', type: 'string' },
-                    {
-                      pattern: /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/,
-                      message: '身份证格式错误！',
-                    },
-                  ],
-                })(<Input maxLength={18} placeholder="请输入身份证" />)}
-              </Form.Item>
-
-              <Form.Item label="手机号">
-                {getFieldDecorator('phone', {
-                  initialValue: hospitalInfo['phone'],
-                  rules: [
-                    { required: true, message: '请输入手机号!', type: 'string' },
-                    {
-                      pattern: /^1(3[0-9]|4[5,7]|5[0,1,2,3,5,6,7,8,9]|6[2,5,6,7]|7[0,1,7,8]|8[0-9]|9[1,8,9])\d{8}$/,
-                      message: '手机号格式错误！',
-                    },
-                  ],
-                })(<Input maxLength={11} placeholder="请输入手机号" />)}
-              </Form.Item>
-              <Form.Item label="医院概况">
-                {getFieldDecorator('hospitalDesc', {
-                  initialValue: hospitalInfo['hospitalDesc'],
-                  rules: [{ required: true, message: '请输入医院概况信息!', type: 'string' }],
-                })(<TextArea maxLength={200} placeholder="请输入医院概况信息" />)}
-              </Form.Item>
-              <Form.Item label="医院门头照片" extra="支持PNG,JPG,JPEG,大小控制在100kb内">
+              <Form.Item label="请输入文章封面" extra="支持PNG,JPG,JPEG,大小控制在100kb内">
                 {getFieldDecorator('picImg', {
                   valuePropName: 'picImg',
-                  initialValue: hospitalInfo['picImg'],
+                  initialValue: contentEdit['picImg'],
+                  rules: [{ required: true, message: '请选择文章封面!', type: 'string' }],
                 })(
                   <Upload
                     name="file"
                     action={this.state.uploadUrl}
-                    accept=".png,.jpg,.jpeg"
                     listType="picture-card"
                     showUploadList={false}
-                    beforeUpload={this.beforeUpload}
+                    // beforeUpload={this.beforeUpload}
                     onChange={this.picImgChange}
                     headers={headers}
                     data={{ type: 'hospital' }}
                   >
-                    {hospitalInfo['picImg'] ? (
-                      <img src={hospitalInfo['picImg']} alt="avatar" style={{ width: '100%' }} />
+                    {contentEdit['picImg'] ? (
+                      <img src={contentEdit['picImg']} alt="avatar" style={{ width: '100%' }} />
                     ) : (
                       uploadButton
                     )}
                   </Upload>,
                 )}
               </Form.Item>
-              <Form.Item
-                label="医疗机构许可证／营业执照"
-                extra="支持PNG,JPG,JPEG,大小控制在300kb内,最多上传5张"
-              >
-                {getFieldDecorator('qualifiImgs', {
+              <Form.Item label="文章内部视频">
+                {getFieldDecorator('contentVideo', {
                   valuePropName: 'fileList',
-                  initialValue: hospitalInfo['qualifiImgs'],
+                  initialValue: contentEdit['contentVideo'],
+                  rules: [{ required: true, message: '请输入文章内部视频!', type: 'string' }],
                 })(
                   <Fragment>
                     <Upload
                       action={this.state.uploadUrl}
-                      listType="picture-card"
-                      fileList={hospitalInfo['qualifiImgs']}
-                      onPreview={this.handlePreview}
-                      onChange={this.handleStoreLiveChange}
-                      accept=".png,.jpg,.jpeg"
+                      onChange={this.handleVideoLiveChange}
+                      accept=".mp4"
                       data={{ type: 'hospital' }}
                       headers={headers}
                     >
-                      {hospitalInfo['qualifiImgs'].length >= 5 ? null : uploadButton}
+                      {/* {contentEdit['contentVideo'].length >= 5 ? null : uploadButton} */}
+                      <Button>上传视频</Button>
                     </Upload>
-                    <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-                      <img alt="example" style={{ width: '100%' }} src={previewImage} />
-                    </Modal>
+                    {/* {this.state.contentEdit.videoList &&
+                      this.state.contentEdit.videoList.length > 0 && ( */}
+                    {this.state.contentEdit.videoList.map(item => {
+                      return (
+                        <div
+                        // style={{
+                        //   height: '25px',
+                        //   lineHeight: '25px',
+                        // }}
+                        >
+                          视频链接：
+                          <a href="javascript:void(0);">
+                            {item && item.response && item.response.data}
+                          </a>
+                        </div>
+                      );
+                    })}
+                    {/* )} */}
                   </Fragment>,
                 )}
               </Form.Item>
@@ -298,9 +212,9 @@ class HospitalEdit extends Component {
             <Button type="primary" onClick={this.handleSave}>
               保存
             </Button>
-            <Button icon="left" className={`${styles.back}`} onClick={this.handleBack}>
+            {/* <Button icon="left" className={`${styles.back}`} onClick={this.handleBack}>
               返回
-            </Button>
+            </Button> */}
           </div>
         </div>
       </PageHeaderWrapper>
