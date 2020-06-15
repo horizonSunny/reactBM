@@ -31,14 +31,13 @@ class HospitalEdit extends Component {
   componentDidMount() {}
   // 保存上传
   handleSave = () => {
-    console.log('all_', this.state.contentEdit);
+    console.log('all_', this.state.contentEdit.contentWrap.toHTML());
 
     const {
       dispatch,
       form: { validateFields },
     } = this.props;
     validateFields((err, values) => {
-      debugger;
       if (!err) {
         //   let params = {
         //     ...values,
@@ -114,7 +113,13 @@ class HospitalEdit extends Component {
     return isJpgOrPng && isLt2M;
   };
   handleEditorChange = editorState => {
-    this.setState({ editorState });
+    // this.setState({ editorState });
+    let data = Object.assign({}, this.state.contentEdit, {
+      contentWrap: editorState,
+    });
+    this.setState({ contentEdit: data }, () => {
+      console.log('handleVideoLiveChange_', this.state.contentEdit);
+    });
   };
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -150,7 +155,7 @@ class HospitalEdit extends Component {
                 {getFieldDecorator('picImg', {
                   valuePropName: 'picImg',
                   initialValue: contentEdit['picImg'],
-                  rules: [{ required: true, message: '请选择文章封面!', type: 'string' }],
+                  // rules: [{ required: true, message: '请选择文章封面!', type: 'string' }],
                 })(
                   <Upload
                     name="file"
@@ -228,7 +233,7 @@ class HospitalEdit extends Component {
                   <BraftEditor
                     style={{ border: '1px solid #d1d1d1', borderRadius: 5 }}
                     placeholder="请输入正文内容"
-                    value={editorState}
+                    value={contentEdit['contentWrap']}
                     onChange={this.handleEditorChange}
                     excludeControls={excludeControls}
                   />,
