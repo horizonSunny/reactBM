@@ -122,6 +122,11 @@ const route = [
                 component: './operTool/findCommodity/findList.tsx',
               },
               {
+                path: '/operTool/contentEdit',
+                name: '内容编辑',
+                component: './operTool/contentEdit/index.tsx',
+              },
+              {
                 path: '/operTool/findCommodity/newCategory',
                 name: '添加分类',
                 component: './operTool/findCommodity/findItem.tsx',
