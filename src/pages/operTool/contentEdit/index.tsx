@@ -5,8 +5,8 @@ import { connect } from 'dva';
 import styles from './index.less';
 import { Form, Input, Button, Upload, Icon, Modal, message } from 'antd';
 import { serverUrl } from '@/utils/request';
-import { getHospitalDetails } from '@/services/businessAdm';
-import routerParams from '@/utils/routerParams';
+import BraftEditor from 'braft-editor';
+import 'braft-editor/dist/index.css';
 
 @connect(({ hospitalAdm }) => ({
   hospitalAdm: hospitalAdm,
@@ -19,10 +19,12 @@ class HospitalEdit extends Component {
       uploadUrl: serverUrl + '/admin/v1/uploadFileWeb',
       previewVisible: false,
       previewImage: '',
+      editorState: null,
       contentEdit: {
         title: '', // 文章标题
         picImg: '', // 文章封面
         videoList: [], // 上传视频集合
+        contentWrap: '', // 文章内容
       },
     };
   }
@@ -111,7 +113,9 @@ class HospitalEdit extends Component {
     }
     return isJpgOrPng && isLt2M;
   };
-
+  handleEditorChange = editorState => {
+    this.setState({ editorState });
+  };
   render() {
     const { getFieldDecorator } = this.props.form;
     // const { hospitalAdm } = this.props;
@@ -128,13 +132,14 @@ class HospitalEdit extends Component {
       labelCol: { span: 6 },
       wrapperCol: { span: 12 },
     };
-    const { contentEdit, previewVisible, previewImage } = this.state;
-
+    const { contentEdit } = this.state;
+    const excludeControls = ['emoji'];
+    const { editorState } = this.state;
     return (
       <PageHeaderWrapper>
         <div className={styles.container}>
           <div className={`${styles.content}`}>
-            <Form {...formItemLayout}>
+            <Form {...formItemLayout} className={styles['main']}>
               <Form.Item label="title">
                 {getFieldDecorator('title', {
                   initialValue: contentEdit['title'],
@@ -203,10 +208,33 @@ class HospitalEdit extends Component {
                   </Fragment>,
                 )}
               </Form.Item>
+              <Form.Item label="文章内容">
+                {getFieldDecorator('contentWrap', {
+                  validateTrigger: 'onBlur',
+                  rules: [
+                    {
+                      required: true,
+                      validator: (_, value, callback) => {
+                        if (value.isEmpty()) {
+                          callback('请输入正文内容');
+                        } else {
+                          callback();
+                        }
+                      },
+                    },
+                  ],
+                  initialValue: BraftEditor.createEditorState(contentEdit['contentWrap']),
+                })(
+                  <BraftEditor
+                    style={{ border: '1px solid #d1d1d1', borderRadius: 5 }}
+                    placeholder="请输入正文内容"
+                    value={editorState}
+                    onChange={this.handleEditorChange}
+                    excludeControls={excludeControls}
+                  />,
+                )}
+              </Form.Item>
             </Form>
-            <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
-              <img alt="example" style={{ width: '100%' }} src={previewImage} />
-            </Modal>
           </div>
           <div className={`${styles.operation}`}>
             <Button type="primary" onClick={this.handleSave}>
