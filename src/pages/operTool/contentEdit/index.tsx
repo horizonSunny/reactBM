@@ -179,7 +179,6 @@ class HospitalEdit extends Component {
                 {getFieldDecorator('contentVideo', {
                   valuePropName: 'fileList',
                   initialValue: contentEdit['contentVideo'],
-                  rules: [{ required: true, message: '请输入文章内部视频!', type: 'string' }],
                 })(
                   <Fragment>
                     <Upload
