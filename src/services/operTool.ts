@@ -33,3 +33,10 @@ export async function editorCategoryItem(params: Object) {
     data: params,
   });
 }
+// 创建科普推荐
+export async function addCoupe(params: Object) {
+  return request('/patient/coupe/addCoupe', {
+    method: 'post',
+    data: params,
+  });
+}

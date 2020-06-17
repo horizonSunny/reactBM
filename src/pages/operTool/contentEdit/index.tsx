@@ -7,6 +7,7 @@ import { Form, Input, Button, Upload, Icon, Modal, message, Radio } from 'antd';
 import { serverUrl } from '@/utils/request';
 import BraftEditor from 'braft-editor';
 import 'braft-editor/dist/index.css';
+import { addCoupe } from '@/services/operTool';
 
 @connect(({ hospitalAdm }) => ({
   hospitalAdm: hospitalAdm,
@@ -33,20 +34,25 @@ class HospitalEdit extends Component {
   // 保存上传
   handleSave = () => {
     console.log('all_', this.state.contentEdit.contentWrap.toHTML());
-
+    console.log('all_', this.state.contentEdit);
     const {
       dispatch,
       form: { validateFields },
     } = this.props;
     validateFields((err, values) => {
+      console.log('values_', values);
+
       if (!err) {
-        //   let params = {
-        //     ...values,
-        //     tenantLogo: this.state.logoUrl,
-        //     adminCard: this.state.adminUrl,
-        //     enterpriseQualification: this.state.qualificationFileList,
-        //     storeLive: this.state.storeLiveFileList,
-        //   };
+        let params = {
+          type: values.type,
+          title: values.title,
+          img: this.state.contentEdit.picImg,
+          content: this.state.contentEdit.contentWrap.toHTML(),
+        };
+        console.log('values_', params);
+        addCoupe(params).then(() => {
+          console.log(123);
+        });
         //   dispatch({
         //     type: 'hospitalAdm/saveBusiness',
         //     payload: params,
